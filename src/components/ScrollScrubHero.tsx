@@ -6,13 +6,7 @@ import Link from 'next/link'
 // How many viewport heights of scroll = full video playback
 const RUNWAY_VH = 5
 
-// Consortium badge — visible early before pillars kick in
-const CONSORTIUM = {
-  showAt: 0.02,
-  peakAt: 0.10,
-  hideAt: 0.26,
-  colleges: ['Pomona', 'CMC', 'Harvey Mudd', 'Scripps', 'Pitzer', 'CGU', 'KGI'],
-}
+const COLLEGES = ['Pomona', 'CMC', 'Harvey Mudd', 'Scripps', 'Pitzer', 'CGU', 'KGI']
 
 // Pillar definitions — text overlays synced to scroll progress
 const PILLARS = [
@@ -156,36 +150,32 @@ export function ScrollScrubHero() {
     <div className="fixed inset-0 z-20 flex justify-center pointer-events-none">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
 
-        {/* Consortium badge — shows all 7 colleges before pillars */}
-        {(() => {
-          const cp = getPillarProgress(frac, CONSORTIUM.showAt, CONSORTIUM.peakAt, CONSORTIUM.hideAt)
-          if (cp <= 0) return null
-          const scale = cp <= 1 ? 0.8 + cp * 0.2 : 1.0 + (cp - 1) * 0.3
-          const opacity = cp <= 0.3 ? cp / 0.3 : cp <= 1 ? 1 : Math.max(0, 1 - (cp - 1) * 1.5)
-          return (
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center z-10"
-              style={{ transform: `scale(${scale})`, opacity, willChange: 'transform, opacity' }}
+        {/* Bottom banner — "featuring" bar with all 7 colleges */}
+        <div
+          className="absolute bottom-16 left-0 right-0 z-10"
+          style={{ opacity: frac < 0.9 ? 1 : Math.max(0, (1 - frac) / 0.1) }}
+        >
+          <div className="mx-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 px-4 py-3">
+            <p
+              className="text-center text-white/50 text-[9px] tracking-[0.25em] uppercase mb-2"
+              style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              <div className="flex flex-col items-center gap-2">
-                <span
-                  className="text-white/80 text-xs tracking-[0.3em] uppercase"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
-                >
-                  The Claremont Colleges
+              The Claremont Colleges
+            </p>
+            <div className="flex justify-center items-center gap-2 flex-wrap">
+              {COLLEGES.map((c, i) => (
+                <span key={c} className="flex items-center gap-2">
+                  <span className="text-white/70 text-[10px] tracking-wider font-medium whitespace-nowrap">
+                    {c}
+                  </span>
+                  {i < COLLEGES.length - 1 && (
+                    <span className="text-white/30 text-[8px]">·</span>
+                  )}
                 </span>
-                <div className="w-56 h-px bg-white/40" />
-                <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 max-w-[280px]">
-                  {CONSORTIUM.colleges.map((c) => (
-                    <span key={c} className="text-white/60 text-[10px] tracking-widest uppercase">
-                      {c}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
-          )
-        })()}
+          </div>
+        </div>
 
         {PILLARS.map((p) => {
           const progress = getPillarProgress(frac, p.showAt, p.peakAt, p.hideAt)
