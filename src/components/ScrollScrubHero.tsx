@@ -8,6 +8,9 @@ const RUNWAY_VH = 5
 
 const COLLEGES = ['Pomona', 'CMC', 'Harvey Mudd', 'Scripps', 'Pitzer', 'CGU', 'KGI']
 
+// Floating "The Claremont Colleges" text — appears before pillars
+const CONSORTIUM = { showAt: 0.02, peakAt: 0.12, hideAt: 0.26 }
+
 // Pillar definitions — text overlays synced to scroll progress
 const PILLARS = [
   { label: 'EVENTS',  href: '/events',  showAt: 0.28, peakAt: 0.34, hideAt: 0.42 },
@@ -149,6 +152,31 @@ export function ScrollScrubHero() {
     {/* Text overlay layer — above the scroll runway so taps register */}
     <div className="fixed inset-0 z-20 flex justify-center pointer-events-none">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
+
+        {/* Floating consortium title — appears before pillars */}
+        {(() => {
+          const cp = getPillarProgress(frac, CONSORTIUM.showAt, CONSORTIUM.peakAt, CONSORTIUM.hideAt)
+          if (cp <= 0) return null
+          const scale = cp <= 1 ? 0.5 + cp * 0.5 : 1.0 + (cp - 1) * 1.0
+          const opacity = cp <= 0.4 ? cp / 0.4 : cp <= 1 ? 1 : Math.max(0, 1 - (cp - 1) * 1.2)
+          return (
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center z-10"
+              style={{ transform: `scale(${scale})`, opacity, willChange: 'transform, opacity' }}
+            >
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-48 h-px bg-white/60" />
+                <span
+                  className="text-white text-3xl font-extrabold tracking-[0.15em] text-center leading-tight"
+                  style={{ fontFamily: 'var(--font-playfair), "Futura", "Bebas Neue", sans-serif' }}
+                >
+                  THE CLAREMONT<br />COLLEGES
+                </span>
+                <div className="w-48 h-px bg-white/60" />
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Bottom banner — "featuring" bar with all 7 colleges */}
         <div
