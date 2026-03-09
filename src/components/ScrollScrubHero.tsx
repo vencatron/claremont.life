@@ -8,10 +8,10 @@ const RUNWAY_VH = 5
 
 // Pillar definitions — text overlays synced to scroll progress
 const PILLARS = [
-  { label: 'EVENTS',  href: '/events',  showAt: 0.02, peakAt: 0.15, hideAt: 0.24 },
-  { label: 'EATS',    href: '/eat',     showAt: 0.26, peakAt: 0.38, hideAt: 0.48 },
-  { label: 'HOUSING', href: '/housing', showAt: 0.50, peakAt: 0.62, hideAt: 0.72 },
-  { label: 'DEALS',   href: '/deals',   showAt: 0.74, peakAt: 0.86, hideAt: 0.96 },
+  { label: 'EVENTS',  href: '/events',  showAt: 0.30, peakAt: 0.35, hideAt: 0.39 },
+  { label: 'EATS',    href: '/eat',     showAt: 0.39, peakAt: 0.44, hideAt: 0.48 },
+  { label: 'HOUSING', href: '/housing', showAt: 0.48, peakAt: 0.53, hideAt: 0.57 },
+  { label: 'DEALS',   href: '/deals',   showAt: 0.57, peakAt: 0.62, hideAt: 0.66 },
 ]
 
 export function ScrollScrubHero() {
