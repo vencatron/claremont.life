@@ -43,7 +43,7 @@ export function ScrollScrubHero() {
 
     // Unlock and start background beat
     if (audio && !st.audioUnlocked) {
-      audio.volume = 0.3
+      audio.volume = 0.1
       audio.play().then(() => {
         st.audioUnlocked = true
       }).catch(() => {
@@ -79,9 +79,9 @@ export function ScrollScrubHero() {
       const audio = audioRef.current
       if (audio && st.audioUnlocked) {
         if (f > 0.95) {
-          audio.volume = Math.max(0, 0.3 * (1 - (f - 0.95) / 0.05))
+          audio.volume = Math.max(0, 0.1 * (1 - (f - 0.95) / 0.05))
         } else {
-          audio.volume = 0.3
+          audio.volume = 0.1
         }
       }
 
