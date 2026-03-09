@@ -6,6 +6,14 @@ import Link from 'next/link'
 // How many viewport heights of scroll = full video playback
 const RUNWAY_VH = 5
 
+// Consortium badge — visible early before pillars kick in
+const CONSORTIUM = {
+  showAt: 0.02,
+  peakAt: 0.10,
+  hideAt: 0.26,
+  colleges: ['Pomona', 'CMC', 'Harvey Mudd', 'Scripps', 'Pitzer', 'CGU', 'KGI'],
+}
+
 // Pillar definitions — text overlays synced to scroll progress
 const PILLARS = [
   { label: 'EVENTS',  href: '/events',  showAt: 0.28, peakAt: 0.34, hideAt: 0.42 },
@@ -147,6 +155,38 @@ export function ScrollScrubHero() {
     {/* Text overlay layer — above the scroll runway so taps register */}
     <div className="fixed inset-0 z-20 flex justify-center pointer-events-none">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
+
+        {/* Consortium badge — shows all 7 colleges before pillars */}
+        {(() => {
+          const cp = getPillarProgress(frac, CONSORTIUM.showAt, CONSORTIUM.peakAt, CONSORTIUM.hideAt)
+          if (cp <= 0) return null
+          const scale = cp <= 1 ? 0.8 + cp * 0.2 : 1.0 + (cp - 1) * 0.3
+          const opacity = cp <= 0.3 ? cp / 0.3 : cp <= 1 ? 1 : Math.max(0, 1 - (cp - 1) * 1.5)
+          return (
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center z-10"
+              style={{ transform: `scale(${scale})`, opacity, willChange: 'transform, opacity' }}
+            >
+              <div className="flex flex-col items-center gap-2">
+                <span
+                  className="text-white/80 text-xs tracking-[0.3em] uppercase"
+                  style={{ fontFamily: 'var(--font-playfair)' }}
+                >
+                  The Claremont Colleges
+                </span>
+                <div className="w-56 h-px bg-white/40" />
+                <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 max-w-[280px]">
+                  {CONSORTIUM.colleges.map((c) => (
+                    <span key={c} className="text-white/60 text-[10px] tracking-widest uppercase">
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )
+        })()}
+
         {PILLARS.map((p) => {
           const progress = getPillarProgress(frac, p.showAt, p.peakAt, p.hideAt)
           if (progress <= 0) return null
