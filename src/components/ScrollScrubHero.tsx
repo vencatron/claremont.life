@@ -3,9 +3,10 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 
-// How many viewport heights of scroll = full video playback + all pillars done
+// How many viewport heights of scroll = full video playback
 const RUNWAY_VH = 5
 
+// Invisible tap targets — match when each pillar is visible in the baked video
 const PILLARS = [
   { label: 'EVENTS',  href: '/events',  showAt: 0.05, hideAt: 0.22 },
   { label: 'EATS',    href: '/eat',     showAt: 0.25, hideAt: 0.45 },
@@ -15,7 +16,7 @@ const PILLARS = [
 
 export function ScrollScrubHero() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const pillarRefs = useRef<(HTMLAnchorElement | null)[]>([])
+  const tapRefs = useRef<(HTMLAnchorElement | null)[]>([])
   const rafRef = useRef<number | null>(null)
   const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false })
 
@@ -38,21 +39,13 @@ export function ScrollScrubHero() {
       const frac = Math.min(1, window.scrollY / (RUNWAY_VH * window.innerHeight))
       st.target = frac * video.duration
 
-      pillarRefs.current.forEach((el, i) => {
+      // Show/hide invisible tap targets to match visible pillar in video
+      tapRefs.current.forEach((el, i) => {
         if (!el) return
         const p = PILLARS[i]
-        const r = 0.05
-        let o = 0
-        if (frac >= p.showAt && frac <= p.hideAt) {
-          if (frac < p.showAt + r)      o = (frac - p.showAt) / r
-          else if (frac > p.hideAt - r) o = (p.hideAt - frac) / r
-          else                          o = 1
-        }
-        o = Math.max(0, Math.min(1, o))
-        const scale = 0.4 + o * 0.6
-        el.style.opacity = String(o)
-        el.style.transform = `scale(${scale})`
-        el.style.pointerEvents = o > 0.05 ? 'auto' : 'none'
+        const visible = frac >= p.showAt && frac <= p.hideAt
+        el.style.pointerEvents = visible ? 'auto' : 'none'
+        el.style.opacity = visible ? '1' : '0'
       })
 
       if (!st.ticking) {
@@ -85,46 +78,33 @@ export function ScrollScrubHero() {
   }, [])
 
   return (
-    <div className="fixed inset-0 -z-10 flex justify-center pointer-events-none">
+    <div className="fixed inset-0 -z-10 flex justify-center">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
-        {/* Video */}
+        {/* Baked video — pillars are part of the footage */}
         <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover opacity-85"
-          src="/claremont-hero-sharp-scrub.mp4"
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/claremont-pillars-float-scrub.mp4"
           muted
           playsInline
           preload="auto"
         />
-        {/* Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 pointer-events-none" />
 
-        {/* Pillar links */}
+        {/* Invisible full-area tap targets — one per pillar, only active when pillar is on screen */}
         {PILLARS.map((p, i) => (
-          <div
+          <Link
             key={p.label}
-            className="absolute inset-0 flex items-center justify-center"
-          >
-            <Link
-              href={p.href}
-              ref={(el) => { pillarRefs.current[i] = el }}
-              style={{
-                fontFamily: 'var(--font-bebas)',
-                fontSize: 'clamp(3.5rem, 18vw, 6.5rem)',
-                letterSpacing: '0.12em',
-                color: 'white',
-                opacity: 0,
-                transform: 'scale(0.4)',
-                pointerEvents: 'none',
-                textShadow: '0 2px 40px rgba(0,0,0,0.9), 0 0 80px rgba(0,0,0,0.4)',
-                textDecoration: 'none',
-                display: 'block',
-                lineHeight: 1,
-              }}
-            >
-              {p.label}
-            </Link>
-          </div>
+            href={p.href}
+            ref={(el) => { tapRefs.current[i] = el }}
+            aria-label={p.label}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: 0,
+              pointerEvents: 'none',
+              zIndex: 1,
+            }}
+          />
         ))}
       </div>
     </div>
