@@ -43,9 +43,12 @@ export function ScrollScrubHero() {
 
     // Unlock and start background beat
     if (audio && !st.audioUnlocked) {
-      st.audioUnlocked = true
       audio.volume = 0.3
-      audio.play().catch(() => {})
+      audio.play().then(() => {
+        st.audioUnlocked = true
+      }).catch(() => {
+        // iOS rejected — will retry on next gesture
+      })
     }
   }, [])
 
@@ -103,14 +106,20 @@ export function ScrollScrubHero() {
     }
 
     // Listen for both scroll and touch to unlock video ASAP
+    // Multiple event types to maximize chance of iOS audio unlock
+    const gestureEvents = ['touchstart', 'touchend', 'click', 'scroll'] as const
     window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('touchstart', unlockMedia, { once: true, passive: true })
+    gestureEvents.forEach(evt => {
+      window.addEventListener(evt, unlockMedia, { passive: true })
+    })
 
     update()
 
     return () => {
       window.removeEventListener('scroll', update)
-      window.removeEventListener('touchstart', unlockMedia)
+      gestureEvents.forEach(evt => {
+        window.removeEventListener(evt, unlockMedia)
+      })
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [unlockMedia])
