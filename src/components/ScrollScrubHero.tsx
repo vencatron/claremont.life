@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
 
 // How many viewport heights of scroll = full video playback
@@ -17,8 +17,30 @@ const PILLARS = [
 export function ScrollScrubHero() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const rafRef = useRef<number | null>(null)
-  const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false })
+  const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false, unlocked: false })
   const [frac, setFrac] = useState(0)
+
+  // iOS Safari requires a user gesture to "unlock" video for programmatic currentTime control.
+  // We play() then immediately pause() on the first touch/scroll interaction.
+  const unlockVideo = useCallback(() => {
+    const video = videoRef.current
+    const st = stateRef.current
+    if (!video || st.unlocked) return
+    st.unlocked = true
+
+    // play() returns a promise on modern browsers; pause immediately after it resolves
+    const p = video.play()
+    if (p && typeof p.then === 'function') {
+      p.then(() => {
+        video.pause()
+        video.currentTime = st.target
+      }).catch(() => {
+        // Autoplay blocked — video will remain black until next gesture
+      })
+    } else {
+      video.pause()
+    }
+  }, [])
 
   useEffect(() => {
     const video = videoRef.current
@@ -40,6 +62,9 @@ export function ScrollScrubHero() {
       st.target = f * video.duration
       setFrac(f)
 
+      // Unlock on first scroll (counts as user gesture on iOS)
+      if (!st.unlocked) unlockVideo()
+
       if (!st.ticking) {
         st.ticking = true
         rafRef.current = requestAnimationFrame(tick)
@@ -48,7 +73,7 @@ export function ScrollScrubHero() {
 
     function tick() {
       if (!video) { st.ticking = false; return }
-      st.current += (st.target - st.current) * 0.1
+      st.current += (st.target - st.current) * 0.15
       if (Math.abs(st.current - st.target) < 0.005) st.current = st.target
       if (Math.abs(video.currentTime - st.current) > 0.016) {
         video.currentTime = st.current
@@ -60,14 +85,18 @@ export function ScrollScrubHero() {
       }
     }
 
+    // Listen for both scroll and touch to unlock video ASAP
     window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('touchstart', unlockVideo, { once: true, passive: true })
+
     update()
 
     return () => {
       window.removeEventListener('scroll', update)
+      window.removeEventListener('touchstart', unlockVideo)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [])
+  }, [unlockVideo])
 
   return (
     <div className="fixed inset-0 -z-10 flex justify-center">
@@ -80,6 +109,8 @@ export function ScrollScrubHero() {
           muted
           playsInline
           preload="auto"
+          // iOS hint: set poster to first frame so it's not just black before unlock
+          poster=""
         />
 
         {/* Pillar text overlays — float in from small to large */}
