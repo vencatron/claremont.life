@@ -21,39 +21,23 @@ const PILLARS = [
 
 export function ScrollScrubHero() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const audioRef = useRef<HTMLAudioElement>(null)
   const rafRef = useRef<number | null>(null)
-  const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false, unlocked: false, audioUnlocked: false })
+  const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false, unlocked: false })
   const [frac, setFrac] = useState(0)
 
-  // iOS Safari requires a user gesture to "unlock" video/audio for programmatic control.
-  const unlockMedia = useCallback(() => {
+  const unlockVideo = useCallback(() => {
     const video = videoRef.current
-    const audio = audioRef.current
     const st = stateRef.current
-
-    // Unlock video
-    if (video && !st.unlocked) {
-      st.unlocked = true
-      const p = video.play()
-      if (p && typeof p.then === 'function') {
-        p.then(() => {
-          video.pause()
-          video.currentTime = st.target
-        }).catch(() => {})
-      } else {
+    if (!video || st.unlocked) return
+    st.unlocked = true
+    const p = video.play()
+    if (p && typeof p.then === 'function') {
+      p.then(() => {
         video.pause()
-      }
-    }
-
-    // Unlock and start background beat
-    if (audio && !st.audioUnlocked) {
-      audio.volume = 0.1
-      audio.play().then(() => {
-        st.audioUnlocked = true
-      }).catch(() => {
-        // iOS rejected — will retry on next gesture
-      })
+        video.currentTime = st.target
+      }).catch(() => {})
+    } else {
+      video.pause()
     }
   }, [])
 
@@ -77,18 +61,7 @@ export function ScrollScrubHero() {
       st.target = f * video.duration
       setFrac(f)
 
-      // Unlock on first scroll (counts as user gesture on iOS)
-      if (!st.unlocked) unlockMedia()
-
-      // Fade audio out when past the hero section
-      const audio = audioRef.current
-      if (audio && st.audioUnlocked) {
-        if (f > 0.95) {
-          audio.volume = Math.max(0, 0.1 * (1 - (f - 0.95) / 0.05))
-        } else {
-          audio.volume = 0.1
-        }
-      }
+      if (!st.unlocked) unlockVideo()
 
       if (!st.ticking) {
         st.ticking = true
@@ -110,30 +83,20 @@ export function ScrollScrubHero() {
       }
     }
 
-    // Listen for both scroll and touch to unlock video ASAP
-    // Multiple event types to maximize chance of iOS audio unlock
-    const gestureEvents = ['touchstart', 'touchend', 'click', 'scroll'] as const
     window.addEventListener('scroll', update, { passive: true })
-    gestureEvents.forEach(evt => {
-      window.addEventListener(evt, unlockMedia, { passive: true })
-    })
+    window.addEventListener('touchstart', unlockVideo, { once: true, passive: true })
 
     update()
 
     return () => {
       window.removeEventListener('scroll', update)
-      gestureEvents.forEach(evt => {
-        window.removeEventListener(evt, unlockMedia)
-      })
+      window.removeEventListener('touchstart', unlockVideo)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [unlockMedia])
+  }, [unlockVideo])
 
   return (
     <>
-    {/* Background beat — soft Not Like Us instrumental loop */}
-    <audio ref={audioRef} src="/bg-beat.mp3" loop preload="auto" />
-
     {/* Video layer — behind everything */}
     <div className="fixed inset-0 -z-10 flex justify-center">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
@@ -162,7 +125,7 @@ export function ScrollScrubHero() {
           return (
             <div
               className="absolute inset-0 flex flex-col items-center justify-center z-10"
-              style={{ transform: `scale(${scale})`, opacity, willChange: 'transform, opacity' }}
+              style={{ transform: `scale(${scale})`, opacity }}
             >
               <div className="flex flex-col items-center gap-3">
                 <div className="w-48 h-px bg-white/60" />
@@ -178,7 +141,7 @@ export function ScrollScrubHero() {
           )
         })()}
 
-        {/* Bottom banner — "featuring" bar with all 7 colleges */}
+        {/* Bottom banner — all 7 colleges */}
         <div
           className="absolute bottom-16 left-0 right-0 z-10"
           style={{ opacity: frac < 0.9 ? 1 : Math.max(0, (1 - frac) / 0.1) }}
@@ -209,13 +172,10 @@ export function ScrollScrubHero() {
           const progress = getPillarProgress(frac, p.showAt, p.peakAt, p.hideAt)
           if (progress <= 0) return null
 
-          // Scale: 0.3 → 1.0 during appear, keeps growing 1.0 → 2.0 during dissolve
-          // Simulates text floating toward camera then passing through
           const scale = progress <= 1
             ? 0.3 + progress * 0.7
             : 1.0 + (progress - 1) * 1.0
 
-          // Opacity: fade in, hold briefly at peak, then dissolve out
           const opacity = progress <= 0.4
             ? progress / 0.4
             : progress <= 1
@@ -236,7 +196,6 @@ export function ScrollScrubHero() {
                 style={{
                   transform: `scale(${scale})`,
                   opacity,
-                  willChange: 'transform, opacity',
                 }}
               >
                 <div className="w-48 h-px bg-white/60" />
