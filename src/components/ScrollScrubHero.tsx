@@ -1,24 +1,24 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 
 // How many viewport heights of scroll = full video playback
 const RUNWAY_VH = 5
 
-// Invisible tap targets — match when each pillar is visible in the baked video
+// Pillar definitions — text overlays synced to scroll progress
 const PILLARS = [
-  { label: 'EVENTS',  href: '/events',  showAt: 0.05, hideAt: 0.22 },
-  { label: 'EATS',    href: '/eat',     showAt: 0.25, hideAt: 0.45 },
-  { label: 'HOUSING', href: '/housing', showAt: 0.48, hideAt: 0.68 },
-  { label: 'DEALS',   href: '/deals',   showAt: 0.71, hideAt: 0.92 },
+  { label: 'EVENTS',  href: '/events',  showAt: 0.02, peakAt: 0.15, hideAt: 0.24 },
+  { label: 'EATS',    href: '/eat',     showAt: 0.26, peakAt: 0.38, hideAt: 0.48 },
+  { label: 'HOUSING', href: '/housing', showAt: 0.50, peakAt: 0.62, hideAt: 0.72 },
+  { label: 'DEALS',   href: '/deals',   showAt: 0.74, peakAt: 0.86, hideAt: 0.96 },
 ]
 
 export function ScrollScrubHero() {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const tapRefs = useRef<(HTMLAnchorElement | null)[]>([])
   const rafRef = useRef<number | null>(null)
   const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false })
+  const [frac, setFrac] = useState(0)
 
   useEffect(() => {
     const video = videoRef.current
@@ -36,17 +36,9 @@ export function ScrollScrubHero() {
 
     function update() {
       if (!st.ready || !video) return
-      const frac = Math.min(1, window.scrollY / (RUNWAY_VH * window.innerHeight))
-      st.target = frac * video.duration
-
-      // Show/hide invisible tap targets to match visible pillar in video
-      tapRefs.current.forEach((el, i) => {
-        if (!el) return
-        const p = PILLARS[i]
-        const visible = frac >= p.showAt && frac <= p.hideAt
-        el.style.pointerEvents = visible ? 'auto' : 'none'
-        el.style.opacity = visible ? '1' : '0'
-      })
+      const f = Math.min(1, window.scrollY / (RUNWAY_VH * window.innerHeight))
+      st.target = f * video.duration
+      setFrac(f)
 
       if (!st.ticking) {
         st.ticking = true
@@ -80,7 +72,7 @@ export function ScrollScrubHero() {
   return (
     <div className="fixed inset-0 -z-10 flex justify-center">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
-        {/* Baked video — pillars are part of the footage */}
+        {/* Clean forward-only drone footage */}
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover"
@@ -90,23 +82,60 @@ export function ScrollScrubHero() {
           preload="auto"
         />
 
-        {/* Invisible full-area tap targets — one per pillar, only active when pillar is on screen */}
-        {PILLARS.map((p, i) => (
-          <Link
-            key={p.label}
-            href={p.href}
-            ref={(el) => { tapRefs.current[i] = el }}
-            aria-label={p.label}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: 0,
-              pointerEvents: 'none',
-              zIndex: 1,
-            }}
-          />
-        ))}
+        {/* Pillar text overlays — float in from small to large */}
+        {PILLARS.map((p) => {
+          const progress = getPillarProgress(frac, p.showAt, p.peakAt, p.hideAt)
+          if (progress <= 0) return null
+
+          // Scale: 0.2 → 1.0 during appear, 1.0 → 1.1 during fade out
+          const scale = progress <= 1
+            ? 0.2 + progress * 0.8
+            : 1.0 + (progress - 1) * 0.1
+
+          // Opacity: fade in fast, hold, then fade out
+          const opacity = progress <= 0.3
+            ? progress / 0.3
+            : progress <= 1
+            ? 1
+            : Math.max(0, 1 - (progress - 1) * 2)
+
+          return (
+            <Link
+              key={p.label}
+              href={p.href}
+              className="absolute inset-0 flex flex-col items-center justify-center z-10"
+              style={{
+                pointerEvents: opacity > 0.3 ? 'auto' : 'none',
+              }}
+            >
+              <div
+                className="flex flex-col items-center gap-3"
+                style={{
+                  transform: `scale(${scale})`,
+                  opacity,
+                  willChange: 'transform, opacity',
+                }}
+              >
+                <div className="w-48 h-px bg-white/60" />
+                <span
+                  className="text-white text-6xl font-extrabold tracking-[0.2em]"
+                  style={{ fontFamily: 'var(--font-playfair), "Futura", "Bebas Neue", sans-serif' }}
+                >
+                  {p.label}
+                </span>
+                <div className="w-48 h-px bg-white/60" />
+              </div>
+            </Link>
+          )
+        })}
       </div>
     </div>
   )
+}
+
+/** Returns 0 when hidden, 0→1 during appear (showAt→peakAt), 1→2 during fade (peakAt→hideAt) */
+function getPillarProgress(frac: number, showAt: number, peakAt: number, hideAt: number): number {
+  if (frac < showAt || frac > hideAt) return 0
+  if (frac <= peakAt) return (frac - showAt) / (peakAt - showAt)
+  return 1 + (frac - peakAt) / (hideAt - peakAt)
 }
