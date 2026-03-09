@@ -16,29 +16,36 @@ const PILLARS = [
 
 export function ScrollScrubHero() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
   const rafRef = useRef<number | null>(null)
-  const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false, unlocked: false })
+  const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false, unlocked: false, audioUnlocked: false })
   const [frac, setFrac] = useState(0)
 
-  // iOS Safari requires a user gesture to "unlock" video for programmatic currentTime control.
-  // We play() then immediately pause() on the first touch/scroll interaction.
-  const unlockVideo = useCallback(() => {
+  // iOS Safari requires a user gesture to "unlock" video/audio for programmatic control.
+  const unlockMedia = useCallback(() => {
     const video = videoRef.current
+    const audio = audioRef.current
     const st = stateRef.current
-    if (!video || st.unlocked) return
-    st.unlocked = true
 
-    // play() returns a promise on modern browsers; pause immediately after it resolves
-    const p = video.play()
-    if (p && typeof p.then === 'function') {
-      p.then(() => {
+    // Unlock video
+    if (video && !st.unlocked) {
+      st.unlocked = true
+      const p = video.play()
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          video.pause()
+          video.currentTime = st.target
+        }).catch(() => {})
+      } else {
         video.pause()
-        video.currentTime = st.target
-      }).catch(() => {
-        // Autoplay blocked — video will remain black until next gesture
-      })
-    } else {
-      video.pause()
+      }
+    }
+
+    // Unlock and start background beat
+    if (audio && !st.audioUnlocked) {
+      st.audioUnlocked = true
+      audio.volume = 0.15
+      audio.play().catch(() => {})
     }
   }, [])
 
@@ -63,7 +70,17 @@ export function ScrollScrubHero() {
       setFrac(f)
 
       // Unlock on first scroll (counts as user gesture on iOS)
-      if (!st.unlocked) unlockVideo()
+      if (!st.unlocked) unlockMedia()
+
+      // Fade audio out when past the hero section
+      const audio = audioRef.current
+      if (audio && st.audioUnlocked) {
+        if (f > 0.95) {
+          audio.volume = Math.max(0, 0.15 * (1 - (f - 0.95) / 0.05))
+        } else {
+          audio.volume = 0.15
+        }
+      }
 
       if (!st.ticking) {
         st.ticking = true
@@ -87,19 +104,22 @@ export function ScrollScrubHero() {
 
     // Listen for both scroll and touch to unlock video ASAP
     window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('touchstart', unlockVideo, { once: true, passive: true })
+    window.addEventListener('touchstart', unlockMedia, { once: true, passive: true })
 
     update()
 
     return () => {
       window.removeEventListener('scroll', update)
-      window.removeEventListener('touchstart', unlockVideo)
+      window.removeEventListener('touchstart', unlockMedia)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [unlockVideo])
+  }, [unlockMedia])
 
   return (
     <>
+    {/* Background beat — soft Not Like Us instrumental loop */}
+    <audio ref={audioRef} src="/bg-beat.mp3" loop preload="auto" />
+
     {/* Video layer — behind everything */}
     <div className="fixed inset-0 -z-10 flex justify-center">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
