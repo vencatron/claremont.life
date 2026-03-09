@@ -99,9 +99,10 @@ export function ScrollScrubHero() {
   }, [unlockVideo])
 
   return (
+    <>
+    {/* Video layer — behind everything */}
     <div className="fixed inset-0 -z-10 flex justify-center">
       <div className="relative w-full max-w-lg h-full overflow-hidden">
-        {/* Clean forward-only drone footage */}
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover"
@@ -109,11 +110,14 @@ export function ScrollScrubHero() {
           muted
           playsInline
           preload="auto"
-          // iOS hint: set poster to first frame so it's not just black before unlock
           poster=""
         />
+      </div>
+    </div>
 
-        {/* Pillar text overlays — float in from small to large */}
+    {/* Text overlay layer — above the scroll runway so taps register */}
+    <div className="fixed inset-0 z-20 flex justify-center pointer-events-none">
+      <div className="relative w-full max-w-lg h-full overflow-hidden">
         {PILLARS.map((p) => {
           const progress = getPillarProgress(frac, p.showAt, p.peakAt, p.hideAt)
           if (progress <= 0) return null
@@ -137,7 +141,7 @@ export function ScrollScrubHero() {
               href={p.href}
               className="absolute inset-0 flex flex-col items-center justify-center z-10"
               style={{
-                pointerEvents: opacity > 0.3 ? 'auto' : 'none',
+                pointerEvents: opacity > 0.3 ? 'auto' as const : 'none' as const,
               }}
             >
               <div
@@ -162,6 +166,7 @@ export function ScrollScrubHero() {
         })}
       </div>
     </div>
+    </>
   )
 }
 
