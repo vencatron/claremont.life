@@ -8,10 +8,10 @@ const RUNWAY_VH = 5
 
 // Pillar definitions — text overlays synced to scroll progress
 const PILLARS = [
-  { label: 'EVENTS',  href: '/events',  showAt: 0.30, peakAt: 0.35, hideAt: 0.39 },
-  { label: 'EATS',    href: '/eat',     showAt: 0.39, peakAt: 0.44, hideAt: 0.48 },
-  { label: 'HOUSING', href: '/housing', showAt: 0.48, peakAt: 0.53, hideAt: 0.57 },
-  { label: 'DEALS',   href: '/deals',   showAt: 0.57, peakAt: 0.62, hideAt: 0.66 },
+  { label: 'EVENTS',  href: '/events',  showAt: 0.28, peakAt: 0.34, hideAt: 0.42 },
+  { label: 'EATS',    href: '/eat',     showAt: 0.42, peakAt: 0.48, hideAt: 0.56 },
+  { label: 'HOUSING', href: '/housing', showAt: 0.56, peakAt: 0.62, hideAt: 0.70 },
+  { label: 'DEALS',   href: '/deals',   showAt: 0.70, peakAt: 0.76, hideAt: 0.84 },
 ]
 
 export function ScrollScrubHero() {
@@ -118,17 +118,18 @@ export function ScrollScrubHero() {
           const progress = getPillarProgress(frac, p.showAt, p.peakAt, p.hideAt)
           if (progress <= 0) return null
 
-          // Scale: 0.2 → 1.0 during appear, 1.0 → 1.1 during fade out
+          // Scale: 0.3 → 1.0 during appear, keeps growing 1.0 → 2.0 during dissolve
+          // Simulates text floating toward camera then passing through
           const scale = progress <= 1
-            ? 0.2 + progress * 0.8
-            : 1.0 + (progress - 1) * 0.1
+            ? 0.3 + progress * 0.7
+            : 1.0 + (progress - 1) * 1.0
 
-          // Opacity: fade in fast, hold, then fade out
-          const opacity = progress <= 0.3
-            ? progress / 0.3
+          // Opacity: fade in, hold briefly at peak, then dissolve out
+          const opacity = progress <= 0.4
+            ? progress / 0.4
             : progress <= 1
             ? 1
-            : Math.max(0, 1 - (progress - 1) * 2)
+            : Math.max(0, 1 - (progress - 1) * 1.2)
 
           return (
             <Link
