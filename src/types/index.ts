@@ -1,14 +1,17 @@
-import type { College } from '@/lib/constants'
-
 export interface ClaremontEvent {
   id: string
+  source: string
+  source_id: string
   title: string
   description?: string
-  college: College
-  event_type?: string
-  location?: string
-  starts_at: string
   url?: string
+  start_date: string
+  end_date?: string
+  location?: string
+  category?: string
+  image_url?: string
+  lat?: number
+  lng?: number
 }
 
 export interface Business {

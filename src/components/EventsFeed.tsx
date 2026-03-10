@@ -5,6 +5,7 @@ import { CollegeFilter } from '@/components/CollegeFilter'
 import { EventCard } from '@/components/EventCard'
 import type { ClaremontEvent } from '@/types'
 import type { College } from '@/lib/constants'
+import { SOURCE_TO_COLLEGE } from '@/lib/constants'
 
 interface EventsFeedProps {
   events: ClaremontEvent[]
@@ -13,10 +14,12 @@ interface EventsFeedProps {
 export function EventsFeed({ events }: EventsFeedProps) {
   const [selectedCollege, setSelectedCollege] = useState<College>('All')
 
-  const filtered = selectedCollege === 'All' ? events : events.filter((e) => e.college === selectedCollege)
+  const filtered = selectedCollege === 'All'
+    ? events
+    : events.filter((e) => SOURCE_TO_COLLEGE[e.source] === selectedCollege)
 
   const grouped = filtered.reduce<Record<string, ClaremontEvent[]>>((acc, event) => {
-    const day = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'short', day: 'numeric' }).format(new Date(event.starts_at))
+    const day = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'short', day: 'numeric' }).format(new Date(event.start_date))
     if (!acc[day]) acc[day] = []
     acc[day].push(event)
     return acc

@@ -1,12 +1,12 @@
 import { supabase } from './supabase'
 import type { ClaremontEvent, Business } from '@/types'
 
-export async function getUpcomingEvents(limit = 20): Promise<ClaremontEvent[]> {
+export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
   const { data, error } = await supabase
     .from('events')
     .select('*')
-    .gte('starts_at', new Date().toISOString())
-    .order('starts_at', { ascending: true })
+    .gte('start_date', new Date().toISOString())
+    .order('start_date', { ascending: true })
     .limit(limit)
   if (error) { console.error('getUpcomingEvents:', error); return [] }
   return data ?? []
