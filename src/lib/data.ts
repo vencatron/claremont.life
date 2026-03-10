@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { ClaremontEvent, Business } from '@/types'
+import type { ClaremontEvent, Business, EatPlace } from '@/types'
 
 export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
   const { data, error } = await supabase
@@ -19,6 +19,16 @@ export async function getBusinesses(): Promise<Business[]> {
     .eq('is_active', true)
     .order('category')
   if (error) { console.error('getBusinesses:', error); return [] }
+  return data ?? []
+}
+
+export async function getEatPlaces(): Promise<EatPlace[]> {
+  const { data, error } = await supabase
+    .from('eat_places')
+    .select('*')
+    .eq('business_status', 'OPERATIONAL')
+    .order('rating', { ascending: false, nullsFirst: false })
+  if (error) { console.error('getEatPlaces:', error); return [] }
   return data ?? []
 }
 
