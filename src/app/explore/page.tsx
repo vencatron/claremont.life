@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 
-const VillageScene = dynamic(() => import('./village-scene'), {
+const VillageScene = dynamic(() => import('./village-scene-3dtiles'), {
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center h-screen bg-black text-white">
