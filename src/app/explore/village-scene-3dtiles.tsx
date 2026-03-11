@@ -105,16 +105,16 @@ export default function VillageScene3DTiles() {
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x87CEEB);
       // Light fog to help with depth perception
-      scene.fog = new THREE.FogExp2(0x87CEEB, 0.0002);
+      scene.fog = new THREE.FogExp2(0x87CEEB, 0.003);
 
       // ── Camera ────────────────────────────────────────
       const camera = new THREE.PerspectiveCamera(
         60,
         window.innerWidth / window.innerHeight,
-        0.1,
-        10000,
+        0.5,
+        800,
       );
-      camera.position.set(0, 50, 100);
+      camera.position.set(0, 30, 60);
       camera.lookAt(0, 0, 0);
 
       // ── Renderer ──────────────────────────────────────
@@ -134,11 +134,11 @@ export default function VillageScene3DTiles() {
       sun.shadow.mapSize.width = 1024;
       sun.shadow.mapSize.height = 1024;
       sun.shadow.camera.near = 1;
-      sun.shadow.camera.far = 2000;
-      sun.shadow.camera.left = -500;
-      sun.shadow.camera.right = 500;
-      sun.shadow.camera.top = 500;
-      sun.shadow.camera.bottom = -500;
+      sun.shadow.camera.far = 500;
+      sun.shadow.camera.left = -100;
+      sun.shadow.camera.right = 100;
+      sun.shadow.camera.top = 100;
+      sun.shadow.camera.bottom = -100;
       scene.add(sun);
       const hemi = new THREE.HemisphereLight(0x87CEEB, 0x4a7c4f, 0.5);
       scene.add(hemi);
@@ -164,8 +164,16 @@ export default function VillageScene3DTiles() {
         new ReorientationPlugin({ lat: LAT_RAD, lon: LON_RAD, up: '+y' }),
       );
 
-      // High detail
-      tiles.errorTarget = 8;
+      // Balance detail vs load speed — 20 is Google's recommended default
+      tiles.errorTarget = 20;
+      
+      // Limit how many tiles can be downloading/parsing at once
+      tiles.downloadQueue.maxJobs = 6;
+      tiles.parseQueue.maxJobs = 3;
+      
+      // Cap cached tiles to limit memory and network
+      tiles.lruCache.maxSize = 400;
+      tiles.lruCache.minSize = 200;
 
       scene.add(tiles.group);
 
@@ -230,7 +238,7 @@ export default function VillageScene3DTiles() {
       };
       const onMouseUp = () => { isDragging = false; };
       const onWheel = (e: WheelEvent) => {
-        cameraDistRef.current = Math.max(5, Math.min(200,
+        cameraDistRef.current = Math.max(5, Math.min(80,
           cameraDistRef.current + e.deltaY * 0.05));
       };
 
@@ -270,7 +278,7 @@ export default function VillageScene3DTiles() {
         if (e.touches.length === 2) {
           const t0 = e.touches[0], t1 = e.touches[1];
           const d = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
-          cameraDistRef.current = Math.max(5, Math.min(200,
+          cameraDistRef.current = Math.max(5, Math.min(80,
             cameraDistRef.current + (pinchDist - d) * 0.05));
           pinchDist = d;
           return;
@@ -404,12 +412,22 @@ export default function VillageScene3DTiles() {
         character.position.x += velocity.x;
         character.position.z += velocity.z;
 
+        // Clamp to village area (~300m radius from center) to avoid loading distant tiles
+        const VILLAGE_RADIUS = 300;
+        const distFromCenter = Math.hypot(character.position.x, character.position.z);
+        if (distFromCenter > VILLAGE_RADIUS) {
+          const scale = VILLAGE_RADIUS / distFromCenter;
+          character.position.x *= scale;
+          character.position.z *= scale;
+          velocity.set(0, 0, 0);
+        }
+
         // ── Ground detection (every 3rd frame for perf) ─
         if (frameCount % 3 === 0) {
-          const origin = new THREE.Vector3(character.position.x, character.position.y + 200, character.position.z);
+          const origin = new THREE.Vector3(character.position.x, character.position.y + 100, character.position.z);
           groundRaycaster.set(origin, DOWN);
           groundRaycaster.near = 0;
-          groundRaycaster.far = 10000;
+          groundRaycaster.far = 500;
           const hits = groundRaycaster.intersectObject(tiles.group, true);
           if (hits.length > 0) {
             lastGroundY = hits[0].point.y;
