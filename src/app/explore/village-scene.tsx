@@ -3,6 +3,85 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import villageData from './data/village-data.json';
+import enrichmentData from './data/business-enrichment.json';
+
+// ─── Enrich building data with business names + corrected heights ────
+type BuildingEntry = typeof villageData.buildings[0] & { enrichedName?: string };
+
+function applyEnrichment(buildings: typeof villageData.buildings): BuildingEntry[] {
+  // Build name → height map from overrides
+  const heightByName = new Map<string, number>();
+  for (const o of enrichmentData.heightOverrides) {
+    heightByName.set(o.name, o.height);
+  }
+
+  // Type → height defaults
+  const typeHeights = enrichmentData.typeHeightDefaults as Record<string, number>;
+
+  // Compute centroids once
+  const centroids = buildings.map((b) => {
+    const fp = b.footprint;
+    const cx = fp.reduce((s: number, p: number[]) => s + p[0], 0) / fp.length;
+    const cz = fp.reduce((s: number, p: number[]) => s + p[1], 0) / fp.length;
+    return { cx, cz };
+  });
+
+  // Clone buildings so we can mutate
+  const result: BuildingEntry[] = buildings.map((b) => ({ ...b }));
+
+  // Apply height overrides for already-named buildings
+  for (let i = 0; i < result.length; i++) {
+    const b = result[i];
+    if (b.name && heightByName.has(b.name)) {
+      result[i] = { ...b, height: heightByName.get(b.name)! };
+    } else if (!b.name) {
+      // Apply type-based height defaults for unnamed buildings
+      const typeH = typeHeights[b.type];
+      if (typeH && b.height === 4) {
+        result[i] = { ...b, height: typeH };
+      }
+    }
+  }
+
+  // Match each enrichment business to nearest building centroid
+  const MATCH_RADIUS = 60; // meters
+  for (const biz of enrichmentData.businesses) {
+    let bestIdx = -1;
+    let bestDist = MATCH_RADIUS;
+    for (let i = 0; i < centroids.length; i++) {
+      const dx = centroids[i].cx - biz.x;
+      const dz = centroids[i].cz - biz.z;
+      const d = Math.sqrt(dx * dx + dz * dz);
+      if (d < bestDist) {
+        bestDist = d;
+        bestIdx = i;
+      }
+    }
+    if (bestIdx >= 0) {
+      const existing = result[bestIdx];
+      // Only overwrite if building has no name, or if it's a known empty name
+      if (!existing.name) {
+        const updated: BuildingEntry = {
+          ...existing,
+          name: biz.name,
+          type: biz.type || existing.type,
+        };
+        if ((biz as { height?: number }).height) {
+          updated.height = (biz as { height?: number }).height!;
+        } else if (heightByName.has(biz.name)) {
+          updated.height = heightByName.get(biz.name)!;
+        } else if (typeHeights[biz.type]) {
+          updated.height = typeHeights[biz.type];
+        }
+        result[bestIdx] = updated;
+      }
+    }
+  }
+
+  return result;
+}
+
+const enrichedBuildings = applyEnrichment(villageData.buildings);
 
 // ─── Color palette ───────────────────────────────────────────
 const COLORS = {
@@ -44,7 +123,7 @@ function getBuildingColor(type: string): number {
 
 // ─── Create a building mesh from footprint ───────────────────
 function createBuilding(
-  building: typeof villageData.buildings[0],
+  building: BuildingEntry,
   scene: THREE.Scene
 ) {
   const { footprint, height, name, type } = building;
@@ -545,14 +624,14 @@ export default function VillageScene() {
     createGround(scene);
     createStreets(scene);
 
-    for (const building of villageData.buildings) {
+    for (const building of enrichedBuildings) {
       createBuilding(building, scene);
     }
 
     // ─── Build AABB collision boxes ────────────────────
     const PAD = 0.6;
     const boxes: AABB[] = [];
-    for (const building of villageData.buildings) {
+    for (const building of enrichedBuildings) {
       const fp = building.footprint;
       if (fp.length < 3) continue;
       let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
@@ -845,7 +924,7 @@ export default function VillageScene() {
       const pos = character.position;
       setInfo(
         `${Math.round(pos.x)}, ${Math.round(pos.z)} · ` +
-        `${villageData.buildings.length} buildings`
+        `${enrichedBuildings.filter(b => b.name).length} named · ${enrichedBuildings.length} buildings`
       );
 
       // ─── Minimap broadcast ─────────────────────────
