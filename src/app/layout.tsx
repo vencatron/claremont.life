@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Playfair_Display, DM_Sans, Bebas_Neue } from 'next/font/google'
 import { BottomNav } from '@/components/BottomNav'
+import { LayoutWrapper } from '@/components/LayoutWrapper'
 import './globals.css'
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', display: 'swap' })
@@ -16,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${bebasNeue.variable}`}>
       <body className="bg-black text-foreground font-[family-name:var(--font-dm-sans)] antialiased">
-        <main className="min-h-screen pb-24 max-w-lg mx-auto">{children}</main>
+        <LayoutWrapper>{children}</LayoutWrapper>
         <BottomNav />
       </body>
     </html>
