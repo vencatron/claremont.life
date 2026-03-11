@@ -382,14 +382,212 @@ function addLabel(
   scene.add(sprite);
 }
 
+// ─── UV tiling helper ─────────────────────────────────────────
+function setPlaneUVs(
+  geo: THREE.PlaneGeometry,
+  width: number,
+  length: number,
+  tileSize: number
+) {
+  const uvs = geo.attributes.uv as THREE.BufferAttribute;
+  const scaleX = width / tileSize;
+  const scaleY = length / tileSize;
+  for (let i = 0; i < uvs.count; i++) {
+    uvs.setX(i, uvs.getX(i) * scaleX);
+    uvs.setY(i, uvs.getY(i) * scaleY);
+  }
+  uvs.needsUpdate = true;
+}
+
+// ─── Procedural texture generators ────────────────────────────
+function makeAsphaltTexture(): THREE.CanvasTexture {
+  const SIZE = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = SIZE; canvas.height = SIZE;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#282828';
+  ctx.fillRect(0, 0, SIZE, SIZE);
+
+  // Pixel-level noise / grain
+  const imgData = ctx.getImageData(0, 0, SIZE, SIZE);
+  const d = imgData.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const n = ((Math.random() * 28 - 14) | 0);
+    const v = Math.max(18, Math.min(65, 40 + n));
+    d[i] = v; d[i + 1] = v; d[i + 2] = v; d[i + 3] = 255;
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  // Aggregate specks (small stones visible in asphalt)
+  for (let i = 0; i < 700; i++) {
+    const x = Math.random() * SIZE;
+    const y = Math.random() * SIZE;
+    const r = Math.random() * 2.2 + 0.4;
+    const v = (Math.random() * 28 + 48) | 0;
+    ctx.fillStyle = `rgb(${v},${v},${v})`;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+
+function makeConcreteTexture(): THREE.CanvasTexture {
+  const SIZE = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = SIZE; canvas.height = SIZE;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#b5ad9d';
+  ctx.fillRect(0, 0, SIZE, SIZE);
+
+  // Pixel-level variation
+  const imgData = ctx.getImageData(0, 0, SIZE, SIZE);
+  const d = imgData.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const n = ((Math.random() * 18 - 9) | 0);
+    d[i]     = Math.max(140, Math.min(210, 181 + n));
+    d[i + 1] = Math.max(130, Math.min(200, 173 + n));
+    d[i + 2] = Math.max(118, Math.min(188, 157 + n));
+    d[i + 3] = 255;
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  // Expansion joint grid (every quarter of texture = every ~2 m at 8 m/tile)
+  ctx.strokeStyle = 'rgba(100,94,80,0.65)';
+  ctx.lineWidth = 2;
+  const GRID = SIZE / 4;
+  for (let x = GRID; x < SIZE; x += GRID) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, SIZE); ctx.stroke();
+  }
+  for (let y = GRID; y < SIZE; y += GRID) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(SIZE, y); ctx.stroke();
+  }
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+
+function makeGrassTexture(): THREE.CanvasTexture {
+  const SIZE = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = SIZE; canvas.height = SIZE;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#3d6642';
+  ctx.fillRect(0, 0, SIZE, SIZE);
+
+  // Pixel variation for organic look
+  const imgData = ctx.getImageData(0, 0, SIZE, SIZE);
+  const d = imgData.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const n = ((Math.random() * 32 - 16) | 0);
+    d[i]     = Math.max(22, Math.min(90,  61 + n));
+    d[i + 1] = Math.max(58, Math.min(160, 102 + (n * 1.5 | 0)));
+    d[i + 2] = Math.max(18, Math.min(82,  66 + n));
+    d[i + 3] = 255;
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  // Darker organic patches
+  for (let i = 0; i < 130; i++) {
+    const x = Math.random() * SIZE;
+    const y = Math.random() * SIZE;
+    const rx = Math.random() * 22 + 5;
+    const ry = Math.random() * 12 + 3;
+    ctx.fillStyle = `rgba(18,68,22,${(Math.random() * 0.18 + 0.08).toFixed(2)})`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, ry, Math.random() * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+
+// ─── Crosswalk helper ─────────────────────────────────────────
+// crossingEW=true → pedestrian crosses an E-W road (walks N-S)
+// cx/cz = center of crosswalk; roadWidth = width of road being crossed
+function addCrosswalk(
+  cx: number, cz: number,
+  crossingEW: boolean,
+  roadWidth: number,
+  scene: THREE.Scene,
+  mat: THREE.MeshBasicMaterial
+) {
+  const STRIPE_W  = 0.40; // thickness in walking direction
+  const STRIPE_GAP = 0.50;
+  const STRIPE_LEN = 3.8; // length parallel to road edge
+  const period = STRIPE_W + STRIPE_GAP;
+  const numStripes = Math.max(4, Math.floor(roadWidth / period));
+  const totalSpan = numStripes * period;
+
+  for (let i = 0; i < numStripes; i++) {
+    const offset = -totalSpan / 2 + i * period + STRIPE_W / 2;
+    const geo = crossingEW
+      ? new THREE.BoxGeometry(STRIPE_LEN, 0.004, STRIPE_W)  // stripes along X, stacked in Z
+      : new THREE.BoxGeometry(STRIPE_W, 0.004, STRIPE_LEN); // stripes along Z, stacked in X
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(
+      crossingEW ? cx : cx + offset,
+      0.04,
+      crossingEW ? cz + offset : cz,
+    );
+    scene.add(mesh);
+  }
+}
+
+function addCrosswalks(scene: THREE.Scene, whiteMat: THREE.MeshBasicMaterial) {
+  // ── Indian Hill Blvd (N-S, x≈-75, w=14) × Bonita Ave (E-W, z≈10, w=12) ──
+  const IH_X = -75, IH_HW = 7;   // Indian Hill
+  const BON_Z = 10, BON_HW = 6;  // Bonita Ave
+  // Cross Indian Hill on N side of Bonita (pedestrian walks E-W)
+  addCrosswalk(IH_X, BON_Z + BON_HW + 2.0, false, 14, scene, whiteMat);
+  // Cross Indian Hill on S side of Bonita
+  addCrosswalk(IH_X, BON_Z - BON_HW - 2.0, false, 14, scene, whiteMat);
+  // Cross Bonita on W side of Indian Hill (pedestrian walks N-S)
+  addCrosswalk(IH_X - IH_HW - 2.0, BON_Z, true, 12, scene, whiteMat);
+  // Cross Bonita on E side of Indian Hill
+  addCrosswalk(IH_X + IH_HW + 2.0, BON_Z, true, 12, scene, whiteMat);
+
+  // ── Indian Hill Blvd × 2nd Street (E-W, z≈-95, w≈8) ──
+  const ST2_Z = -95, ST2_HW = 4;
+  addCrosswalk(IH_X, ST2_Z + ST2_HW + 2.0, false, 14, scene, whiteMat);
+  addCrosswalk(IH_X, ST2_Z - ST2_HW - 2.0, false, 14, scene, whiteMat);
+  addCrosswalk(IH_X - IH_HW - 2.0, ST2_Z, true, 8, scene, whiteMat);
+  addCrosswalk(IH_X + IH_HW + 2.0, ST2_Z, true, 8, scene, whiteMat);
+
+  // ── Yale Ave (N-S, x≈55, w≈8) × Bonita Ave ──
+  const YALE_X = 55, YALE_HW = 4;
+  addCrosswalk(YALE_X, BON_Z + BON_HW + 2.0, false, 8, scene, whiteMat);
+  addCrosswalk(YALE_X, BON_Z - BON_HW - 2.0, false, 8, scene, whiteMat);
+  addCrosswalk(YALE_X - YALE_HW - 2.0, BON_Z, true, 12, scene, whiteMat);
+  addCrosswalk(YALE_X + YALE_HW + 2.0, BON_Z, true, 12, scene, whiteMat);
+}
+
 // ─── Streets ─────────────────────────────────────────────────
 function createStreets(scene: THREE.Scene) {
+  // ── Shared textures (one per call) ─────────────────────────
+  const asphaltTex  = makeAsphaltTexture();
+  const concreteTex = makeConcreteTexture();
+
+  // ── Shared materials ────────────────────────────────────────
+  const roadMat     = new THREE.MeshLambertMaterial({ map: asphaltTex });
+  const footwayMat  = new THREE.MeshLambertMaterial({ map: concreteTex, color: 0xb8b2a5 });
+  const sidewalkMat = new THREE.MeshLambertMaterial({ map: concreteTex, color: 0xc2bcb0 });
+  const whiteMat    = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const yellowMat   = new THREE.MeshBasicMaterial({ color: 0xFFCC00 });
+
   for (const street of villageData.streets) {
     if (street.points.length < 2) continue;
 
     const halfW = street.width / 2;
-    const isFootway = street.type === 'footway' || street.type === 'cycleway';
-    const color = isFootway ? COLORS.sidewalk : COLORS.road;
+    const isFootway = street.type === 'footway'
+      || street.type === 'cycleway'
+      || street.type === 'pedestrian';
 
     for (let i = 0; i < street.points.length - 1; i++) {
       const [x1, z1] = street.points[i];
@@ -399,36 +597,85 @@ function createStreets(scene: THREE.Scene) {
       const len = Math.sqrt(dx * dx + dz * dz);
       if (len < 0.5) continue;
 
-      const cx = (x1 + x2) / 2;
-      const cz = (z1 + z2) / 2;
+      const cx   = (x1 + x2) / 2;
+      const cz   = (z1 + z2) / 2;
       const angle = Math.atan2(dx, dz);
+      const nx   = -dz / len;  // lateral unit vector
+      const nz   =  dx / len;
+      const yPos = 0.02 + (isFootway ? 0.05 : 0);
 
-      const geo = new THREE.PlaneGeometry(halfW * 2, len);
-      const mat = new THREE.MeshLambertMaterial({ color });
-      const mesh = new THREE.Mesh(geo, mat);
+      // ── Road / footway surface ────────────────────────────
+      const roadW = halfW * 2;
+      const geo   = new THREE.PlaneGeometry(roadW, len);
+      setPlaneUVs(geo, roadW, len, 4); // 4 m per texture tile
+
+      const mat   = isFootway ? footwayMat : roadMat;
+      const mesh  = new THREE.Mesh(geo, mat);
       mesh.rotation.x = -Math.PI / 2;
       mesh.rotation.z = -angle;
-      mesh.position.set(cx, 0.02 + (isFootway ? 0.05 : 0), cz);
+      mesh.position.set(cx, yPos, cz);
       mesh.receiveShadow = true;
       scene.add(mesh);
 
-      // Sidewalk strips alongside roads
+      // ── Concrete sidewalk strips alongside vehicle roads ──
       if (!isFootway && street.width >= 8) {
-        const swGeo = new THREE.PlaneGeometry(1.5, len);
-        const swMat = new THREE.MeshLambertMaterial({ color: COLORS.sidewalk });
-        const nx = -dz / len;
-        const nz = dx / len;
+        const swW   = 1.5;
+        const swGeo = new THREE.PlaneGeometry(swW, len);
+        setPlaneUVs(swGeo, swW, len, 2); // 2 m tile for sidewalk concrete
+
         for (const side of [-1, 1]) {
-          const sw = new THREE.Mesh(swGeo, swMat);
+          const sw = new THREE.Mesh(swGeo, sidewalkMat);
           sw.rotation.x = -Math.PI / 2;
           sw.rotation.z = -angle;
           sw.position.set(
-            cx + nx * (halfW + 0.75) * side,
+            cx + nx * (halfW + swW / 2) * side,
             0.05,
-            cz + nz * (halfW + 0.75) * side
+            cz + nz * (halfW + swW / 2) * side,
           );
           sw.receiveShadow = true;
           scene.add(sw);
+        }
+      }
+
+      // ── Road markings (major roads only for performance) ──
+      if (!isFootway && street.width >= 8 && len > 3) {
+        const dirX = dx / len;
+        const dirZ = dz / len;
+
+        // White solid edge lines
+        const edgeOffset = halfW - 0.25;
+        for (const side of [-1, 1]) {
+          const edgeGeo  = new THREE.BoxGeometry(0.12, 0.004, Math.max(0.1, len - 0.4));
+          const edgeMesh = new THREE.Mesh(edgeGeo, whiteMat);
+          edgeMesh.rotation.y = angle;
+          edgeMesh.position.set(
+            cx + nx * edgeOffset * side,
+            yPos + 0.002,
+            cz + nz * edgeOffset * side,
+          );
+          scene.add(edgeMesh);
+        }
+
+        // Yellow dashed center line (2-lane roads, width ≥ 10 m)
+        if (street.width >= 10) {
+          const dashLen  = 2.5;
+          const gapLen   = 2.5;
+          const period   = dashLen + gapLen;
+          const count    = Math.max(0, Math.floor((len - 1) / period));
+          const startT   = -(count * period) / 2 + dashLen / 2;
+
+          for (let d = 0; d < count; d++) {
+            const t       = startT + d * period;
+            const dashGeo = new THREE.BoxGeometry(0.14, 0.004, dashLen);
+            const dashMesh = new THREE.Mesh(dashGeo, yellowMat);
+            dashMesh.rotation.y = angle;
+            dashMesh.position.set(
+              cx + dirX * t,
+              yPos + 0.003,
+              cz + dirZ * t,
+            );
+            scene.add(dashMesh);
+          }
         }
       }
     }
@@ -437,10 +684,12 @@ function createStreets(scene: THREE.Scene) {
     if (street.name && street.width >= 10 && street.points.length >= 2) {
       const midIdx = Math.floor(street.points.length / 2);
       const [mx, mz] = street.points[midIdx];
-      // Only add if we haven't already (dedup by checking nearby)
       addStreetLabel(street.name, mx, mz, scene);
     }
   }
+
+  // ── Crosswalk markings at key intersections ────────────────
+  addCrosswalks(scene, whiteMat);
 }
 
 const addedStreetLabels = new Set<string>();
@@ -563,8 +812,12 @@ function createMountains(scene: THREE.Scene) {
 
 // ─── Ground plane ────────────────────────────────────────────
 function createGround(scene: THREE.Scene) {
-  const geo = new THREE.PlaneGeometry(1200, 1200);
-  const mat = new THREE.MeshLambertMaterial({ color: COLORS.ground });
+  const GROUND_SIZE = 1200;
+  const geo = new THREE.PlaneGeometry(GROUND_SIZE, GROUND_SIZE);
+  // 1 texture tile ≈ 8 m
+  setPlaneUVs(geo, GROUND_SIZE, GROUND_SIZE, 8);
+  const grassTex = makeGrassTexture();
+  const mat = new THREE.MeshLambertMaterial({ map: grassTex });
   const mesh = new THREE.Mesh(geo, mat);
   mesh.rotation.x = -Math.PI / 2;
   mesh.position.y = -0.01;
