@@ -2,10 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Calendar, UtensilsCrossed, Home, Tag, Grid3X3, Compass, Users, Building2 } from 'lucide-react'
+import { Calendar, UtensilsCrossed, Tag, Users, Building2 } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { label: 'Home', href: '/', icon: Compass },
   { label: 'Events', href: '/events', icon: Calendar },
   { label: 'Eat', href: '/eat', icon: UtensilsCrossed },
   { label: 'Live', href: '/housing', icon: Building2 },
