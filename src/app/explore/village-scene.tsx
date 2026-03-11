@@ -829,11 +829,11 @@ export default function VillageScene() {
       const keys = keysRef.current;
       const moveDir = new THREE.Vector3();
 
-      // Get camera-relative forward/right
+      // Get camera-relative forward/right (forward = direction camera faces)
       const camForward = new THREE.Vector3(
-        -Math.sin(cameraAngleRef.current),
+        Math.sin(cameraAngleRef.current),
         0,
-        -Math.cos(cameraAngleRef.current)
+        Math.cos(cameraAngleRef.current)
       ).normalize();
       const camRight = new THREE.Vector3(
         camForward.z, 0, -camForward.x
@@ -847,8 +847,8 @@ export default function VillageScene() {
       // Virtual joystick input
       const joy = joystickRef.current;
       if (joy.active && (Math.abs(joy.dx) > 0.05 || Math.abs(joy.dy) > 0.05)) {
-        moveDir.add(camForward.clone().multiplyScalar(-joy.dy));
-        moveDir.add(camRight.clone().multiplyScalar(joy.dx));
+        moveDir.add(camForward.clone().multiplyScalar(joy.dy));
+        moveDir.add(camRight.clone().multiplyScalar(-joy.dx));
       }
 
       if (moveDir.length() > 0) {
