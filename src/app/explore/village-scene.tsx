@@ -121,10 +121,81 @@ function getBuildingColor(type: string): number {
   return map[type] || COLORS.buildingBase;
 }
 
+// ─── Slugify a building name for texture lookup ───────────────
+function nameToSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// ─── Apply Street View texture to front facade ────────────────
+function applyFacadeTexture(
+  footprint: number[][],
+  height: number,
+  name: string,
+  scene: THREE.Scene,
+  textureLoader: THREE.TextureLoader
+) {
+  // Find the longest edge — treat it as the front facade
+  let maxLen = 0;
+  let bestI = 0;
+  for (let i = 0; i < footprint.length - 1; i++) {
+    const len = Math.sqrt(
+      (footprint[i + 1][0] - footprint[i][0]) ** 2 +
+      (footprint[i + 1][1] - footprint[i][1]) ** 2
+    );
+    if (len > maxLen) { maxLen = len; bestI = i; }
+  }
+
+  const [x1, z1] = footprint[bestI];
+  const [x2, z2] = footprint[bestI + 1];
+  const dx = x2 - x1;
+  const dz = z2 - z1;
+  const edgeLen = Math.sqrt(dx * dx + dz * dz);
+
+  // Outward normal (perpendicular to edge, pointing away from building interior)
+  const nx = -dz / edgeLen;
+  const nz = dx / edgeLen;
+
+  const cx = (x1 + x2) / 2;
+  const cz = (z1 + z2) / 2;
+
+  const slug = nameToSlug(name);
+  const texturePath = `/explore/textures/buildings/${slug}.jpg`;
+
+  // Create plane covering the full front face
+  const planeGeo = new THREE.PlaneGeometry(edgeLen, height);
+
+  textureLoader.load(
+    texturePath,
+    (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.minFilter = THREE.LinearFilter;
+      const mat = new THREE.MeshLambertMaterial({
+        map: texture,
+        transparent: false,
+      });
+      const plane = new THREE.Mesh(planeGeo, mat);
+      // Position at face centroid, offset slightly outward to avoid z-fighting
+      plane.position.set(cx + nx * 0.05, height / 2, cz + nz * 0.05);
+      // Point the plane's +Z normal outward
+      plane.lookAt(new THREE.Vector3(cx + nx * 10, height / 2, cz + nz * 10));
+      plane.userData = { facadeTexture: true };
+      scene.add(plane);
+    },
+    undefined,
+    () => {
+      // Texture not found — fall back to flat color (nothing to do, building already rendered)
+    }
+  );
+}
+
 // ─── Create a building mesh from footprint ───────────────────
 function createBuilding(
   building: BuildingEntry,
-  scene: THREE.Scene
+  scene: THREE.Scene,
+  textureLoader?: THREE.TextureLoader
 ) {
   const { footprint, height, name, type } = building;
   if (footprint.length < 3) return;
@@ -162,6 +233,11 @@ function createBuilding(
   // Add awning for named commercial buildings
   if (name && (type === 'commercial' || type === 'retail')) {
     addAwning(footprint, height, name, scene);
+  }
+
+  // Add Street View facade texture for named buildings
+  if (name && textureLoader) {
+    applyFacadeTexture(footprint, height, name, scene, textureLoader);
   }
 
   // Add name label
@@ -624,8 +700,12 @@ export default function VillageScene() {
     createGround(scene);
     createStreets(scene);
 
+    // Create a shared TextureLoader for Street View facades
+    const loadingManager = new THREE.LoadingManager();
+    const textureLoader = new THREE.TextureLoader(loadingManager);
+
     for (const building of enrichedBuildings) {
-      createBuilding(building, scene);
+      createBuilding(building, scene, textureLoader);
     }
 
     // ─── Build AABB collision boxes ────────────────────
