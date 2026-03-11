@@ -16,6 +16,10 @@ const VillageScene = dynamic(() => import('./village-scene'), {
   ),
 });
 
+// These components use browser APIs — load client-side only
+const Minimap = dynamic(() => import('./minimap'), { ssr: false });
+const BuildingInfo = dynamic(() => import('./building-info'), { ssr: false });
+
 export default function ExplorePage() {
   useEffect(() => {
     // Lock body scroll for fullscreen 3D
@@ -30,6 +34,8 @@ export default function ExplorePage() {
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 100 }}>
       <VillageScene />
+      <Minimap />
+      <BuildingInfo />
     </div>
   );
 }

@@ -875,6 +875,7 @@ export default function VillageScene() {
       renderer.domElement.removeEventListener('touchmove', onTouchMove);
       renderer.domElement.removeEventListener('touchend', onTouchEnd);
       renderer.domElement.removeEventListener('click', onCanvasClick as EventListener);
+      if (hudTimerRef.current) clearTimeout(hudTimerRef.current);
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
@@ -884,8 +885,14 @@ export default function VillageScene() {
     <div className="relative w-full h-screen bg-black">
       <div ref={mountRef} className="w-full h-full" />
 
-      {/* HUD */}
-      <div className="absolute top-4 left-4 pointer-events-none">
+      {/* HUD — fades after 5s of inactivity */}
+      <div
+        className="absolute top-4 left-4 pointer-events-none"
+        style={{
+          transition: 'opacity 0.6s ease',
+          opacity: hudVisible ? 1 : 0,
+        }}
+      >
         <div className="bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2 text-white">
           <h1 className="text-lg font-bold tracking-wide">
             🏘️ Claremont Village
@@ -894,16 +901,32 @@ export default function VillageScene() {
         </div>
       </div>
 
-      {/* Controls help — desktop only */}
-      {!isMobile && (
-        <div className="absolute bottom-4 left-4 pointer-events-none">
-          <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-3 text-white/80 text-xs space-y-1">
-            <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">W A S D</kbd> Move</p>
-            <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Mouse Drag</kbd> Look around</p>
-            <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Scroll</kbd> Zoom</p>
-          </div>
+      {/* Controls help — fades with HUD */}
+      <div
+        className="absolute bottom-4 left-4 pointer-events-none"
+        style={{
+          transition: 'opacity 0.6s ease',
+          opacity: hudVisible ? 1 : 0,
+        }}
+      >
+        <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-3 text-white/80 text-xs space-y-1">
+          {isMobile ? (
+            <>
+              <p>🕹️ <span className="opacity-70">Joystick</span> Move</p>
+              <p>👆 <span className="opacity-70">Drag</span> Look around</p>
+              <p>🤏 <span className="opacity-70">Pinch</span> Zoom</p>
+              <p>👆 <span className="opacity-70">Tap</span> building info</p>
+            </>
+          ) : (
+            <>
+              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">W A S D</kbd> Move</p>
+              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Mouse Drag</kbd> Look around</p>
+              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Scroll</kbd> Zoom</p>
+              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Click</kbd> Building info</p>
+            </>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Virtual joystick — mobile only */}
       {isMobile && (
