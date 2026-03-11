@@ -469,15 +469,35 @@ function createCharacter(): THREE.Group {
   return group;
 }
 
+// ─── AABB collision box type ─────────────────────────────────
+interface AABB { minX: number; maxX: number; minZ: number; maxZ: number }
+
+function isInsideAABB(x: number, z: number, boxes: AABB[]): boolean {
+  for (let i = 0; i < boxes.length; i++) {
+    const b = boxes[i];
+    if (x > b.minX && x < b.maxX && z > b.minZ && z < b.maxZ) return true;
+  }
+  return false;
+}
+
 // ─── Main Component ──────────────────────────────────────────
 export default function VillageScene() {
   const mountRef = useRef<HTMLDivElement>(null);
   const [info, setInfo] = useState<string>('');
+  const [isMobile, setIsMobile] = useState(false);
+  const [hudVisible, setHudVisible] = useState(true);
   const keysRef = useRef<Set<string>>(new Set());
   const characterRef = useRef<THREE.Group | null>(null);
   const cameraAngleRef = useRef(0);
   const cameraDistRef = useRef(25);
   const cameraPitchRef = useRef(0.6);
+  // Collision boxes for all buildings
+  const buildingBoxesRef = useRef<AABB[]>([]);
+  // Virtual joystick state (no re-renders)
+  const joystickRef = useRef({ active: false, dx: 0, dy: 0, startX: 0, startY: 0 });
+  // HUD fade timer
+  const hudTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastInputRef = useRef(Date.now());
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -529,6 +549,23 @@ export default function VillageScene() {
       createBuilding(building, scene);
     }
 
+    // ─── Build AABB collision boxes ────────────────────
+    const PAD = 0.6;
+    const boxes: AABB[] = [];
+    for (const building of villageData.buildings) {
+      const fp = building.footprint;
+      if (fp.length < 3) continue;
+      let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+      for (const [x, z] of fp) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (z < minZ) minZ = z;
+        if (z > maxZ) maxZ = z;
+      }
+      boxes.push({ minX: minX - PAD, maxX: maxX + PAD, minZ: minZ - PAD, maxZ: maxZ + PAD });
+    }
+    buildingBoxesRef.current = boxes;
+
     scatterTrees(scene);
     createMountains(scene);
 
@@ -539,8 +576,16 @@ export default function VillageScene() {
     characterRef.current = character;
 
     // ─── Input handling ────────────────────────────────
+    const resetHudTimer = () => {
+      lastInputRef.current = Date.now();
+      setHudVisible(true);
+      if (hudTimerRef.current) clearTimeout(hudTimerRef.current);
+      hudTimerRef.current = setTimeout(() => setHudVisible(false), 5000);
+    };
+
     const onKeyDown = (e: KeyboardEvent) => {
       keysRef.current.add(e.key.toLowerCase());
+      resetHudTimer();
       e.preventDefault();
     };
     const onKeyUp = (e: KeyboardEvent) => {
@@ -549,6 +594,10 @@ export default function VillageScene() {
 
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('keyup', onKeyUp);
+
+    // Detect touch / mobile
+    const hasTouched = navigator.maxTouchPoints > 0 || 'ontouchstart' in window;
+    if (hasTouched) setIsMobile(true);
 
     // Mouse for camera orbit
     let isDragging = false;
@@ -580,6 +629,106 @@ export default function VillageScene() {
     renderer.domElement.addEventListener('mousemove', onMouseMove);
     renderer.domElement.addEventListener('mouseup', onMouseUp);
     renderer.domElement.addEventListener('wheel', onWheel);
+
+    // ─── Touch: camera orbit + pinch zoom ──────────────
+    // Joystick area: bottom-left 160×160px — touch events there go to joystick
+    const JOYSTICK_ZONE = 160;
+    let touchCamActive = false;
+    let touchCamId = -1;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+    let pinchDist = 0;
+
+    const isInJoystickZone = (x: number, y: number) =>
+      x < JOYSTICK_ZONE && y > window.innerHeight - JOYSTICK_ZONE;
+
+    const onTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      if (e.touches.length === 2) {
+        // Pinch start
+        const t0 = e.touches[0], t1 = e.touches[1];
+        pinchDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+        touchCamActive = false;
+        return;
+      }
+      const t = e.touches[0];
+      if (isInJoystickZone(t.clientX, t.clientY)) return; // handled by joystick
+      touchCamActive = true;
+      touchCamId = t.identifier;
+      lastTouchX = t.clientX;
+      lastTouchY = t.clientY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      if (e.touches.length === 2) {
+        // Pinch zoom
+        const t0 = e.touches[0], t1 = e.touches[1];
+        const d = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+        const delta = pinchDist - d;
+        cameraDistRef.current = Math.max(8, Math.min(80,
+          cameraDistRef.current + delta * 0.05));
+        pinchDist = d;
+        return;
+      }
+      if (!touchCamActive) return;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        if (t.identifier !== touchCamId) continue;
+        const dx = t.clientX - lastTouchX;
+        const dy = t.clientY - lastTouchY;
+        cameraAngleRef.current -= dx * 0.005;
+        cameraPitchRef.current = Math.max(0.1, Math.min(1.2,
+          cameraPitchRef.current + dy * 0.005));
+        lastTouchX = t.clientX;
+        lastTouchY = t.clientY;
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === touchCamId) {
+          touchCamActive = false;
+        }
+      }
+    };
+
+    renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
+    renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: false });
+    renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: false });
+
+    // ─── Click / Tap raycasting ────────────────────────
+    const raycaster = new THREE.Raycaster();
+    const buildingMeshes: THREE.Object3D[] = [];
+    scene.traverse((obj) => {
+      if ((obj as THREE.Mesh).isMesh && obj.userData.building) {
+        buildingMeshes.push(obj);
+      }
+    });
+
+    const onCanvasClick = (e: MouseEvent | TouchEvent) => {
+      let clientX: number, clientY: number;
+      if (e instanceof MouseEvent) {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      } else {
+        const t = (e as TouchEvent).changedTouches[0];
+        clientX = t.clientX;
+        clientY = t.clientY;
+      }
+      const rect = renderer.domElement.getBoundingClientRect();
+      const x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+      const hits = raycaster.intersectObjects(buildingMeshes, false);
+      if (hits.length > 0) {
+        const { name, type } = hits[0].object.userData;
+        window.dispatchEvent(new CustomEvent('building-click', { detail: { name, type } }));
+      }
+    };
+
+    renderer.domElement.addEventListener('click', onCanvasClick as EventListener);
+    renderer.domElement.addEventListener('touchend', onCanvasClick as EventListener, { passive: false });
 
     // ─── Resize ────────────────────────────────────────
     const onResize = () => {
@@ -616,6 +765,13 @@ export default function VillageScene() {
       if (keys.has('a') || keys.has('arrowleft')) moveDir.sub(camRight);
       if (keys.has('d') || keys.has('arrowright')) moveDir.add(camRight);
 
+      // Virtual joystick input
+      const joy = joystickRef.current;
+      if (joy.active && (Math.abs(joy.dx) > 0.05 || Math.abs(joy.dy) > 0.05)) {
+        moveDir.add(camForward.clone().multiplyScalar(-joy.dy));
+        moveDir.add(camRight.clone().multiplyScalar(joy.dx));
+      }
+
       if (moveDir.length() > 0) {
         moveDir.normalize();
         velocity.add(moveDir.multiplyScalar(SPEED * 0.016));
@@ -641,7 +797,24 @@ export default function VillageScene() {
       }
 
       velocity.multiplyScalar(FRICTION);
-      character.position.add(velocity);
+
+      // ─── Collision detection (AABB + wall sliding) ──
+      const bboxes = buildingBoxesRef.current;
+      const cx = character.position.x + velocity.x;
+      const cz = character.position.z + velocity.z;
+      if (!isInsideAABB(cx, cz, bboxes)) {
+        character.position.x = cx;
+        character.position.z = cz;
+      } else {
+        // Try X-axis only
+        if (!isInsideAABB(character.position.x + velocity.x, character.position.z, bboxes)) {
+          character.position.x += velocity.x;
+        }
+        // Try Z-axis only
+        if (!isInsideAABB(character.position.x, character.position.z + velocity.z, bboxes)) {
+          character.position.z += velocity.z;
+        }
+      }
 
       // ─── Camera follow ─────────────────────────────
       const dist = cameraDistRef.current;
@@ -675,6 +848,15 @@ export default function VillageScene() {
         `${villageData.buildings.length} buildings`
       );
 
+      // ─── Minimap broadcast ─────────────────────────
+      window.dispatchEvent(new CustomEvent('character-move', {
+        detail: {
+          x: character.position.x,
+          z: character.position.z,
+          heading: cameraAngleRef.current,
+        },
+      }));
+
       renderer.render(scene, camera);
     };
 
@@ -689,6 +871,10 @@ export default function VillageScene() {
       renderer.domElement.removeEventListener('mousemove', onMouseMove);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);
       renderer.domElement.removeEventListener('wheel', onWheel);
+      renderer.domElement.removeEventListener('touchstart', onTouchStart);
+      renderer.domElement.removeEventListener('touchmove', onTouchMove);
+      renderer.domElement.removeEventListener('touchend', onTouchEnd);
+      renderer.domElement.removeEventListener('click', onCanvasClick as EventListener);
       mountRef.current?.removeChild(renderer.domElement);
       renderer.dispose();
     };
@@ -708,14 +894,84 @@ export default function VillageScene() {
         </div>
       </div>
 
-      {/* Controls help */}
-      <div className="absolute bottom-4 left-4 pointer-events-none">
-        <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-3 text-white/80 text-xs space-y-1">
-          <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">W A S D</kbd> Move</p>
-          <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Mouse Drag</kbd> Look around</p>
-          <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Scroll</kbd> Zoom</p>
+      {/* Controls help — desktop only */}
+      {!isMobile && (
+        <div className="absolute bottom-4 left-4 pointer-events-none">
+          <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-3 text-white/80 text-xs space-y-1">
+            <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">W A S D</kbd> Move</p>
+            <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Mouse Drag</kbd> Look around</p>
+            <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Scroll</kbd> Zoom</p>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Virtual joystick — mobile only */}
+      {isMobile && (
+        <div
+          className="absolute"
+          style={{ bottom: 24, left: 24, width: 120, height: 120, touchAction: 'none' }}
+          onPointerDown={(e) => {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            const rect = e.currentTarget.getBoundingClientRect();
+            joystickRef.current = {
+              active: true,
+              dx: 0,
+              dy: 0,
+              startX: rect.left + rect.width / 2,
+              startY: rect.top + rect.height / 2,
+            };
+          }}
+          onPointerMove={(e) => {
+            if (!joystickRef.current.active) return;
+            const { startX, startY } = joystickRef.current;
+            const MAX = 40;
+            const rawDx = e.clientX - startX;
+            const rawDy = e.clientY - startY;
+            const dist = Math.hypot(rawDx, rawDy);
+            const scale = dist > MAX ? MAX / dist : 1;
+            joystickRef.current.dx = (rawDx * scale) / MAX;
+            joystickRef.current.dy = (rawDy * scale) / MAX;
+            // Move nub visually
+            const nub = e.currentTarget.querySelector<HTMLElement>('.joy-nub');
+            if (nub) {
+              nub.style.transform = `translate(${rawDx * scale}px, ${rawDy * scale}px)`;
+            }
+          }}
+          onPointerUp={(e) => {
+            joystickRef.current.active = false;
+            joystickRef.current.dx = 0;
+            joystickRef.current.dy = 0;
+            const nub = e.currentTarget.querySelector<HTMLElement>('.joy-nub');
+            if (nub) nub.style.transform = 'translate(0px, 0px)';
+          }}
+        >
+          {/* Outer ring */}
+          <div
+            style={{
+              width: '100%', height: '100%',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.15)',
+              border: '2px solid rgba(255,255,255,0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+            }}
+          >
+            {/* Inner nub */}
+            <div
+              className="joy-nub"
+              style={{
+                width: 44, height: 44,
+                borderRadius: '50%',
+                background: 'rgba(255,255,255,0.6)',
+                position: 'absolute',
+                transition: 'transform 0.05s',
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
