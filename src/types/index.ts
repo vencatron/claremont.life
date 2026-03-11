@@ -23,6 +23,24 @@ export interface Business {
   website?: string
 }
 
+export interface Deal {
+  id: string
+  name: string
+  category: string
+  deal_description: string
+  discount_pct: number | null
+  address: string | null
+  website: string | null
+  instagram: string | null
+  phone: string | null
+  requires_student_id: boolean
+  expiration: string | null
+  source: string
+  is_active: boolean
+  notes: string | null
+  last_verified: string
+}
+
 export interface EatPlace {
   place_id: string
   name: string
