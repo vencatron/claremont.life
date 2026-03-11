@@ -1,12 +1,15 @@
+import { getRedditPosts } from '@/lib/data'
+import { CommunityFeed } from './community-feed'
 import { PageHeader } from '@/components/PageHeader'
-import { NewsletterSignup } from '@/components/NewsletterSignup'
 
-export default function KnowPage() {
+export const revalidate = 1800 // 30 min
+
+export default async function KnowPage() {
+  const posts = await getRedditPosts(300)
   return (
     <div>
-      <PageHeader title="Know Claremont" />
-      <div className="px-4"><p className="text-gray-600 text-lg">Coming soon. City news, local history, and the Claremont most students never find.</p></div>
-      <div className="px-4 pb-8"><NewsletterSignup /></div>
+      <PageHeader title="Community" subtitle="What Claremont is talking about" />
+      <CommunityFeed posts={posts} />
     </div>
   )
 }

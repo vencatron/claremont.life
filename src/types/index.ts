@@ -41,3 +41,20 @@ export interface EatPlace {
   editorial_summary: string | null
   business_status: string
 }
+
+export interface RedditPost {
+  post_id: string
+  subreddit: string
+  title: string
+  body: string | null
+  url: string
+  permalink: string
+  author: string
+  score: number
+  num_comments: number
+  flair: string | null
+  created_utc: string
+  is_self: boolean
+  thumbnail: string | null
+  link_url: string | null
+}
