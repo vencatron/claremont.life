@@ -60,6 +60,43 @@ export interface EatPlace {
   business_status: string
 }
 
+export interface HousingListing {
+  id: string
+  source: string
+  source_id: string
+  listing_type: 'complex' | 'listing'
+  name: string
+  address: string
+  city: string
+  state: string
+  zip: string
+  lat: number
+  lng: number
+  bedrooms: number | null
+  bathrooms: number | null
+  price_min: number | null
+  price_max: number | null
+  sqft: number | null
+  has_parking: boolean | null
+  has_laundry: boolean | null
+  has_ac: boolean | null
+  pet_friendly: boolean | null
+  furnished: boolean | null
+  phone: string | null
+  website: string | null
+  google_maps_url: string | null
+  listing_url: string | null
+  photos: string[]
+  description: string | null
+  rating: number | null
+  rating_count: number | null
+  distance_to_campus_m: number | null
+  walkability: 'walkable' | 'bikeable' | 'one-bus' | 'car-needed'
+  available: boolean
+  available_date: string | null
+  last_scraped: string
+}
+
 export interface RedditPost {
   post_id: string
   subreddit: string

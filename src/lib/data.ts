@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { ClaremontEvent, Business, Deal, EatPlace, RedditPost } from '@/types'
+import type { ClaremontEvent, Business, Deal, EatPlace, HousingListing, RedditPost } from '@/types'
 
 export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
   const { data, error } = await supabase
@@ -49,6 +49,32 @@ export async function getDeals(): Promise<Deal[]> {
     .eq('is_active', true)
     .order('category')
   if (error) { console.error('getDeals:', error); return [] }
+  return data ?? []
+}
+
+export async function getHousingListings(filters?: {
+  walkability?: string[]
+  maxPrice?: number
+  minBedrooms?: number
+}): Promise<HousingListing[]> {
+  let query = supabase
+    .from('housing')
+    .select('*')
+    .eq('available', true)
+    .order('distance_to_campus_m', { ascending: true, nullsFirst: false })
+
+  if (filters?.walkability?.length) {
+    query = query.in('walkability', filters.walkability)
+  }
+  if (filters?.maxPrice) {
+    query = query.lte('price_min', filters.maxPrice)
+  }
+  if (filters?.minBedrooms !== undefined) {
+    query = query.gte('bedrooms', filters.minBedrooms)
+  }
+
+  const { data, error } = await query
+  if (error) { console.error('getHousingListings:', error); return [] }
   return data ?? []
 }
 
