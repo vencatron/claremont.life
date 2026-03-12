@@ -315,7 +315,7 @@ export default function VillageScene3DTiles() {
       const outlineMeshes: Array<{ line: THREE.LineLoop; building: OSMBuilding }> = [];
 
       // All CSS2DObjects for visibility control
-      const allLabels: Array<{ obj: CSS2DObject; building: OSMBuilding }> = [];
+      const allLabels: Array<{ obj: InstanceType<typeof CSS2DObject>; building: OSMBuilding }> = [];
 
       const buildingOverlayY = 5;
       const labelY = 8;
