@@ -18,7 +18,7 @@ function createCharacter(): THREE.Group {
   const bodyMat = new THREE.MeshLambertMaterial({ color: 0x2980b9 });
   const body = new THREE.Mesh(bodyGeo, bodyMat);
   body.position.y = 1.3;
-  body.castShadow = true;
+  body
   group.add(body);
 
   // Head (skin)
@@ -26,7 +26,7 @@ function createCharacter(): THREE.Group {
   const headMat = new THREE.MeshLambertMaterial({ color: 0xf5cba7 });
   const head = new THREE.Mesh(headGeo, headMat);
   head.position.y = 2.1;
-  head.castShadow = true;
+  head
   group.add(head);
 
   // Eyes
@@ -44,7 +44,7 @@ function createCharacter(): THREE.Group {
   for (const side of [-0.17, 0.17]) {
     const leg = new THREE.Mesh(legGeo, legMat);
     leg.position.set(side, 0.35, 0);
-    leg.castShadow = true;
+    leg
     group.add(leg);
   }
 
@@ -54,7 +54,7 @@ function createCharacter(): THREE.Group {
   for (const side of [-0.4, 0.4]) {
     const arm = new THREE.Mesh(armGeo, armMat);
     arm.position.set(side, 1.2, 0);
-    arm.castShadow = true;
+    arm
     group.add(arm);
   }
 
@@ -105,7 +105,7 @@ export default function VillageScene3DTiles() {
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x87CEEB);
       // Light fog to help with depth perception
-      scene.fog = new THREE.FogExp2(0x87CEEB, 0.003);
+      // No fog — tiles handle their own LoD fading
 
       // ── Camera ────────────────────────────────────────
       const camera = new THREE.PerspectiveCamera(
@@ -121,26 +121,16 @@ export default function VillageScene3DTiles() {
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      // Shadows disabled — photorealistic tiles have baked lighting
       mountRef.current!.appendChild(renderer.domElement);
 
       // ── Lighting ──────────────────────────────────────
       const ambient = new THREE.AmbientLight(0xffffff, 1.0);
       scene.add(ambient);
-      const sun = new THREE.DirectionalLight(0xfff5e0, 1.5);
+      const sun = new THREE.DirectionalLight(0xfff5e0, 1.2);
       sun.position.set(100, 200, 50);
-      sun.castShadow = true;
-      sun.shadow.mapSize.width = 1024;
-      sun.shadow.mapSize.height = 1024;
-      sun.shadow.camera.near = 1;
-      sun.shadow.camera.far = 500;
-      sun.shadow.camera.left = -100;
-      sun.shadow.camera.right = 100;
-      sun.shadow.camera.top = 100;
-      sun.shadow.camera.bottom = -100;
       scene.add(sun);
-      const hemi = new THREE.HemisphereLight(0x87CEEB, 0x4a7c4f, 0.5);
+      const hemi = new THREE.HemisphereLight(0x87CEEB, 0x4a7c4f, 0.4);
       scene.add(hemi);
 
       // ── Google 3D Tiles ───────────────────────────────
@@ -161,19 +151,32 @@ export default function VillageScene3DTiles() {
       tiles.registerPlugin(new TilesFadePlugin());
       tiles.registerPlugin(new GLTFExtensionsPlugin({ dracoLoader }));
       tiles.registerPlugin(
-        new ReorientationPlugin({ lat: LAT_RAD, lon: LON_RAD, up: '+y' }),
+        new ReorientationPlugin({ lat: LAT_RAD, lon: LON_RAD }),
       );
 
-      // Balance detail vs load speed — 20 is Google's recommended default
+      // Google's recommended default — good balance of detail vs speed
       tiles.errorTarget = 20;
       
-      // Limit how many tiles can be downloading/parsing at once
+      // Limit concurrent downloads to prevent network saturation
       tiles.downloadQueue.maxJobs = 6;
       tiles.parseQueue.maxJobs = 3;
       
-      // Cap cached tiles to limit memory and network
+      // Cap cached tiles
       tiles.lruCache.maxSize = 400;
       tiles.lruCache.minSize = 200;
+
+      // Dismiss loading overlay when first tile model loads
+      let loadingDismissed = false;
+      const dismissLoading = () => {
+        if (!loadingDismissed) {
+          loadingDismissed = true;
+          setLoading(false);
+        }
+      };
+      tiles.addEventListener('load-model', dismissLoading);
+      
+      // Safety timeout — dismiss loading after 8 seconds no matter what
+      const loadingTimeout = setTimeout(dismissLoading, 8000);
 
       scene.add(tiles.group);
 
@@ -431,9 +434,7 @@ export default function VillageScene3DTiles() {
           const hits = groundRaycaster.intersectObject(tiles.group, true);
           if (hits.length > 0) {
             lastGroundY = hits[0].point.y;
-            setLoading(false);
           }
-          // If no tiles loaded yet, keep fallback height
         }
 
         // Smooth character to ground
@@ -451,10 +452,8 @@ export default function VillageScene3DTiles() {
         );
         camera.lookAt(character.position.x, character.position.y + 1.5, character.position.z);
 
-        // Sun follows character
+        // Sun follows character (directional light)
         sun.position.set(character.position.x + 100, 200, character.position.z + 50);
-        sun.target.position.copy(character.position);
-        sun.target.updateMatrixWorld();
 
         // ── Minimap broadcast ─────────────────────────
         window.dispatchEvent(new CustomEvent('character-move', {
@@ -509,6 +508,8 @@ export default function VillageScene3DTiles() {
         renderer!.domElement.removeEventListener('touchend', onTouchEnd);
         renderer!.domElement.removeEventListener('click', onCanvasClick as EventListener);
         if (hudTimerRef.current) clearTimeout(hudTimerRef.current);
+        clearTimeout(loadingTimeout);
+        tiles.removeEventListener('load-model', dismissLoading);
         tiles.dispose();
         try { mountRef.current?.removeChild(renderer!.domElement); } catch {}
         renderer!.dispose();
