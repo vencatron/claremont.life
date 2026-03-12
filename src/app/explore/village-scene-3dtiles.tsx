@@ -73,7 +73,7 @@ export default function VillageScene3DTiles() {
   const keysRef = useRef<Set<string>>(new Set());
   const characterRef = useRef<THREE.Group | null>(null);
   const cameraAngleRef = useRef(0);
-  const cameraDistRef = useRef(25);
+  const cameraDistRef = useRef(60);
   const cameraPitchRef = useRef(0.6);
   const joystickRef = useRef({ active: false, dx: 0, dy: 0, startX: 0, startY: 0 });
   const hudTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -159,7 +159,7 @@ export default function VillageScene3DTiles() {
       );
 
       // Google's recommended default — good balance of detail vs speed
-      tiles.errorTarget = 20;
+      tiles.errorTarget = 8;
       
       // Limit concurrent downloads to prevent network saturation
       tiles.downloadQueue.maxJobs = 6;
@@ -247,7 +247,7 @@ export default function VillageScene3DTiles() {
       };
       const onMouseUp = () => { isDragging = false; };
       const onWheel = (e: WheelEvent) => {
-        cameraDistRef.current = Math.max(5, Math.min(80,
+        cameraDistRef.current = Math.max(40, Math.min(100,
           cameraDistRef.current + e.deltaY * 0.05));
       };
 
@@ -287,7 +287,7 @@ export default function VillageScene3DTiles() {
         if (e.touches.length === 2) {
           const t0 = e.touches[0], t1 = e.touches[1];
           const d = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
-          cameraDistRef.current = Math.max(5, Math.min(80,
+          cameraDistRef.current = Math.max(40, Math.min(100,
             cameraDistRef.current + (pinchDist - d) * 0.05));
           pinchDist = d;
           return;
@@ -361,7 +361,7 @@ export default function VillageScene3DTiles() {
 
       // ── Animation loop ────────────────────────────────
       const velocity = new THREE.Vector3();
-      const SPEED = 6;
+      const SPEED = 3;
       const FRICTION = 0.85;
       let walkCycle = 0;
       let frameCount = 0;
