@@ -111,10 +111,10 @@ export default function VillageScene3DTiles() {
       const camera = new THREE.PerspectiveCamera(
         60,
         window.innerWidth / window.innerHeight,
-        0.5,
-        800,
+        1,
+        4000,
       );
-      camera.position.set(0, 30, 60);
+      camera.position.set(0, 300, 200);
       camera.lookAt(0, 0, 0);
 
       // ── Renderer ──────────────────────────────────────
@@ -182,13 +182,15 @@ export default function VillageScene3DTiles() {
 
       // ── Character ─────────────────────────────────────
       const character = createCharacter();
-      // Start above origin, will settle to ground via raycast
-      character.position.set(0, 10, 0);
+      // Start high — will snap to ground once tiles load via raycast
+      character.position.set(0, 500, 0);
+      character.visible = false; // hidden until we find ground
       scene.add(character);
       characterRef.current = character;
 
       // ── State refs ────────────────────────────────────
       let lastGroundY = 0;
+      let groundFound = false;
       const groundRaycaster = new THREE.Raycaster();
       // firstHitOnly is not in Three.js types but speeds up raycasting when available
       (groundRaycaster as unknown as { firstHitOnly: boolean }).firstHitOnly = true;
@@ -427,30 +429,51 @@ export default function VillageScene3DTiles() {
 
         // ── Ground detection (every 3rd frame for perf) ─
         if (frameCount % 3 === 0) {
-          const origin = new THREE.Vector3(character.position.x, character.position.y + 100, character.position.z);
+          // Raycast from high above straight down to find ground
+          const origin = new THREE.Vector3(character.position.x, 2000, character.position.z);
           groundRaycaster.set(origin, DOWN);
           groundRaycaster.near = 0;
-          groundRaycaster.far = 500;
+          groundRaycaster.far = 5000;
           const hits = groundRaycaster.intersectObject(tiles.group, true);
           if (hits.length > 0) {
-            lastGroundY = hits[0].point.y;
+            const groundY = hits[0].point.y;
+            if (!groundFound) {
+              // First ground hit — teleport character and camera
+              groundFound = true;
+              character.position.y = groundY + 1.0;
+              lastGroundY = groundY;
+              character.visible = true;
+              // Position camera relative to character
+              camera.position.set(
+                character.position.x,
+                character.position.y + 20,
+                character.position.z + 40,
+              );
+              camera.lookAt(character.position);
+            } else {
+              lastGroundY = groundY;
+            }
           }
         }
 
-        // Smooth character to ground
-        const targetY = lastGroundY + 0.05; // slight offset so feet don't clip
-        character.position.y += (targetY - character.position.y) * 0.2;
+        // Smooth character to ground (only after first ground found)
+        if (groundFound) {
+          const targetY = lastGroundY + 0.05;
+          character.position.y += (targetY - character.position.y) * 0.2;
+        }
 
-        // ── Camera follow ─────────────────────────────
-        const dist  = cameraDistRef.current;
-        const pitch = cameraPitchRef.current;
-        const angle = cameraAngleRef.current;
-        camera.position.set(
-          character.position.x + Math.sin(angle) * dist * Math.cos(pitch),
-          character.position.y + dist * Math.sin(pitch),
-          character.position.z + Math.cos(angle) * dist * Math.cos(pitch),
-        );
-        camera.lookAt(character.position.x, character.position.y + 1.5, character.position.z);
+        // ── Camera follow (only after ground found) ────
+        if (groundFound) {
+          const dist  = cameraDistRef.current;
+          const pitch = cameraPitchRef.current;
+          const angle = cameraAngleRef.current;
+          camera.position.set(
+            character.position.x + Math.sin(angle) * dist * Math.cos(pitch),
+            character.position.y + dist * Math.sin(pitch),
+            character.position.z + Math.cos(angle) * dist * Math.cos(pitch),
+          );
+          camera.lookAt(character.position.x, character.position.y + 1.5, character.position.z);
+        }
 
         // Sun follows character (directional light)
         sun.position.set(character.position.x + 100, 200, character.position.z + 50);
