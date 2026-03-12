@@ -73,8 +73,8 @@ export default function VillageScene3DTiles() {
   const keysRef = useRef<Set<string>>(new Set());
   const characterRef = useRef<THREE.Group | null>(null);
   const cameraAngleRef = useRef(0);
-  const cameraDistRef = useRef(60);
-  const cameraPitchRef = useRef(0.6);
+  const cameraDistRef = useRef(80);
+  const cameraPitchRef = useRef(1.05);
   const joystickRef = useRef({ active: false, dx: 0, dy: 0, startX: 0, startY: 0 });
   const hudTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -126,7 +126,40 @@ export default function VillageScene3DTiles() {
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       // Shadows disabled — photorealistic tiles have baked lighting
+      // Toy camera look: boost saturation + contrast
+      renderer.domElement.style.filter = 'saturate(1.5) contrast(1.12) brightness(1.03)';
       mount.appendChild(renderer.domElement);
+
+      // ── Post-processing: vegetation (tree) knockout ────
+      const { EffectComposer } = await import('three/examples/jsm/postprocessing/EffectComposer.js');
+      const { RenderPass } = await import('three/examples/jsm/postprocessing/RenderPass.js');
+      const { ShaderPass } = await import('three/examples/jsm/postprocessing/ShaderPass.js');
+      if (cancelled) return;
+
+      const composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+
+      const GreenKnockoutShader = {
+        uniforms: { tDiffuse: { value: null } },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+        `,
+        fragmentShader: `
+          uniform sampler2D tDiffuse;
+          varying vec2 vUv;
+          void main() {
+            vec4 c = texture2D(tDiffuse, vUv);
+            // Detect green-dominant pixels (tree canopies)
+            float greenDom = c.g - max(c.r, c.b) * 0.82;
+            float fade = smoothstep(0.06, 0.24, greenDom);
+            // Blend toward sky blue
+            vec3 skyTint = vec3(0.529, 0.808, 0.922);
+            gl_FragColor = vec4(mix(c.rgb, skyTint, fade * 0.72), c.a);
+          }
+        `,
+      };
+      composer.addPass(new ShaderPass(GreenKnockoutShader));
 
       // ── Lighting ──────────────────────────────────────
       const ambient = new THREE.AmbientLight(0xffffff, 1.0);
@@ -158,12 +191,12 @@ export default function VillageScene3DTiles() {
         new ReorientationPlugin({ lat: LAT_RAD, lon: LON_RAD }),
       );
 
-      // Google's recommended default — good balance of detail vs speed
-      tiles.errorTarget = 8;
-      
-      // Limit concurrent downloads to prevent network saturation
-      tiles.downloadQueue.maxJobs = 6;
-      tiles.parseQueue.maxJobs = 3;
+      // Lower error target = sharper tiles load sooner
+      tiles.errorTarget = 4;
+
+      // More concurrent downloads/parses for faster load-in
+      tiles.downloadQueue.maxJobs = 12;
+      tiles.parseQueue.maxJobs = 6;
       
       // Cap cached tiles
       tiles.lruCache.maxSize = 400;
@@ -240,7 +273,7 @@ export default function VillageScene3DTiles() {
         const dx = e.clientX - lastMouseX;
         const dy = e.clientY - lastMouseY;
         cameraAngleRef.current -= dx * 0.005;
-        cameraPitchRef.current = Math.max(0.1, Math.min(1.3,
+        cameraPitchRef.current = Math.max(0.1, Math.min(1.45,
           cameraPitchRef.current + dy * 0.005));
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
@@ -297,7 +330,7 @@ export default function VillageScene3DTiles() {
           const t = e.changedTouches[i];
           if (t.identifier !== touchCamId) continue;
           cameraAngleRef.current -= (t.clientX - lastTouchX) * 0.005;
-          cameraPitchRef.current = Math.max(0.1, Math.min(1.3,
+          cameraPitchRef.current = Math.max(0.1, Math.min(1.45,
             cameraPitchRef.current - (t.clientY - lastTouchY) * 0.005));
           lastTouchX = t.clientX;
           lastTouchY = t.clientY;
@@ -356,6 +389,7 @@ export default function VillageScene3DTiles() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer!.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
       };
       window.addEventListener('resize', onResize);
 
@@ -504,7 +538,7 @@ export default function VillageScene3DTiles() {
           setPosInfo(`${character.position.x.toFixed(0)}, ${character.position.z.toFixed(0)}`);
         }
 
-        renderer!.render(scene, camera);
+        composer.render();
       };
 
       animate();
@@ -562,6 +596,22 @@ export default function VillageScene3DTiles() {
   return (
     <div className="relative w-full h-screen bg-black">
       <div ref={mountRef} className="w-full h-full" />
+
+      {/* Tilt-shift miniature effect — blur top & bottom bands */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 10 }}>
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: '22%',
+          backdropFilter: 'blur(6px)',
+          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 100%)',
+          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 100%)',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '22%',
+          backdropFilter: 'blur(6px)',
+          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 100%)',
+          maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 100%)',
+        }} />
+      </div>
 
       {/* Loading overlay */}
       {loading && (
