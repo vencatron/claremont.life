@@ -101,6 +101,10 @@ export default function VillageScene3DTiles() {
 
       if (cancelled) return;
 
+      // Clear any stale canvases from prior renders (React Strict Mode)
+      const mount = mountRef.current!;
+      while (mount.firstChild) mount.removeChild(mount.firstChild);
+
       // ── Scene ─────────────────────────────────────────
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x87CEEB);
@@ -122,7 +126,7 @@ export default function VillageScene3DTiles() {
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       // Shadows disabled — photorealistic tiles have baked lighting
-      mountRef.current!.appendChild(renderer.domElement);
+      mount.appendChild(renderer.domElement);
 
       // ── Lighting ──────────────────────────────────────
       const ambient = new THREE.AmbientLight(0xffffff, 1.0);
