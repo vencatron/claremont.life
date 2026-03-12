@@ -384,8 +384,8 @@ export default function VillageScene3DTiles() {
 
         if (keys.has('w') || keys.has('arrowup'))    moveDir.add(camForward);
         if (keys.has('s') || keys.has('arrowdown'))  moveDir.sub(camForward);
-        if (keys.has('a') || keys.has('arrowleft'))  moveDir.sub(camRight);
-        if (keys.has('d') || keys.has('arrowright')) moveDir.add(camRight);
+        if (keys.has('a') || keys.has('arrowleft'))  moveDir.add(camRight);
+        if (keys.has('d') || keys.has('arrowright')) moveDir.sub(camRight);
 
         // Virtual joystick
         const joy = joystickRef.current;
