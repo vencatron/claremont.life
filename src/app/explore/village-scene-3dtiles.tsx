@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { fetchOSMBuildings } from './data/osm-buildings';
+import type { OSMBuilding } from './data/osm-buildings';
 
 // ─── Types ───────────────────────────────────────────────────
 interface AttributionEntry {
@@ -9,79 +11,15 @@ interface AttributionEntry {
   value: string;
 }
 
-// ─── Character builder ────────────────────────────────────────
-function createCharacter(): THREE.Group {
-  const group = new THREE.Group();
-
-  // Body (blue shirt)
-  const bodyGeo = new THREE.BoxGeometry(0.6, 1.0, 0.4);
-  const bodyMat = new THREE.MeshLambertMaterial({ color: 0x2980b9 });
-  const body = new THREE.Mesh(bodyGeo, bodyMat);
-  body.position.y = 1.3;
-  body
-  group.add(body);
-
-  // Head (skin)
-  const headGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-  const headMat = new THREE.MeshLambertMaterial({ color: 0xf5cba7 });
-  const head = new THREE.Mesh(headGeo, headMat);
-  head.position.y = 2.1;
-  head
-  group.add(head);
-
-  // Eyes
-  const eyeGeo = new THREE.BoxGeometry(0.08, 0.08, 0.05);
-  const eyeMat = new THREE.MeshLambertMaterial({ color: 0x2c3e50 });
-  for (const side of [-0.12, 0.12]) {
-    const eye = new THREE.Mesh(eyeGeo, eyeMat);
-    eye.position.set(side, 2.15, 0.26);
-    group.add(eye);
-  }
-
-  // Legs (dark pants)
-  const legGeo = new THREE.BoxGeometry(0.22, 0.7, 0.3);
-  const legMat = new THREE.MeshLambertMaterial({ color: 0x2c3e50 });
-  for (const side of [-0.17, 0.17]) {
-    const leg = new THREE.Mesh(legGeo, legMat);
-    leg.position.set(side, 0.35, 0);
-    leg
-    group.add(leg);
-  }
-
-  // Arms (blue shirt)
-  const armGeo = new THREE.BoxGeometry(0.2, 0.7, 0.25);
-  const armMat = new THREE.MeshLambertMaterial({ color: 0x2980b9 });
-  for (const side of [-0.4, 0.4]) {
-    const arm = new THREE.Mesh(armGeo, armMat);
-    arm.position.set(side, 1.2, 0);
-    arm
-    group.add(arm);
-  }
-
-  return group;
-}
-
 // ─── Main Component ───────────────────────────────────────────
 export default function VillageScene3DTiles() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [hudVisible, setHudVisible] = useState(true);
   const [loading, setLoading] = useState(true);
   const [attributions, setAttributions] = useState<string>('');
-  const [posInfo, setPosInfo] = useState('');
-
-  const keysRef = useRef<Set<string>>(new Set());
-  const characterRef = useRef<THREE.Group | null>(null);
-  const cameraAngleRef = useRef(0);
-  const cameraDistRef = useRef(25);
-  const cameraPitchRef = useRef(0.6);
-  const joystickRef = useRef({ active: false, dx: 0, dy: 0, startX: 0, startY: 0 });
-  const hudTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    // ── Lazy-load 3d-tiles-renderer (client-only, ESM) ─────────
     let cancelled = false;
     let animId = 0;
     let renderer: THREE.WebGLRenderer | null = null;
@@ -98,14 +36,17 @@ export default function VillageScene3DTiles() {
       const { DRACOLoader } = await import(
         'three/examples/jsm/loaders/DRACOLoader.js'
       );
+      const { CSS2DRenderer, CSS2DObject } = await import(
+        'three/examples/jsm/renderers/CSS2DRenderer.js'
+      );
 
       if (cancelled) return;
+
+      const mount = mountRef.current!;
 
       // ── Scene ─────────────────────────────────────────
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x87CEEB);
-      // Light fog to help with depth perception
-      // No fog — tiles handle their own LoD fading
 
       // ── Camera ────────────────────────────────────────
       const camera = new THREE.PerspectiveCamera(
@@ -114,15 +55,21 @@ export default function VillageScene3DTiles() {
         1,
         4000,
       );
-      camera.position.set(0, 300, 200);
-      camera.lookAt(0, 0, 0);
 
-      // ── Renderer ──────────────────────────────────────
+      // ── WebGL Renderer ────────────────────────────────
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      // Shadows disabled — photorealistic tiles have baked lighting
-      mountRef.current!.appendChild(renderer.domElement);
+      mount.appendChild(renderer.domElement);
+
+      // ── CSS2D Renderer ────────────────────────────────
+      const css2dRenderer = new CSS2DRenderer();
+      css2dRenderer.setSize(window.innerWidth, window.innerHeight);
+      css2dRenderer.domElement.style.position = 'absolute';
+      css2dRenderer.domElement.style.top = '0';
+      css2dRenderer.domElement.style.left = '0';
+      css2dRenderer.domElement.style.pointerEvents = 'none';
+      mount.appendChild(css2dRenderer.domElement);
 
       // ── Lighting ──────────────────────────────────────
       const ambient = new THREE.AmbientLight(0xffffff, 1.0);
@@ -137,7 +84,6 @@ export default function VillageScene3DTiles() {
       const apiToken = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? '';
       const tiles = new TilesRenderer();
 
-      // DRACO decoder for compressed meshes
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath(
         'https://www.gstatic.com/draco/versioned/decoders/1.5.6/',
@@ -154,18 +100,12 @@ export default function VillageScene3DTiles() {
         new ReorientationPlugin({ lat: LAT_RAD, lon: LON_RAD }),
       );
 
-      // Google's recommended default — good balance of detail vs speed
       tiles.errorTarget = 20;
-      
-      // Limit concurrent downloads to prevent network saturation
       tiles.downloadQueue.maxJobs = 6;
       tiles.parseQueue.maxJobs = 3;
-      
-      // Cap cached tiles
       tiles.lruCache.maxSize = 400;
       tiles.lruCache.minSize = 200;
 
-      // Dismiss loading overlay when first tile model loads
       let loadingDismissed = false;
       const dismissLoading = () => {
         if (!loadingDismissed) {
@@ -174,136 +114,188 @@ export default function VillageScene3DTiles() {
         }
       };
       tiles.addEventListener('load-model', dismissLoading);
-      
-      // Safety timeout — dismiss loading after 8 seconds no matter what
       const loadingTimeout = setTimeout(dismissLoading, 8000);
 
       scene.add(tiles.group);
 
-      // ── Character ─────────────────────────────────────
-      const character = createCharacter();
-      // Start high — will snap to ground once tiles load via raycast
-      character.position.set(0, 500, 0);
-      character.visible = false; // hidden until we find ground
-      scene.add(character);
-      characterRef.current = character;
+      // ── Orbit Camera State ────────────────────────────
+      // Focus point — what the camera looks at (in scene space)
+      const focusPoint = new THREE.Vector3(0, 0, 0);
+      const focusPointTarget = new THREE.Vector3(0, 0, 0);
 
-      // ── State refs ────────────────────────────────────
-      let lastGroundY = 0;
-      let groundFound = false;
-      const groundRaycaster = new THREE.Raycaster();
-      // firstHitOnly is not in Three.js types but speeds up raycasting when available
-      (groundRaycaster as unknown as { firstHitOnly: boolean }).firstHitOnly = true;
-      const DOWN = new THREE.Vector3(0, -1, 0);
+      // Spherical coords around focus point
+      let orbitTheta = 0;          // horizontal angle (radians)
+      let orbitPhi = Math.PI / 3;  // vertical angle from top (radians) — 60° = mostly overhead
+      let orbitRadius = 45;        // altitude in metres
 
-      // ── Input ─────────────────────────────────────────
-      const resetHudTimer = () => {
-        setHudVisible(true);
-        if (hudTimerRef.current) clearTimeout(hudTimerRef.current);
-        hudTimerRef.current = setTimeout(() => setHudVisible(false), 5000);
+      const ALT_MIN = 30;
+      const ALT_MAX = 60;
+      const PAN_RADIUS = 500;
+
+      // Camera actual position (smoothly lerped)
+      const cameraPos = new THREE.Vector3();
+
+      const getCameraTarget = () => {
+        const x = focusPoint.x + orbitRadius * Math.sin(orbitPhi) * Math.sin(orbitTheta);
+        const y = focusPoint.y + orbitRadius * Math.cos(orbitPhi);
+        const z = focusPoint.z + orbitRadius * Math.sin(orbitPhi) * Math.cos(orbitTheta);
+        return new THREE.Vector3(x, y, z);
       };
 
-      const onKeyDown = (e: KeyboardEvent) => {
-        keysRef.current.add(e.key.toLowerCase());
-        resetHudTimer();
-        // Prevent scrolling page
-        if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase())) {
-          e.preventDefault();
+      // Initialise camera position immediately (no lerp on first frame)
+      const initPos = getCameraTarget();
+      camera.position.copy(initPos);
+      cameraPos.copy(initPos);
+      camera.lookAt(focusPoint);
+
+      // ── Pointer / touch state ─────────────────────────
+      type DragMode = 'none' | 'orbit' | 'pan';
+      let dragMode: DragMode = 'none';
+      let lastMouseX = 0, lastMouseY = 0;
+      // For right-button drag — track start position
+      let panLastX = 0, panLastY = 0;
+
+      // Pinch zoom state
+      let pinchActive = false;
+      let pinchDist = 0;
+      let pinchMidX = 0, pinchMidY = 0;
+      // Pan state for two-finger
+      let pinchPanLastX = 0, pinchPanLastY = 0;
+
+      // ── Pan helper ────────────────────────────────────
+      // Move focusPoint in the camera's XZ plane
+      const panCamera = (screenDx: number, screenDy: number) => {
+        // Right vector from camera heading
+        const right = new THREE.Vector3(
+          Math.cos(orbitTheta), 0, -Math.sin(orbitTheta),
+        );
+        // Forward vector (projected to horizontal plane)
+        const forward = new THREE.Vector3(
+          -Math.sin(orbitTheta), 0, -Math.cos(orbitTheta),
+        );
+
+        // Scale panning by altitude — further = faster pan feels natural
+        const panScale = orbitRadius * 0.0015;
+        focusPointTarget.addScaledVector(right, -screenDx * panScale);
+        focusPointTarget.addScaledVector(forward, screenDy * panScale);
+
+        // Clamp pan to radius
+        const flat = new THREE.Vector2(focusPointTarget.x, focusPointTarget.z);
+        if (flat.length() > PAN_RADIUS) {
+          flat.setLength(PAN_RADIUS);
+          focusPointTarget.x = flat.x;
+          focusPointTarget.z = flat.y;
         }
       };
-      const onKeyUp = (e: KeyboardEvent) => {
-        keysRef.current.delete(e.key.toLowerCase());
-      };
-      window.addEventListener('keydown', onKeyDown);
-      window.addEventListener('keyup', onKeyUp);
 
-      // Mobile detection
-      if (navigator.maxTouchPoints > 0 || 'ontouchstart' in window) {
-        setIsMobile(true);
-      }
-
-      // ── Mouse camera orbit ─────────────────────────────
-      let isDragging = false;
-      let lastMouseX = 0, lastMouseY = 0;
-
+      // ── Mouse events ──────────────────────────────────
       const onMouseDown = (e: MouseEvent) => {
-        isDragging = true;
-        lastMouseX = e.clientX;
-        lastMouseY = e.clientY;
+        if (e.button === 0) {
+          dragMode = 'orbit';
+          lastMouseX = e.clientX;
+          lastMouseY = e.clientY;
+        } else if (e.button === 2) {
+          dragMode = 'pan';
+          panLastX = e.clientX;
+          panLastY = e.clientY;
+        }
       };
+
       const onMouseMove = (e: MouseEvent) => {
-        if (!isDragging) return;
-        const dx = e.clientX - lastMouseX;
-        const dy = e.clientY - lastMouseY;
-        cameraAngleRef.current -= dx * 0.005;
-        cameraPitchRef.current = Math.max(0.1, Math.min(1.3,
-          cameraPitchRef.current + dy * 0.005));
-        lastMouseX = e.clientX;
-        lastMouseY = e.clientY;
+        if (dragMode === 'orbit') {
+          const dx = e.clientX - lastMouseX;
+          const dy = e.clientY - lastMouseY;
+          orbitTheta -= dx * 0.005;
+          orbitPhi = Math.max(0.05, Math.min(Math.PI / 2.2, orbitPhi + dy * 0.005));
+          lastMouseX = e.clientX;
+          lastMouseY = e.clientY;
+        } else if (dragMode === 'pan') {
+          const dx = e.clientX - panLastX;
+          const dy = e.clientY - panLastY;
+          panCamera(dx, dy);
+          panLastX = e.clientX;
+          panLastY = e.clientY;
+        }
       };
-      const onMouseUp = () => { isDragging = false; };
+
+      const onMouseUp = () => { dragMode = 'none'; };
+
+      const onContextMenu = (e: MouseEvent) => { e.preventDefault(); };
+
       const onWheel = (e: WheelEvent) => {
-        cameraDistRef.current = Math.max(5, Math.min(80,
-          cameraDistRef.current + e.deltaY * 0.05));
+        e.preventDefault();
+        orbitRadius = Math.max(ALT_MIN, Math.min(ALT_MAX,
+          orbitRadius + e.deltaY * 0.05));
       };
 
       renderer.domElement.addEventListener('mousedown', onMouseDown);
       renderer.domElement.addEventListener('mousemove', onMouseMove);
       renderer.domElement.addEventListener('mouseup', onMouseUp);
-      renderer.domElement.addEventListener('wheel', onWheel);
+      renderer.domElement.addEventListener('contextmenu', onContextMenu);
+      renderer.domElement.addEventListener('wheel', onWheel, { passive: false });
 
-      // ── Touch: camera orbit + pinch zoom ──────────────
-      const JOYSTICK_ZONE = 160;
-      let touchCamActive = false;
-      let touchCamId = -1;
+      // ── Touch events ──────────────────────────────────
+      let touchOrbitActive = false;
+      let touchOrbitId = -1;
       let lastTouchX = 0, lastTouchY = 0;
-      let pinchDist = 0;
-
-      const isInJoystickZone = (x: number, y: number) =>
-        x < JOYSTICK_ZONE && y > window.innerHeight - JOYSTICK_ZONE;
 
       const onTouchStart = (e: TouchEvent) => {
         e.preventDefault();
         if (e.touches.length === 2) {
+          touchOrbitActive = false;
           const t0 = e.touches[0], t1 = e.touches[1];
           pinchDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
-          touchCamActive = false;
+          pinchMidX = (t0.clientX + t1.clientX) / 2;
+          pinchMidY = (t0.clientY + t1.clientY) / 2;
+          pinchPanLastX = pinchMidX;
+          pinchPanLastY = pinchMidY;
+          pinchActive = true;
           return;
         }
-        const t = e.touches[0];
-        if (isInJoystickZone(t.clientX, t.clientY)) return;
-        touchCamActive = true;
-        touchCamId = t.identifier;
-        lastTouchX = t.clientX;
-        lastTouchY = t.clientY;
+        pinchActive = false;
+        if (e.touches.length === 1) {
+          const t = e.touches[0];
+          touchOrbitActive = true;
+          touchOrbitId = t.identifier;
+          lastTouchX = t.clientX;
+          lastTouchY = t.clientY;
+        }
       };
 
       const onTouchMove = (e: TouchEvent) => {
         e.preventDefault();
-        if (e.touches.length === 2) {
+        if (e.touches.length === 2 && pinchActive) {
           const t0 = e.touches[0], t1 = e.touches[1];
           const d = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
-          cameraDistRef.current = Math.max(5, Math.min(80,
-            cameraDistRef.current + (pinchDist - d) * 0.05));
+          orbitRadius = Math.max(ALT_MIN, Math.min(ALT_MAX,
+            orbitRadius + (pinchDist - d) * 0.05));
           pinchDist = d;
+
+          const midX = (t0.clientX + t1.clientX) / 2;
+          const midY = (t0.clientY + t1.clientY) / 2;
+          panCamera(midX - pinchPanLastX, midY - pinchPanLastY);
+          pinchPanLastX = midX;
+          pinchPanLastY = midY;
           return;
         }
-        if (!touchCamActive) return;
+        if (!touchOrbitActive) return;
         for (let i = 0; i < e.changedTouches.length; i++) {
           const t = e.changedTouches[i];
-          if (t.identifier !== touchCamId) continue;
-          cameraAngleRef.current -= (t.clientX - lastTouchX) * 0.005;
-          cameraPitchRef.current = Math.max(0.1, Math.min(1.3,
-            cameraPitchRef.current - (t.clientY - lastTouchY) * 0.005));
+          if (t.identifier !== touchOrbitId) continue;
+          const dx = t.clientX - lastTouchX;
+          const dy = t.clientY - lastTouchY;
+          orbitTheta -= dx * 0.005;
+          orbitPhi = Math.max(0.05, Math.min(Math.PI / 2.2, orbitPhi + dy * 0.005));
           lastTouchX = t.clientX;
           lastTouchY = t.clientY;
         }
       };
 
       const onTouchEnd = (e: TouchEvent) => {
+        if (e.touches.length < 2) pinchActive = false;
         for (let i = 0; i < e.changedTouches.length; i++) {
-          if (e.changedTouches[i].identifier === touchCamId) {
-            touchCamActive = false;
+          if (e.changedTouches[i].identifier === touchOrbitId) {
+            touchOrbitActive = false;
           }
         }
       };
@@ -312,180 +304,168 @@ export default function VillageScene3DTiles() {
       renderer.domElement.addEventListener('touchmove', onTouchMove, { passive: false });
       renderer.domElement.addEventListener('touchend', onTouchEnd, { passive: false });
 
-      // ── Click / tap raycasting for building info ───────
-      const clickRaycaster = new THREE.Raycaster();
+      // ── Building overlays ─────────────────────────────
+      const overlayGroup = new THREE.Group();
+      scene.add(overlayGroup);
 
-      const onCanvasClick = (e: MouseEvent | TouchEvent) => {
-        let clientX: number, clientY: number;
-        if (e instanceof MouseEvent) {
-          clientX = e.clientX; clientY = e.clientY;
-        } else {
-          const t = (e as TouchEvent).changedTouches[0];
-          clientX = t.clientX; clientY = t.clientY;
-        }
-        const rect = renderer!.domElement.getBoundingClientRect();
-        const x = ((clientX - rect.left) / rect.width) * 2 - 1;
-        const y = -((clientY - rect.top) / rect.height) * 2 + 1;
-        clickRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
-        const hits = clickRaycaster.intersectObject(tiles.group, true);
-        if (hits.length > 0) {
-          // Try to find building name from tile metadata traversal
-          let name = '';
-          let type = '';
-          let obj: THREE.Object3D | null = hits[0].object;
-          while (obj) {
-            if (obj.userData?.name) { name = obj.userData.name; }
-            if (obj.userData?.type) { type = obj.userData.type; }
-            obj = obj.parent;
+      // Per-category groups for toggling
+      const categoryGroups = new Map<string, THREE.Group>();
+
+      // Store outline meshes for raycasting
+      const outlineMeshes: Array<{ line: THREE.LineLoop; building: OSMBuilding }> = [];
+
+      // All CSS2DObjects for visibility control
+      const allLabels: Array<{ obj: CSS2DObject; building: OSMBuilding }> = [];
+
+      const buildingOverlayY = 5;
+      const labelY = 8;
+
+      try {
+        const buildings = await fetchOSMBuildings();
+        if (!cancelled) {
+          // Count categories
+          const categoryCounts: Record<string, number> = {};
+
+          for (const building of buildings) {
+            // Ensure per-category group exists
+            if (!categoryGroups.has(building.category)) {
+              const g = new THREE.Group();
+              categoryGroups.set(building.category, g);
+              overlayGroup.add(g);
+            }
+            const catGroup = categoryGroups.get(building.category)!;
+
+            categoryCounts[building.category] = (categoryCounts[building.category] ?? 0) + 1;
+
+            // ── Outline polygon ──────────────────────
+            const points = building.footprint.map(
+              (p) => new THREE.Vector3(p.x, buildingOverlayY, p.z),
+            );
+            if (points.length < 2) continue;
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({
+              color: new THREE.Color(building.color),
+              linewidth: 1,
+            });
+            const line = new THREE.LineLoop(geometry, material);
+            catGroup.add(line);
+            outlineMeshes.push({ line, building });
+
+            // ── CSS2D label ───────────────────────────
+            const div = document.createElement('div');
+            div.textContent = building.name;
+            div.style.color = building.color;
+            div.style.background = 'rgba(0,0,0,0.7)';
+            div.style.borderRadius = '4px';
+            div.style.padding = '2px 6px';
+            div.style.fontSize = '11px';
+            div.style.fontFamily = 'system-ui, sans-serif';
+            div.style.fontWeight = '500';
+            div.style.whiteSpace = 'nowrap';
+            div.style.pointerEvents = 'none';
+            div.style.userSelect = 'none';
+
+            const label = new CSS2DObject(div);
+            label.position.set(building.centroid.x, labelY, building.centroid.z);
+            catGroup.add(label);
+            allLabels.push({ obj: label, building });
           }
-          window.dispatchEvent(new CustomEvent('building-click', {
-            detail: { name: name || 'Google 3D Tile', type: type || 'building' },
+
+          window.dispatchEvent(new CustomEvent('overlay-buildings-loaded', {
+            detail: { count: buildings.length, categories: categoryCounts },
           }));
+        }
+      } catch (err) {
+        console.warn('OSM buildings load failed:', err);
+      }
+
+      // ── Category toggle listener ───────────────────────
+      const onToggleCategory = (e: Event) => {
+        const { category, visible } = (e as CustomEvent).detail as { category: string; visible: boolean };
+        const g = categoryGroups.get(category);
+        if (g) g.visible = visible;
+      };
+      window.addEventListener('toggle-category', onToggleCategory);
+
+      // ── Click: raycast against outlines ───────────────
+      const clickRaycaster = new THREE.Raycaster();
+      clickRaycaster.params.Line = { threshold: 3 };
+
+      const onCanvasClick = (e: MouseEvent) => {
+        // Only fire on actual clicks, not end-of-drag
+        if (Math.abs(e.clientX - lastMouseX) > 5 || Math.abs(e.clientY - lastMouseY) > 5) return;
+
+        const rect = renderer!.domElement.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        clickRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+
+        const lineObjects = outlineMeshes.map((m) => m.line);
+        const hits = clickRaycaster.intersectObjects(lineObjects, false);
+        if (hits.length > 0) {
+          const hitLine = hits[0].object as THREE.LineLoop;
+          const match = outlineMeshes.find((m) => m.line === hitLine);
+          if (match) {
+            window.dispatchEvent(new CustomEvent('building-overlay-click', {
+              detail: {
+                name: match.building.name,
+                category: match.building.category,
+                color: match.building.color,
+                tags: match.building.tags,
+              },
+            }));
+          }
         }
       };
 
-      renderer.domElement.addEventListener('click', onCanvasClick as EventListener);
-      renderer.domElement.addEventListener('touchend', onCanvasClick as EventListener, { passive: false });
+      renderer.domElement.addEventListener('click', onCanvasClick);
 
       // ── Resize ────────────────────────────────────────
       const onResize = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer!.setSize(window.innerWidth, window.innerHeight);
+        css2dRenderer.setSize(window.innerWidth, window.innerHeight);
       };
       window.addEventListener('resize', onResize);
 
       // ── Animation loop ────────────────────────────────
-      const velocity = new THREE.Vector3();
-      const SPEED = 15;
-      const FRICTION = 0.85;
-      let walkCycle = 0;
+      const LERP = 0.1;
       let frameCount = 0;
 
       const animate = () => {
         animId = requestAnimationFrame(animate);
         frameCount++;
 
+        // Smooth focus point
+        focusPoint.lerp(focusPointTarget, LERP);
+
+        // Compute target camera position
+        const targetPos = getCameraTarget();
+
+        // Smooth camera position (lerp towards target)
+        cameraPos.lerp(targetPos, LERP);
+        camera.position.copy(cameraPos);
+        camera.lookAt(focusPoint);
+
+        // ── Label visibility by altitude ─────────────
+        const alt = orbitRadius;
+        for (const { obj, building } of allLabels) {
+          if (alt > 50) {
+            obj.visible = false;
+          } else if (alt > 40) {
+            obj.visible = building.category === 'college';
+          } else {
+            obj.visible = true;
+          }
+        }
+
         // ── Tiles update ─────────────────────────────
         camera.updateMatrixWorld();
         tiles.setResolutionFromRenderer(camera, renderer!);
         tiles.setCamera(camera);
         tiles.update();
-
-        // ── Character movement ────────────────────────
-        const keys = keysRef.current;
-        const moveDir = new THREE.Vector3();
-
-        const camForward = new THREE.Vector3(
-          -Math.sin(cameraAngleRef.current), 0,
-          -Math.cos(cameraAngleRef.current),
-        ).normalize();
-        const camRight = new THREE.Vector3(camForward.z, 0, -camForward.x);
-
-        if (keys.has('w') || keys.has('arrowup'))    moveDir.add(camForward);
-        if (keys.has('s') || keys.has('arrowdown'))  moveDir.sub(camForward);
-        if (keys.has('a') || keys.has('arrowleft'))  moveDir.add(camRight);
-        if (keys.has('d') || keys.has('arrowright')) moveDir.sub(camRight);
-
-        // Virtual joystick
-        const joy = joystickRef.current;
-        if (joy.active && (Math.abs(joy.dx) > 0.05 || Math.abs(joy.dy) > 0.05)) {
-          moveDir.add(camForward.clone().multiplyScalar(-joy.dy));
-          moveDir.add(camRight.clone().multiplyScalar(joy.dx));
-        }
-
-        if (moveDir.length() > 0) {
-          moveDir.normalize();
-          velocity.add(moveDir.multiplyScalar(SPEED * 0.016));
-          character.rotation.y = Math.atan2(velocity.x, velocity.z);
-          // Walk animation
-          walkCycle += 0.15;
-          const legs = [character.children[4], character.children[5]]; // leg indices
-          if (legs[0]) legs[0].rotation.x =  Math.sin(walkCycle) * 0.5;
-          if (legs[1]) legs[1].rotation.x = -Math.sin(walkCycle) * 0.5;
-          const arms = [character.children[6], character.children[7]]; // arm indices
-          if (arms[0]) arms[0].rotation.x = -Math.sin(walkCycle) * 0.4;
-          if (arms[1]) arms[1].rotation.x =  Math.sin(walkCycle) * 0.4;
-        } else {
-          walkCycle = 0;
-          for (let i = 4; i <= 7; i++) {
-            if (character.children[i]) character.children[i].rotation.x = 0;
-          }
-        }
-
-        velocity.multiplyScalar(FRICTION);
-        character.position.x += velocity.x;
-        character.position.z += velocity.z;
-
-        // Clamp to village area (~300m radius from center) to avoid loading distant tiles
-        const VILLAGE_RADIUS = 300;
-        const distFromCenter = Math.hypot(character.position.x, character.position.z);
-        if (distFromCenter > VILLAGE_RADIUS) {
-          const scale = VILLAGE_RADIUS / distFromCenter;
-          character.position.x *= scale;
-          character.position.z *= scale;
-          velocity.set(0, 0, 0);
-        }
-
-        // ── Ground detection (every 3rd frame for perf) ─
-        if (frameCount % 3 === 0) {
-          // Raycast from high above straight down to find ground
-          const origin = new THREE.Vector3(character.position.x, 2000, character.position.z);
-          groundRaycaster.set(origin, DOWN);
-          groundRaycaster.near = 0;
-          groundRaycaster.far = 5000;
-          const hits = groundRaycaster.intersectObject(tiles.group, true);
-          if (hits.length > 0) {
-            const groundY = hits[0].point.y;
-            if (!groundFound) {
-              // First ground hit — teleport character and camera
-              groundFound = true;
-              character.position.y = groundY + 1.0;
-              lastGroundY = groundY;
-              character.visible = true;
-              // Position camera relative to character
-              camera.position.set(
-                character.position.x,
-                character.position.y + 20,
-                character.position.z + 40,
-              );
-              camera.lookAt(character.position);
-            } else {
-              lastGroundY = groundY;
-            }
-          }
-        }
-
-        // Smooth character to ground (only after first ground found)
-        if (groundFound) {
-          const targetY = lastGroundY + 0.05;
-          character.position.y += (targetY - character.position.y) * 0.2;
-        }
-
-        // ── Camera follow (only after ground found) ────
-        if (groundFound) {
-          const dist  = cameraDistRef.current;
-          const pitch = cameraPitchRef.current;
-          const angle = cameraAngleRef.current;
-          camera.position.set(
-            character.position.x + Math.sin(angle) * dist * Math.cos(pitch),
-            character.position.y + dist * Math.sin(pitch),
-            character.position.z + Math.cos(angle) * dist * Math.cos(pitch),
-          );
-          camera.lookAt(character.position.x, character.position.y + 1.5, character.position.z);
-        }
-
-        // Sun follows character (directional light)
-        sun.position.set(character.position.x + 100, 200, character.position.z + 50);
-
-        // ── Minimap broadcast ─────────────────────────
-        window.dispatchEvent(new CustomEvent('character-move', {
-          detail: {
-            x: character.position.x,
-            z: character.position.z,
-            heading: cameraAngleRef.current,
-          },
-        }));
 
         // ── Attribution (every 120 frames) ────────────
         if (frameCount % 120 === 0) {
@@ -495,12 +475,10 @@ export default function VillageScene3DTiles() {
             .filter(Boolean)
             .join(' · ');
           setAttributions(attrText || '© Google');
-
-          // Position info
-          setPosInfo(`${character.position.x.toFixed(0)}, ${character.position.z.toFixed(0)}`);
         }
 
         renderer!.render(scene, camera);
+        css2dRenderer.render(scene, camera);
       };
 
       animate();
@@ -519,32 +497,26 @@ export default function VillageScene3DTiles() {
       return () => {
         cancelled = true;
         cancelAnimationFrame(animId);
-        window.removeEventListener('keydown', onKeyDown);
-        window.removeEventListener('keyup', onKeyUp);
         window.removeEventListener('resize', onResize);
+        window.removeEventListener('toggle-category', onToggleCategory);
         renderer!.domElement.removeEventListener('mousedown', onMouseDown);
         renderer!.domElement.removeEventListener('mousemove', onMouseMove);
         renderer!.domElement.removeEventListener('mouseup', onMouseUp);
+        renderer!.domElement.removeEventListener('contextmenu', onContextMenu);
         renderer!.domElement.removeEventListener('wheel', onWheel);
         renderer!.domElement.removeEventListener('touchstart', onTouchStart);
         renderer!.domElement.removeEventListener('touchmove', onTouchMove);
         renderer!.domElement.removeEventListener('touchend', onTouchEnd);
-        renderer!.domElement.removeEventListener('click', onCanvasClick as EventListener);
-        if (hudTimerRef.current) clearTimeout(hudTimerRef.current);
+        renderer!.domElement.removeEventListener('click', onCanvasClick);
         clearTimeout(loadingTimeout);
         tiles.removeEventListener('load-model', dismissLoading);
         tiles.dispose();
-        try { mountRef.current?.removeChild(renderer!.domElement); } catch {}
+        try { mount.removeChild(renderer!.domElement); } catch {}
+        try { mount.removeChild(css2dRenderer.domElement); } catch {}
         renderer!.dispose();
       };
-    })().then((cleanup) => {
-      // Store cleanup for when effect runs again
-      if (cleanup && typeof cleanup === 'function') {
-        // React will call the returned cleanup when unmounting
-      }
-    });
+    })();
 
-    // Return cleanup from useEffect
     return () => {
       cancelled = true;
       cancelAnimationFrame(animId);
@@ -570,108 +542,31 @@ export default function VillageScene3DTiles() {
         </div>
       )}
 
-      {/* HUD — top-left, fades after inactivity */}
-      <div
-        className="absolute top-4 left-4 pointer-events-none"
-        style={{ transition: 'opacity 0.6s ease', opacity: hudVisible ? 1 : 0 }}
-      >
+      {/* HUD — top-left */}
+      <div className="absolute top-4 left-4 pointer-events-none">
         <div className="bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2 text-white">
-          <h1 className="text-lg font-bold tracking-wide">🏘️ Claremont Village</h1>
-          <p className="text-xs text-white/60 mt-1">
-            {posInfo ? `📍 ${posInfo}` : 'Google Photorealistic 3D Tiles'}
-          </p>
+          <h1 className="text-lg font-bold tracking-wide">Claremont Village</h1>
+          <p className="text-xs text-white/60 mt-1">Google Photorealistic 3D Tiles</p>
         </div>
       </div>
 
-      {/* Controls help */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          bottom: 64,
-          left: 16,
-          transition: 'opacity 0.6s ease',
-          opacity: hudVisible ? 1 : 0,
-        }}
-      >
+      {/* Controls help — top-right */}
+      <div className="absolute top-4 right-4 pointer-events-none">
         <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-3 text-white/80 text-xs space-y-1">
-          {isMobile ? (
-            <>
-              <p>🕹️ <span className="opacity-70">Joystick</span> Move</p>
-              <p>👆 <span className="opacity-70">Drag</span> Look around</p>
-              <p>🤏 <span className="opacity-70">Pinch</span> Zoom</p>
-              <p>👆 <span className="opacity-70">Tap</span> Building info</p>
-            </>
-          ) : (
-            <>
-              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">W A S D</kbd> Move</p>
-              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Mouse Drag</kbd> Look around</p>
-              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Scroll</kbd> Zoom</p>
-              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-[10px]">Click</kbd> Building info</p>
-            </>
-          )}
+          <p><span className="opacity-70">Left drag</span> — Rotate</p>
+          <p><span className="opacity-70">Right drag</span> — Pan</p>
+          <p><span className="opacity-70">Scroll</span> — Zoom</p>
+          <p><span className="opacity-70">Click outline</span> — Building info</p>
         </div>
       </div>
 
       {/* Google Attribution — REQUIRED by ToS */}
-      <div
-        className="absolute bottom-2 left-0 right-0 flex items-center justify-center pointer-events-none"
-      >
+      <div className="absolute bottom-2 left-0 right-0 flex items-center justify-center pointer-events-none">
         <div className="bg-black/50 backdrop-blur-sm rounded px-3 py-1 text-white/70 text-[11px] flex items-center gap-2">
           <span>🗺️</span>
           <span>{attributions || '© Google'}</span>
         </div>
       </div>
-
-      {/* Virtual joystick — mobile only */}
-      {isMobile && (
-        <div
-          className="absolute"
-          style={{ bottom: 24, left: 24, width: 120, height: 120, touchAction: 'none' }}
-          onPointerDown={(e) => {
-            e.currentTarget.setPointerCapture(e.pointerId);
-            const rect = e.currentTarget.getBoundingClientRect();
-            joystickRef.current = {
-              active: true, dx: 0, dy: 0,
-              startX: rect.left + rect.width / 2,
-              startY: rect.top + rect.height / 2,
-            };
-          }}
-          onPointerMove={(e) => {
-            if (!joystickRef.current.active) return;
-            const { startX, startY } = joystickRef.current;
-            const MAX = 40;
-            const rawDx = e.clientX - startX;
-            const rawDy = e.clientY - startY;
-            const dist = Math.hypot(rawDx, rawDy);
-            const scale = dist > MAX ? MAX / dist : 1;
-            joystickRef.current.dx = (rawDx * scale) / MAX;
-            joystickRef.current.dy = (rawDy * scale) / MAX;
-            const nub = e.currentTarget.querySelector<HTMLElement>('.joy-nub');
-            if (nub) nub.style.transform = `translate(${rawDx * scale}px, ${rawDy * scale}px)`;
-          }}
-          onPointerUp={(e) => {
-            joystickRef.current.active = false;
-            joystickRef.current.dx = 0;
-            joystickRef.current.dy = 0;
-            const nub = e.currentTarget.querySelector<HTMLElement>('.joy-nub');
-            if (nub) nub.style.transform = 'translate(0px, 0px)';
-          }}
-        >
-          <div style={{
-            width: '100%', height: '100%', borderRadius: '50%',
-            background: 'rgba(255,255,255,0.15)',
-            border: '2px solid rgba(255,255,255,0.4)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            position: 'relative',
-          }}>
-            <div className="joy-nub" style={{
-              width: 44, height: 44, borderRadius: '50%',
-              background: 'rgba(255,255,255,0.6)',
-              position: 'absolute', transition: 'transform 0.05s',
-            }} />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
