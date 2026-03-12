@@ -120,17 +120,18 @@ export default function VillageScene3DTiles() {
 
       // ── Orbit Camera State ────────────────────────────
       // Focus point — what the camera looks at (in scene space)
+      // After ReorientationPlugin the ground is near Y=0 but tiles render at real-world scale
       const focusPoint = new THREE.Vector3(0, 0, 0);
       const focusPointTarget = new THREE.Vector3(0, 0, 0);
 
       // Spherical coords around focus point
       let orbitTheta = 0;          // horizontal angle (radians)
-      let orbitPhi = Math.PI / 3;  // vertical angle from top (radians) — 60° = mostly overhead
-      let orbitRadius = 45;        // altitude in metres
+      let orbitPhi = Math.PI / 6;  // vertical angle from top (radians) — 30° = steep overhead
+      let orbitRadius = 250;       // distance from focus in scene units (~metres)
 
-      const ALT_MIN = 30;
-      const ALT_MAX = 60;
-      const PAN_RADIUS = 500;
+      const ALT_MIN = 100;
+      const ALT_MAX = 500;
+      const PAN_RADIUS = 800;
 
       // Camera actual position (smoothly lerped)
       const cameraPos = new THREE.Vector3();
@@ -225,7 +226,7 @@ export default function VillageScene3DTiles() {
       const onWheel = (e: WheelEvent) => {
         e.preventDefault();
         orbitRadius = Math.max(ALT_MIN, Math.min(ALT_MAX,
-          orbitRadius + e.deltaY * 0.05));
+          orbitRadius + e.deltaY * 0.3));
       };
 
       renderer.domElement.addEventListener('mousedown', onMouseDown);
@@ -317,8 +318,8 @@ export default function VillageScene3DTiles() {
       // All CSS2DObjects for visibility control
       const allLabels: Array<{ obj: InstanceType<typeof CSS2DObject>; building: OSMBuilding }> = [];
 
-      const buildingOverlayY = 5;
-      const labelY = 8;
+      const buildingOverlayY = 15;
+      const labelY = 20;
 
       try {
         const buildings = await fetchOSMBuildings();
@@ -452,9 +453,9 @@ export default function VillageScene3DTiles() {
         // ── Label visibility by altitude ─────────────
         const alt = orbitRadius;
         for (const { obj, building } of allLabels) {
-          if (alt > 50) {
+          if (alt > 400) {
             obj.visible = false;
-          } else if (alt > 40) {
+          } else if (alt > 300) {
             obj.visible = building.category === 'college';
           } else {
             obj.visible = true;
