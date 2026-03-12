@@ -126,7 +126,7 @@ export default function VillageScene3DTiles() {
 
       // Spherical coords around focus point
       let orbitTheta = 0;          // horizontal angle (radians)
-      let orbitPhi = Math.PI / 6;  // vertical angle from top (radians) — 30° = steep overhead
+      let orbitPhi = 0.15;         // vertical angle from top (radians) — nearly straight down
       let orbitRadius = 250;       // distance from focus in scene units (~metres)
 
       const ALT_MIN = 100;
@@ -207,7 +207,7 @@ export default function VillageScene3DTiles() {
           const dx = e.clientX - lastMouseX;
           const dy = e.clientY - lastMouseY;
           orbitTheta -= dx * 0.005;
-          orbitPhi = Math.max(0.05, Math.min(Math.PI / 2.2, orbitPhi + dy * 0.005));
+          orbitPhi = Math.max(0.05, Math.min(Math.PI / 4, orbitPhi + dy * 0.005));
           lastMouseX = e.clientX;
           lastMouseY = e.clientY;
         } else if (dragMode === 'pan') {
@@ -286,7 +286,7 @@ export default function VillageScene3DTiles() {
           const dx = t.clientX - lastTouchX;
           const dy = t.clientY - lastTouchY;
           orbitTheta -= dx * 0.005;
-          orbitPhi = Math.max(0.05, Math.min(Math.PI / 2.2, orbitPhi + dy * 0.005));
+          orbitPhi = Math.max(0.05, Math.min(Math.PI / 4, orbitPhi + dy * 0.005));
           lastTouchX = t.clientX;
           lastTouchY = t.clientY;
         }
