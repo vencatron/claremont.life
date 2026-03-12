@@ -237,7 +237,7 @@ export default function VillageScene3DTiles() {
         const dy = e.clientY - lastMouseY;
         cameraAngleRef.current -= dx * 0.005;
         cameraPitchRef.current = Math.max(0.1, Math.min(1.3,
-          cameraPitchRef.current - dy * 0.005));
+          cameraPitchRef.current + dy * 0.005));
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
       };
@@ -377,8 +377,8 @@ export default function VillageScene3DTiles() {
         const moveDir = new THREE.Vector3();
 
         const camForward = new THREE.Vector3(
-          Math.sin(cameraAngleRef.current), 0,
-          Math.cos(cameraAngleRef.current),
+          -Math.sin(cameraAngleRef.current), 0,
+          -Math.cos(cameraAngleRef.current),
         ).normalize();
         const camRight = new THREE.Vector3(camForward.z, 0, -camForward.x);
 
