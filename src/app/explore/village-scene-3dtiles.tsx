@@ -237,7 +237,7 @@ export default function VillageScene3DTiles() {
         const dy = e.clientY - lastMouseY;
         cameraAngleRef.current -= dx * 0.005;
         cameraPitchRef.current = Math.max(0.1, Math.min(1.3,
-          cameraPitchRef.current + dy * 0.005));
+          cameraPitchRef.current - dy * 0.005));
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
       };
@@ -294,7 +294,7 @@ export default function VillageScene3DTiles() {
           if (t.identifier !== touchCamId) continue;
           cameraAngleRef.current -= (t.clientX - lastTouchX) * 0.005;
           cameraPitchRef.current = Math.max(0.1, Math.min(1.3,
-            cameraPitchRef.current + (t.clientY - lastTouchY) * 0.005));
+            cameraPitchRef.current - (t.clientY - lastTouchY) * 0.005));
           lastTouchX = t.clientX;
           lastTouchY = t.clientY;
         }
