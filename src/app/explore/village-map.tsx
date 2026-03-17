@@ -165,9 +165,6 @@ function buildBusinessGeoJSON() {
   return { type: 'FeatureCollection' as const, features };
 }
 
-// ─── Walking speed ─────────────────────────────────────────────────────────
-const WALK_SPEED_LNG = 0.023 / LNG_M;
-const WALK_SPEED_LAT = 0.023 / LAT_M;
 
 // ─── Free dark map style (no API key needed) ───────────────────────────────
 const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
@@ -473,13 +470,7 @@ function MapLegend({ visible }: { visible: boolean }) {
 export default function VillageMap() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import('maplibre-gl').Map | null>(null);
-  const markerRef = useRef<import('maplibre-gl').Marker | null>(null);
-  const charPosRef = useRef({ lng: CENTER_LNG, lat: CENTER_LAT });
-  const keysRef = useRef<Set<string>>(new Set());
-  const joystickRef = useRef({ active: false, dx: 0, dy: 0, startX: 0, startY: 0 });
-  const rafRef = useRef<number>(0);
   const interactedRef = useRef(false);
-  const bobRef = useRef(0);
   const highlightedIdRef = useRef<number | null>(null);
 
   const [hudVisible, setHudVisible] = useState(true);
@@ -539,7 +530,6 @@ export default function VillageMap() {
     if (!mapContainerRef.current) return;
 
     let map: import('maplibre-gl').Map;
-    let marker: import('maplibre-gl').Marker;
 
     (async () => {
       const maplibregl = await import('maplibre-gl');
@@ -569,17 +559,6 @@ export default function VillageMap() {
       map.on('drag', enableScroll);
 
       map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
-
-      // ── Character marker ────────────────────────────────────────
-      const markerEl = document.createElement('div');
-      markerEl.style.cssText =
-        'font-size:28px;line-height:1;cursor:pointer;user-select:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.8));transition:transform 0.1s;';
-      markerEl.textContent = '\uD83D\uDEB6';
-
-      marker = new maplibregl.Marker({ element: markerEl, anchor: 'bottom' })
-        .setLngLat([CENTER_LNG, CENTER_LAT])
-        .addTo(map);
-      markerRef.current = marker;
 
       // ── Layers on load ──────────────────────────────────────────
       map.on('load', () => {
@@ -714,88 +693,18 @@ export default function VillageMap() {
         if (!features.length) setPopupInfo(null);
       });
 
-      // ── Walk loop ───────────────────────────────────────────────
-      function walkLoop() {
-        const keys = keysRef.current;
-        const joy = joystickRef.current;
-        let dlng = 0;
-        let dlat = 0;
-
-        if (keys.has('ArrowUp') || keys.has('w') || keys.has('W')) dlat += WALK_SPEED_LAT;
-        if (keys.has('ArrowDown') || keys.has('s') || keys.has('S')) dlat -= WALK_SPEED_LAT;
-        if (keys.has('ArrowRight') || keys.has('d') || keys.has('D')) dlng += WALK_SPEED_LNG;
-        if (keys.has('ArrowLeft') || keys.has('a') || keys.has('A')) dlng -= WALK_SPEED_LNG;
-
-        if (joy.active) {
-          dlng += joy.dx * WALK_SPEED_LNG * 1.5;
-          dlat -= joy.dy * WALK_SPEED_LAT * 1.5;
-        }
-
-        const moving = dlng !== 0 || dlat !== 0;
-        if (moving) {
-          charPosRef.current.lng += dlng;
-          charPosRef.current.lat += dlat;
-          markerRef.current?.setLngLat([charPosRef.current.lng, charPosRef.current.lat]);
-
-          bobRef.current += 0.3;
-          const bob = Math.sin(bobRef.current) * 3;
-          const markerEl = markerRef.current?.getElement();
-          if (markerEl) markerEl.style.transform = `translateY(${bob}px)`;
-
-          mapRef.current?.easeTo({
-            center: [charPosRef.current.lng, charPosRef.current.lat],
-            duration: 100,
-            easing: (t: number) => t,
-          });
-        } else {
-          const markerEl = markerRef.current?.getElement();
-          if (markerEl) markerEl.style.transform = 'translateY(0px)';
-        }
-
-        rafRef.current = requestAnimationFrame(walkLoop);
-      }
-
-      rafRef.current = requestAnimationFrame(walkLoop);
     })();
-
-    // Key listeners
-    const onKeyDown = (e: KeyboardEvent) => keysRef.current.add(e.key);
-    const onKeyUp = (e: KeyboardEvent) => keysRef.current.delete(e.key);
-    window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('keyup', onKeyUp);
 
     // Lock body scroll
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('keydown', onKeyDown);
-      window.removeEventListener('keyup', onKeyUp);
       map?.remove();
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     };
   }, [handleBuildingClick]);
-
-  // ── Joystick handlers ─────────────────────────────────────────
-  const onJoyStart = (e: React.TouchEvent | React.MouseEvent) => {
-    const pt = 'touches' in e ? e.touches[0] : e;
-    joystickRef.current = { active: true, dx: 0, dy: 0, startX: pt.clientX, startY: pt.clientY };
-  };
-
-  const onJoyMove = (e: React.TouchEvent | React.MouseEvent) => {
-    if (!joystickRef.current.active) return;
-    const pt = 'touches' in e ? e.touches[0] : e;
-    const dx = (pt.clientX - joystickRef.current.startX) / 40;
-    const dy = (pt.clientY - joystickRef.current.startY) / 40;
-    joystickRef.current.dx = Math.max(-1, Math.min(1, dx));
-    joystickRef.current.dy = Math.max(-1, Math.min(1, dy));
-  };
-
-  const onJoyEnd = () => {
-    joystickRef.current = { active: false, dx: 0, dy: 0, startX: 0, startY: 0 };
-  };
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 100 }}>
@@ -869,7 +778,7 @@ export default function VillageMap() {
             Claremont Village 3D
           </div>
           <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>
-            {isMobile ? 'Tap buildings for details' : 'Hover for info \u00B7 Click for details \u00B7 WASD to walk'}
+            {isMobile ? 'Tap buildings for details' : 'Hover for info \u00B7 Click for details'}
           </div>
         </div>
       </div>
@@ -907,43 +816,6 @@ export default function VillageMap() {
         {villageData.buildings.length} BUILDINGS &middot; {businessData.businesses.length} BUSINESSES
       </div>
 
-      {/* Mobile joystick */}
-      {isMobile && (
-        <div
-          onTouchStart={onJoyStart}
-          onTouchMove={onJoyMove}
-          onTouchEnd={onJoyEnd}
-          onMouseDown={onJoyStart}
-          onMouseMove={onJoyMove}
-          onMouseUp={onJoyEnd}
-          style={{
-            position: 'absolute',
-            bottom: 48,
-            left: 40,
-            zIndex: 20,
-            width: 96,
-            height: 96,
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(8px)',
-            border: '2px solid rgba(255,255,255,0.2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            touchAction: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          <div
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              background: 'rgba(255,255,255,0.4)',
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 }
