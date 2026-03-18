@@ -4,151 +4,1790 @@
     "coordinateSystem": "x/z meters from center lat=34.0965 lng=-117.7185, +x=east, +z=north"
   },
   "businesses": [
-    { "name": "Some Crust Bakery",        "type": "bakery",       "x": -112, "z": -75  },
-    { "name": "Bua Thai",                 "type": "restaurant",   "x": -108, "z": -114 },
-    { "name": "Viva Madrid",              "type": "restaurant",   "x": -112, "z": -171 },
-    { "name": "Candlelight Pavilion",     "type": "theater",      "x": -140, "z": -235, "height": 10 },
-    { "name": "Nick's Cafe",              "type": "restaurant",   "x": -53,  "z": -187 },
-    { "name": "Rhino Records",            "type": "music_store",  "x": -39,  "z": -165 },
-    { "name": "The Village Grind",        "type": "cafe",         "x": -29,  "z": -119 },
-    { "name": "Le Petit Paris",           "type": "restaurant",   "x": -17,  "z": -187 },
-    { "name": "Eureka! Burger",           "type": "restaurant",   "x": 3,    "z": -183 },
-    { "name": "Walter's Restaurant",      "type": "restaurant",   "x": 22,   "z": -180 },
-    { "name": "The Press",                "type": "bar",          "x": 25,   "z": -158 },
-    { "name": "Tutti Mangia",             "type": "restaurant",   "x": 27,   "z": -147 },
-    { "name": "Cafe Molise",              "type": "restaurant",   "x": 30,   "z": -131 },
-    { "name": "Village Wine",             "type": "wine_shop",    "x": 36,   "z": -123 },
-    { "name": "Chamber of Commerce",      "type": "office",       "x": 30,   "z": -112 },
-    { "name": "Wheeler Steffen Sotheby's","type": "real_estate",  "x": 1,    "z": -113 },
-    { "name": "Espiau's",                 "type": "restaurant",   "x": 15,   "z": -76  },
-    { "name": "Sushi Kawa",               "type": "restaurant",   "x": 24,   "z": -61  },
-    { "name": "Bardot",                   "type": "bar",          "x": 80,   "z": -63  },
-    { "name": "Folk Music Center Annex",  "type": "music_store",  "x": 103,  "z": -74  },
-    { "name": "Aruffo's Italian",         "type": "restaurant",   "x": 84,   "z": -154 },
-    { "name": "21 Choices",               "type": "frozen_yogurt","x": 79,   "z": -144 },
-    { "name": "Provisions Market",        "type": "grocery",      "x": 82,   "z": -126 },
-    { "name": "Claremont Courier",        "type": "office",       "x": 89,   "z": -114 },
-    { "name": "Double Peak Brewing",      "type": "brewery",      "x": 103,  "z": -114 },
-    { "name": "Steel City Pizza",         "type": "restaurant",   "x": 73,   "z": -111 },
-    { "name": "Vincenzo's Ristorante",    "type": "restaurant",   "x": 134,  "z": -113 },
-    { "name": "Claremont Heritage",       "type": "museum",       "x": 140,  "z": -109 },
-    { "name": "Wolfe's Market",           "type": "grocery",      "x": 109,  "z": -108 },
-    { "name": "Augie's Coffee",           "type": "cafe",         "x": 118,  "z": -109 },
-    { "name": "Pomona Valley Workshop",   "type": "retail",       "x": 147,  "z": -176 },
-    { "name": "Pizzeria Classico",        "type": "restaurant",   "x": 171,  "z": -177 },
-    { "name": "The Claremont Inn",        "type": "hotel",        "x": 154,  "z": -179 },
-    { "name": "The Copper Door",          "type": "bar",          "x": 168,  "z": -147 },
-    { "name": "El Mezcal",               "type": "restaurant",   "x": 165,  "z": -137 },
-    { "name": "Claremont Yoga",           "type": "fitness",      "x": 151,  "z": -125 },
-    { "name": "Village Barber",           "type": "salon",        "x": 157,  "z": -112 },
-    { "name": "Bonita Boutique",          "type": "retail",       "x": 170,  "z": -170 },
-    { "name": "Indian Hill Pharmacy",     "type": "pharmacy",     "x": 162,  "z": -190 },
-    { "name": "Baja Fresh",               "type": "restaurant",   "x": 53,   "z": -243 },
-    { "name": "Arrow Trading Co.",        "type": "retail",       "x": 167,  "z": -267 },
-    { "name": "Claremont McKenna Café",   "type": "cafe",         "x": 29,   "z": 204  },
-    { "name": "Village Books",            "type": "bookstore",    "x": 97,   "z": 211  },
-    { "name": "The Hub Claremont",        "type": "coworking",    "x": 109,  "z": 175  },
-    { "name": "Uncommon Good",            "type": "retail",       "x": 78,   "z": 166  },
-    { "name": "Claremont Art Glass",      "type": "gallery",      "x": 28,   "z": 172  },
-    { "name": "Brick & Mortar Coffee",    "type": "cafe",         "x": -54,  "z": 186  },
-    { "name": "Montana Smokehouse",       "type": "restaurant",   "x": 33,   "z": 185  },
-    { "name": "Pomona College Bookstore", "type": "bookstore",    "x": 101,  "z": 187  },
-    { "name": "Eureka! Claremont",        "type": "restaurant",   "x": 244,  "z": -168 },
-    { "name": "Bardot Wine Bar",          "type": "bar",          "x": 244,  "z": -180 },
-    { "name": "Harvest House",            "type": "restaurant",   "x": 219,  "z": -245 },
-    { "name": "Claremont Community Bank", "type": "bank",         "x": 246,  "z": -157 },
-    { "name": "The Garlic Brothers",      "type": "restaurant",   "x": 252,  "z": -157 },
-    { "name": "Padua Floral",             "type": "florist",      "x": 289,  "z": -252 },
-    { "name": "Stonefire Grill",          "type": "restaurant",   "x": 288,  "z": -252 },
-    { "name": "Claremont Auto Spa",       "type": "service",      "x": 243,  "z": -179 },
-    { "name": "The Shoe Zoo",             "type": "retail",       "x": 234,  "z": -154 },
-    { "name": "Heritage Wine Bar",        "type": "bar",          "x": 220,  "z": -159 },
-    { "name": "Claremont Florist",        "type": "florist",      "x": 223,  "z": -177 },
-
-    { "name": "Forte Salon",              "type": "salon",        "x": 103,  "z": -114 },
-    { "name": "42nd Street Bagel Cafe",   "type": "cafe",         "x": 14,   "z": -32  },
-    { "name": "California Bank & Trust",  "type": "bank",         "x": 93,   "z": -177 },
-    { "name": "Acme Dry Cleaners",        "type": "service",      "x": 84,   "z": -154 },
-    { "name": "Everett's Shoe Repair",    "type": "service",      "x": 84,   "z": -151 },
-    { "name": "Claremont Juice Co.",      "type": "cafe",         "x": 79,   "z": -144 },
-    { "name": "Ecoterra Holistic Health", "type": "pharmacy",     "x": 82,   "z": -129 },
-    { "name": "Buddhamouse Emporium",     "type": "shop",         "x": 82,   "z": -123 },
-    { "name": "The Hens' Kitchen Shoppe", "type": "shop",         "x": 30,   "z": -112 },
-    { "name": "Village Grille",           "type": "restaurant",   "x": 73,   "z": -111 },
-    { "name": "Menkoi Ya Ramen",          "type": "restaurant",   "x": 11,   "z": 31   },
-    { "name": "Himalayan Collection",     "type": "shop",         "x": 109,  "z": -108 },
-    { "name": "Eye of Buddha",            "type": "shop",         "x": 109,  "z": -105 },
-    { "name": "Miller's Laundry",         "type": "service",      "x": -45,  "z": -32  },
-    { "name": "J. Brown Violin Maker",    "type": "shop",         "x": -45,  "z": -30  },
-    { "name": "Claremont Village Salon",  "type": "salon",        "x": -39,  "z": -165 },
-    { "name": "Escape Salon & Day Spa",   "type": "salon",        "x": -39,  "z": -162 },
-    { "name": "Daddy Ji Indian Cuisine",  "type": "restaurant",   "x": -99,  "z": -51  },
-    { "name": "Starbucks",                "type": "cafe",         "x": 24,   "z": -58  },
-    { "name": "Nosy Neighbors Coffee",    "type": "cafe",         "x": 82,   "z": -131 },
-    { "name": "Nectar Clothing",          "type": "shop",         "x": 3,    "z": -183 },
-    { "name": "Aromatique Skin Care",     "type": "spa",          "x": 3,    "z": -180 },
-    { "name": "Hendricks Pharmacy",       "type": "pharmacy",     "x": 214,  "z": -138 },
-    { "name": "Finney's Crafthouse",      "type": "restaurant",   "x": 216,  "z": -145 },
-    { "name": "Lizzie's Goldmine",        "type": "shop",         "x": 134,  "z": -113 },
-    { "name": "La Popular CDMX",          "type": "restaurant",   "x": 14,   "z": -36  },
-    { "name": "Union on Yale",            "type": "restaurant",   "x": 14,   "z": -28  },
-    { "name": "CK Cafe",                  "type": "cafe",         "x": 88,   "z": -18  },
-    { "name": "Bert & Rocky's Ice Cream", "type": "dessert",      "x": 14,   "z": -24  },
-    { "name": "The Diamond Center",       "type": "shop",         "x": 27,   "z": -150 },
-    { "name": "Yogurtland",               "type": "frozen_yogurt","x": -99,  "z": -54  },
-    { "name": "Insomnia Cookies",         "type": "bakery",       "x": -99,  "z": -48  },
-    { "name": "Poke Dot",                 "type": "restaurant",   "x": -99,  "z": -45  },
-    { "name": "A Shop Called Quest",      "type": "shop",         "x": -99,  "z": -57  },
-    { "name": "Chico's",                  "type": "shop",         "x": -99,  "z": -60  },
-    { "name": "O My Sole",               "type": "shop",         "x": -96,  "z": -51  },
-    { "name": "Sanctuary Pilates",        "type": "fitness",      "x": -96,  "z": -48  },
-    { "name": "Village Postmark",         "type": "service",      "x": 214,  "z": -141 },
-    { "name": "Square i Gallery",         "type": "gallery",      "x": 214,  "z": -144 },
-    { "name": "Bunny Gunner",             "type": "gallery",      "x": 10,   "z": 28   },
-    { "name": "Claremont Museum of Art",  "type": "museum",       "x": -17,  "z": -187 },
-    { "name": "Crepes of Wrath",          "type": "restaurant",   "x": 8,    "z": 28   },
-    { "name": "Vintage Odyssey",          "type": "shop",         "x": 5,    "z": 25   },
-    { "name": "The UPS Store",            "type": "service",      "x": -58,  "z": 215  },
-    { "name": "Le Pain Quotidien",        "type": "cafe",         "x": -99,  "z": -42  },
-    { "name": "The Method Lagree",        "type": "fitness",      "x": -96,  "z": -42  },
-    { "name": "Claremont Lincoln Univ.",   "type": "college",      "x": 53,   "z": -243 },
-    { "name": "Wilkinson Law Offices",    "type": "office",       "x": -53,  "z": -187 }
+    {
+      "name": "Some Crust Bakery",
+      "type": "bakery",
+      "x": -112,
+      "z": -75
+    },
+    {
+      "name": "Bua Thai",
+      "type": "restaurant",
+      "x": -108,
+      "z": -114
+    },
+    {
+      "name": "Viva Madrid",
+      "type": "restaurant",
+      "x": -112,
+      "z": -171
+    },
+    {
+      "name": "Candlelight Pavilion",
+      "type": "theater",
+      "x": -140,
+      "z": -235,
+      "height": 10
+    },
+    {
+      "name": "Nick's Cafe",
+      "type": "restaurant",
+      "x": -53,
+      "z": -187
+    },
+    {
+      "name": "Rhino Records",
+      "type": "music_store",
+      "x": -39,
+      "z": -165
+    },
+    {
+      "name": "The Village Grind",
+      "type": "cafe",
+      "x": -29,
+      "z": -119
+    },
+    {
+      "name": "Le Petit Paris",
+      "type": "restaurant",
+      "x": -17,
+      "z": -187
+    },
+    {
+      "name": "Eureka! Burger",
+      "type": "restaurant",
+      "x": 3,
+      "z": -183
+    },
+    {
+      "name": "Walter's Restaurant",
+      "type": "restaurant",
+      "x": 22,
+      "z": -180
+    },
+    {
+      "name": "The Press",
+      "type": "bar",
+      "x": 25,
+      "z": -158
+    },
+    {
+      "name": "Tutti Mangia",
+      "type": "restaurant",
+      "x": 27,
+      "z": -147
+    },
+    {
+      "name": "Cafe Molise",
+      "type": "restaurant",
+      "x": 30,
+      "z": -131
+    },
+    {
+      "name": "Village Wine",
+      "type": "wine_shop",
+      "x": 36,
+      "z": -123
+    },
+    {
+      "name": "Chamber of Commerce",
+      "type": "office",
+      "x": 30,
+      "z": -112
+    },
+    {
+      "name": "Wheeler Steffen Sotheby's",
+      "type": "real_estate",
+      "x": 1,
+      "z": -113
+    },
+    {
+      "name": "Espiau's",
+      "type": "restaurant",
+      "x": 15,
+      "z": -76
+    },
+    {
+      "name": "Sushi Kawa",
+      "type": "restaurant",
+      "x": 24,
+      "z": -61
+    },
+    {
+      "name": "Bardot",
+      "type": "bar",
+      "x": 80,
+      "z": -63
+    },
+    {
+      "name": "Folk Music Center Annex",
+      "type": "music_store",
+      "x": 103,
+      "z": -74
+    },
+    {
+      "name": "Aruffo's Italian",
+      "type": "restaurant",
+      "x": 84,
+      "z": -154
+    },
+    {
+      "name": "21 Choices",
+      "type": "frozen_yogurt",
+      "x": 79,
+      "z": -144
+    },
+    {
+      "name": "Provisions Market",
+      "type": "grocery",
+      "x": 82,
+      "z": -126
+    },
+    {
+      "name": "Claremont Courier",
+      "type": "office",
+      "x": 89,
+      "z": -114
+    },
+    {
+      "name": "Double Peak Brewing",
+      "type": "brewery",
+      "x": 103,
+      "z": -114
+    },
+    {
+      "name": "Steel City Pizza",
+      "type": "restaurant",
+      "x": 73,
+      "z": -111
+    },
+    {
+      "name": "Vincenzo's Ristorante",
+      "type": "restaurant",
+      "x": 134,
+      "z": -113
+    },
+    {
+      "name": "Claremont Heritage",
+      "type": "museum",
+      "x": 140,
+      "z": -109
+    },
+    {
+      "name": "Wolfe's Market",
+      "type": "grocery",
+      "x": 109,
+      "z": -108
+    },
+    {
+      "name": "Augie's Coffee",
+      "type": "cafe",
+      "x": 118,
+      "z": -109
+    },
+    {
+      "name": "Pomona Valley Workshop",
+      "type": "retail",
+      "x": 147,
+      "z": -176
+    },
+    {
+      "name": "Pizzeria Classico",
+      "type": "restaurant",
+      "x": 171,
+      "z": -177
+    },
+    {
+      "name": "The Claremont Inn",
+      "type": "hotel",
+      "x": 154,
+      "z": -179
+    },
+    {
+      "name": "The Copper Door",
+      "type": "bar",
+      "x": 168,
+      "z": -147
+    },
+    {
+      "name": "El Mezcal",
+      "type": "restaurant",
+      "x": 165,
+      "z": -137
+    },
+    {
+      "name": "Claremont Yoga",
+      "type": "fitness",
+      "x": 151,
+      "z": -125
+    },
+    {
+      "name": "Village Barber",
+      "type": "salon",
+      "x": 157,
+      "z": -112
+    },
+    {
+      "name": "Bonita Boutique",
+      "type": "retail",
+      "x": 170,
+      "z": -170
+    },
+    {
+      "name": "Indian Hill Pharmacy",
+      "type": "pharmacy",
+      "x": 162,
+      "z": -190
+    },
+    {
+      "name": "Baja Fresh",
+      "type": "restaurant",
+      "x": 53,
+      "z": -243
+    },
+    {
+      "name": "Arrow Trading Co.",
+      "type": "retail",
+      "x": 167,
+      "z": -267
+    },
+    {
+      "name": "Claremont McKenna Caf\u00e9",
+      "type": "cafe",
+      "x": 29,
+      "z": 204
+    },
+    {
+      "name": "Village Books",
+      "type": "bookstore",
+      "x": 97,
+      "z": 211
+    },
+    {
+      "name": "The Hub Claremont",
+      "type": "coworking",
+      "x": 109,
+      "z": 175
+    },
+    {
+      "name": "Uncommon Good",
+      "type": "retail",
+      "x": 78,
+      "z": 166
+    },
+    {
+      "name": "Claremont Art Glass",
+      "type": "gallery",
+      "x": 28,
+      "z": 172
+    },
+    {
+      "name": "Brick & Mortar Coffee",
+      "type": "cafe",
+      "x": -54,
+      "z": 186
+    },
+    {
+      "name": "Montana Smokehouse",
+      "type": "restaurant",
+      "x": 33,
+      "z": 185
+    },
+    {
+      "name": "Pomona College Bookstore",
+      "type": "bookstore",
+      "x": 101,
+      "z": 187
+    },
+    {
+      "name": "Eureka! Claremont",
+      "type": "restaurant",
+      "x": 244,
+      "z": -168
+    },
+    {
+      "name": "Bardot Wine Bar",
+      "type": "bar",
+      "x": 244,
+      "z": -180
+    },
+    {
+      "name": "Harvest House",
+      "type": "restaurant",
+      "x": 219,
+      "z": -245
+    },
+    {
+      "name": "Claremont Community Bank",
+      "type": "bank",
+      "x": 246,
+      "z": -157
+    },
+    {
+      "name": "The Garlic Brothers",
+      "type": "restaurant",
+      "x": 252,
+      "z": -157
+    },
+    {
+      "name": "Padua Floral",
+      "type": "florist",
+      "x": 289,
+      "z": -252
+    },
+    {
+      "name": "Stonefire Grill",
+      "type": "restaurant",
+      "x": 288,
+      "z": -252
+    },
+    {
+      "name": "Claremont Auto Spa",
+      "type": "service",
+      "x": 243,
+      "z": -179
+    },
+    {
+      "name": "The Shoe Zoo",
+      "type": "retail",
+      "x": 234,
+      "z": -154
+    },
+    {
+      "name": "Heritage Wine Bar",
+      "type": "bar",
+      "x": 220,
+      "z": -159
+    },
+    {
+      "name": "Claremont Florist",
+      "type": "florist",
+      "x": 223,
+      "z": -177
+    },
+    {
+      "name": "Forte Salon",
+      "type": "salon",
+      "x": 103,
+      "z": -114
+    },
+    {
+      "name": "42nd Street Bagel Cafe",
+      "type": "cafe",
+      "x": 14,
+      "z": -32
+    },
+    {
+      "name": "California Bank & Trust",
+      "type": "bank",
+      "x": 93,
+      "z": -177
+    },
+    {
+      "name": "Acme Dry Cleaners",
+      "type": "service",
+      "x": 84,
+      "z": -154
+    },
+    {
+      "name": "Everett's Shoe Repair",
+      "type": "service",
+      "x": 84,
+      "z": -151
+    },
+    {
+      "name": "Claremont Juice Co.",
+      "type": "cafe",
+      "x": 79,
+      "z": -144
+    },
+    {
+      "name": "Ecoterra Holistic Health",
+      "type": "pharmacy",
+      "x": 82,
+      "z": -129
+    },
+    {
+      "name": "Buddhamouse Emporium",
+      "type": "shop",
+      "x": 82,
+      "z": -123
+    },
+    {
+      "name": "The Hens' Kitchen Shoppe",
+      "type": "shop",
+      "x": 30,
+      "z": -112
+    },
+    {
+      "name": "Village Grille",
+      "type": "restaurant",
+      "x": 73,
+      "z": -111
+    },
+    {
+      "name": "Menkoi Ya Ramen",
+      "type": "restaurant",
+      "x": 11,
+      "z": 31
+    },
+    {
+      "name": "Himalayan Collection",
+      "type": "shop",
+      "x": 109,
+      "z": -108
+    },
+    {
+      "name": "Eye of Buddha",
+      "type": "shop",
+      "x": 109,
+      "z": -105
+    },
+    {
+      "name": "Miller's Laundry",
+      "type": "service",
+      "x": -45,
+      "z": -32
+    },
+    {
+      "name": "J. Brown Violin Maker",
+      "type": "shop",
+      "x": -45,
+      "z": -30
+    },
+    {
+      "name": "Claremont Village Salon",
+      "type": "salon",
+      "x": -39,
+      "z": -165
+    },
+    {
+      "name": "Escape Salon & Day Spa",
+      "type": "salon",
+      "x": -39,
+      "z": -162
+    },
+    {
+      "name": "Daddy Ji Indian Cuisine",
+      "type": "restaurant",
+      "x": -99,
+      "z": -51
+    },
+    {
+      "name": "Starbucks",
+      "type": "cafe",
+      "x": 24,
+      "z": -58
+    },
+    {
+      "name": "Nosy Neighbors Coffee",
+      "type": "cafe",
+      "x": 82,
+      "z": -131
+    },
+    {
+      "name": "Nectar Clothing",
+      "type": "shop",
+      "x": 3,
+      "z": -183
+    },
+    {
+      "name": "Aromatique Skin Care",
+      "type": "spa",
+      "x": 3,
+      "z": -180
+    },
+    {
+      "name": "Hendricks Pharmacy",
+      "type": "pharmacy",
+      "x": 214,
+      "z": -138
+    },
+    {
+      "name": "Finney's Crafthouse",
+      "type": "restaurant",
+      "x": 216,
+      "z": -145
+    },
+    {
+      "name": "Lizzie's Goldmine",
+      "type": "shop",
+      "x": 134,
+      "z": -113
+    },
+    {
+      "name": "La Popular CDMX",
+      "type": "restaurant",
+      "x": 14,
+      "z": -36
+    },
+    {
+      "name": "Union on Yale",
+      "type": "restaurant",
+      "x": 14,
+      "z": -28
+    },
+    {
+      "name": "CK Cafe",
+      "type": "cafe",
+      "x": 88,
+      "z": -18
+    },
+    {
+      "name": "Bert & Rocky's Ice Cream",
+      "type": "dessert",
+      "x": 14,
+      "z": -24
+    },
+    {
+      "name": "The Diamond Center",
+      "type": "shop",
+      "x": 27,
+      "z": -150
+    },
+    {
+      "name": "Yogurtland",
+      "type": "frozen_yogurt",
+      "x": -99,
+      "z": -54
+    },
+    {
+      "name": "Insomnia Cookies",
+      "type": "bakery",
+      "x": -99,
+      "z": -48
+    },
+    {
+      "name": "Poke Dot",
+      "type": "restaurant",
+      "x": -99,
+      "z": -45
+    },
+    {
+      "name": "A Shop Called Quest",
+      "type": "shop",
+      "x": -99,
+      "z": -57
+    },
+    {
+      "name": "Chico's",
+      "type": "shop",
+      "x": -99,
+      "z": -60
+    },
+    {
+      "name": "O My Sole",
+      "type": "shop",
+      "x": -96,
+      "z": -51
+    },
+    {
+      "name": "Sanctuary Pilates",
+      "type": "fitness",
+      "x": -96,
+      "z": -48
+    },
+    {
+      "name": "Village Postmark",
+      "type": "service",
+      "x": 214,
+      "z": -141
+    },
+    {
+      "name": "Square i Gallery",
+      "type": "gallery",
+      "x": 214,
+      "z": -144
+    },
+    {
+      "name": "Bunny Gunner",
+      "type": "gallery",
+      "x": 10,
+      "z": 28
+    },
+    {
+      "name": "Claremont Museum of Art",
+      "type": "museum",
+      "x": -17,
+      "z": -187
+    },
+    {
+      "name": "Crepes of Wrath",
+      "type": "restaurant",
+      "x": 8,
+      "z": 28
+    },
+    {
+      "name": "Vintage Odyssey",
+      "type": "shop",
+      "x": 5,
+      "z": 25
+    },
+    {
+      "name": "The UPS Store",
+      "type": "service",
+      "x": -58,
+      "z": 215
+    },
+    {
+      "name": "Le Pain Quotidien",
+      "type": "cafe",
+      "x": -99,
+      "z": -42
+    },
+    {
+      "name": "The Method Lagree",
+      "type": "fitness",
+      "x": -96,
+      "z": -42
+    },
+    {
+      "name": "Claremont Lincoln Univ.",
+      "type": "college",
+      "x": 53,
+      "z": -243
+    },
+    {
+      "name": "Wilkinson Law Offices",
+      "type": "office",
+      "x": -53,
+      "z": -187
+    },
+    {
+      "name": "Sumner House",
+      "type": "college",
+      "x": 296,
+      "z": -183
+    },
+    {
+      "name": "Baldwin House",
+      "type": "college",
+      "x": 299,
+      "z": -127
+    },
+    {
+      "name": "Renwick House",
+      "type": "college",
+      "x": 356,
+      "z": -115
+    },
+    {
+      "name": "Cook House",
+      "type": "college",
+      "x": 300,
+      "z": -158
+    },
+    {
+      "name": "Carnegie Hall",
+      "type": "college",
+      "x": 288,
+      "z": 181
+    },
+    {
+      "name": "CGU Student Housing C",
+      "type": "college",
+      "x": 218,
+      "z": 93
+    },
+    {
+      "name": "CGU Student Housing A",
+      "type": "college",
+      "x": 247,
+      "z": 107
+    },
+    {
+      "name": "Seaver House",
+      "type": "college",
+      "x": 302,
+      "z": 40
+    },
+    {
+      "name": "Pomona College Walker Hall",
+      "type": "college",
+      "x": 249,
+      "z": 78
+    },
+    {
+      "name": "CGU Faculty House",
+      "type": "college",
+      "x": 267,
+      "z": 108
+    },
+    {
+      "name": "Pomona College Lawry Court",
+      "type": "college",
+      "x": 223,
+      "z": 77
+    },
+    {
+      "name": "Pomona College Gibson Hall",
+      "type": "college",
+      "x": 222,
+      "z": 63
+    },
+    {
+      "name": "Hahn Hall",
+      "type": "college",
+      "x": 230,
+      "z": 183
+    },
+    {
+      "name": "CGU Student Housing B",
+      "type": "college",
+      "x": 220,
+      "z": 107
+    },
+    {
+      "name": "Pomona College Pendleton Pool",
+      "type": "college",
+      "x": 243,
+      "z": 46
+    },
+    {
+      "name": "Bridges Auditorium",
+      "type": "college",
+      "x": 531,
+      "z": 122
+    },
+    {
+      "name": "Bridges Hall of Music (Little Bridges)",
+      "type": "college",
+      "x": 495,
+      "z": 74
+    },
+    {
+      "name": "Smith Campus Center",
+      "type": "college",
+      "x": 615,
+      "z": 94
+    },
+    {
+      "name": "Frary Dining Hall",
+      "type": "college",
+      "x": 569,
+      "z": 139
+    },
+    {
+      "name": "Frank Dining Hall",
+      "type": "college",
+      "x": 597,
+      "z": 129
+    },
+    {
+      "name": "Mason Hall",
+      "type": "college",
+      "x": 532,
+      "z": 63
+    },
+    {
+      "name": "Pearsons Hall",
+      "type": "college",
+      "x": 541,
+      "z": 40
+    },
+    {
+      "name": "Crookshank Hall",
+      "type": "college",
+      "x": 578,
+      "z": 52
+    },
+    {
+      "name": "Carnegie Building (Pomona)",
+      "type": "college",
+      "x": 555,
+      "z": 180
+    },
+    {
+      "name": "Millikan Laboratory",
+      "type": "college",
+      "x": 597,
+      "z": 40
+    },
+    {
+      "name": "Seaver Chemistry Laboratory",
+      "type": "college",
+      "x": 634,
+      "z": 28
+    },
+    {
+      "name": "Andrew Science Hall",
+      "type": "college",
+      "x": 662,
+      "z": 18
+    },
+    {
+      "name": "Lincoln Hall",
+      "type": "college",
+      "x": 643,
+      "z": 85
+    },
+    {
+      "name": "Edmunds Hall",
+      "type": "college",
+      "x": 671,
+      "z": 96
+    },
+    {
+      "name": "Rains Center (Pomona)",
+      "type": "college",
+      "x": 717,
+      "z": 107
+    },
+    {
+      "name": "Alexander Hall",
+      "type": "college",
+      "x": 468,
+      "z": 84
+    },
+    {
+      "name": "Thatcher Music Building",
+      "type": "college",
+      "x": 468,
+      "z": 63
+    },
+    {
+      "name": "Oldenborg Center",
+      "type": "college",
+      "x": 468,
+      "z": 118
+    },
+    {
+      "name": "Sumner Hall (Pomona)",
+      "type": "college",
+      "x": 496,
+      "z": 46
+    },
+    {
+      "name": "Seaver Theatre",
+      "type": "college",
+      "x": 523,
+      "z": 24
+    },
+    {
+      "name": "Harwood Court",
+      "type": "college",
+      "x": 642,
+      "z": 174
+    },
+    {
+      "name": "Sontag Hall",
+      "type": "college",
+      "x": 615,
+      "z": 185
+    },
+    {
+      "name": "Clark Hall (Pomona)",
+      "type": "college",
+      "x": 550,
+      "z": 217
+    },
+    {
+      "name": "Wig Hall",
+      "type": "college",
+      "x": 597,
+      "z": 212
+    },
+    {
+      "name": "Mudd-Blaisdell Hall",
+      "type": "college",
+      "x": 495,
+      "z": 201
+    },
+    {
+      "name": "Pomona College Admissions",
+      "type": "college",
+      "x": 496,
+      "z": -2
+    },
+    {
+      "name": "Marston Quad",
+      "type": "college",
+      "x": 539,
+      "z": 105
+    },
+    {
+      "name": "Smiley Hall",
+      "type": "college",
+      "x": 514,
+      "z": 151
+    },
+    {
+      "name": "Norton-Clark Hall",
+      "type": "college",
+      "x": 643,
+      "z": 229
+    },
+    {
+      "name": "Dialynas Hall",
+      "type": "college",
+      "x": 689,
+      "z": 196
+    },
+    {
+      "name": "Pomona College Studio Art Hall",
+      "type": "college",
+      "x": 459,
+      "z": 8
+    },
+    {
+      "name": "Roberts Hall (CMC)",
+      "type": "college",
+      "x": 892,
+      "z": 477
+    },
+    {
+      "name": "Kravis Center (CMC)",
+      "type": "college",
+      "x": 938,
+      "z": 515
+    },
+    {
+      "name": "Bauer Center (CMC)",
+      "type": "college",
+      "x": 938,
+      "z": 460
+    },
+    {
+      "name": "Collins Dining Hall (CMC)",
+      "type": "college",
+      "x": 873,
+      "z": 494
+    },
+    {
+      "name": "Marian Miner Cook Athenaeum",
+      "type": "college",
+      "x": 873,
+      "z": 450
+    },
+    {
+      "name": "Seaman Hall (CMC)",
+      "type": "college",
+      "x": 920,
+      "z": 438
+    },
+    {
+      "name": "Adams Hall (CMC)",
+      "type": "college",
+      "x": 883,
+      "z": 428
+    },
+    {
+      "name": "Beckett Hall (CMC)",
+      "type": "college",
+      "x": 939,
+      "z": 422
+    },
+    {
+      "name": "Berger Hall (CMC)",
+      "type": "college",
+      "x": 892,
+      "z": 527
+    },
+    {
+      "name": "Green Hall (CMC)",
+      "type": "college",
+      "x": 920,
+      "z": 538
+    },
+    {
+      "name": "Stark Hall (CMC)",
+      "type": "college",
+      "x": 902,
+      "z": 405
+    },
+    {
+      "name": "Phillips Hall (CMC)",
+      "type": "college",
+      "x": 911,
+      "z": 384
+    },
+    {
+      "name": "Boswell Hall (CMC)",
+      "type": "college",
+      "x": 1003,
+      "z": 456
+    },
+    {
+      "name": "CMC Admissions",
+      "type": "college",
+      "x": 865,
+      "z": 373
+    },
+    {
+      "name": "Poppa Hall (CMC)",
+      "type": "college",
+      "x": 975,
+      "z": 472
+    },
+    {
+      "name": "Rose Institute (CMC)",
+      "type": "college",
+      "x": 957,
+      "z": 440
+    },
+    {
+      "name": "Roberts Pavilion (CMC)",
+      "type": "college",
+      "x": 974,
+      "z": 558
+    },
+    {
+      "name": "Parent Field (CMC)",
+      "type": "college",
+      "x": 917,
+      "z": 576
+    },
+    {
+      "name": "Shanahan Center (HMC)",
+      "type": "college",
+      "x": 734,
+      "z": 1045
+    },
+    {
+      "name": "Olin Science Center (HMC)",
+      "type": "college",
+      "x": 689,
+      "z": 1024
+    },
+    {
+      "name": "Parsons Engineering (HMC)",
+      "type": "college",
+      "x": 726,
+      "z": 1002
+    },
+    {
+      "name": "Sprague Library (HMC)",
+      "type": "college",
+      "x": 791,
+      "z": 1025
+    },
+    {
+      "name": "Galileo Hall (HMC)",
+      "type": "college",
+      "x": 782,
+      "z": 1058
+    },
+    {
+      "name": "Kingston Hall (HMC)",
+      "type": "college",
+      "x": 782,
+      "z": 1003
+    },
+    {
+      "name": "Platt Campus Center (HMC)",
+      "type": "college",
+      "x": 735,
+      "z": 980
+    },
+    {
+      "name": "Hoch-Shanahan Dining Commons (HMC)",
+      "type": "college",
+      "x": 781,
+      "z": 970
+    },
+    {
+      "name": "Thomas-Garrett Hall (HMC)",
+      "type": "college",
+      "x": 708,
+      "z": 970
+    },
+    {
+      "name": "Drinkward Recital Hall (HMC)",
+      "type": "college",
+      "x": 745,
+      "z": 959
+    },
+    {
+      "name": "Linde Activities Center (HMC)",
+      "type": "college",
+      "x": 725,
+      "z": 1068
+    },
+    {
+      "name": "East Dorm (HMC)",
+      "type": "college",
+      "x": 827,
+      "z": 1001
+    },
+    {
+      "name": "West Dorm (HMC)",
+      "type": "college",
+      "x": 680,
+      "z": 1068
+    },
+    {
+      "name": "North Dorm (HMC)",
+      "type": "college",
+      "x": 735,
+      "z": 1101
+    },
+    {
+      "name": "South Dorm (HMC)",
+      "type": "college",
+      "x": 735,
+      "z": 947
+    },
+    {
+      "name": "Sontag Dorm (HMC)",
+      "type": "college",
+      "x": 791,
+      "z": 947
+    },
+    {
+      "name": "McGregor Computer Science Center (HMC)",
+      "type": "college",
+      "x": 736,
+      "z": 1036
+    },
+    {
+      "name": "Balch Hall (Scripps)",
+      "type": "college",
+      "x": 652,
+      "z": 725
+    },
+    {
+      "name": "Vita Nova Hall (Scripps)",
+      "type": "college",
+      "x": 689,
+      "z": 693
+    },
+    {
+      "name": "Lang Art Building (Scripps)",
+      "type": "college",
+      "x": 643,
+      "z": 671
+    },
+    {
+      "name": "Williamson Gallery (Scripps)",
+      "type": "college",
+      "x": 616,
+      "z": 661
+    },
+    {
+      "name": "Steele Hall (Scripps)",
+      "type": "college",
+      "x": 698,
+      "z": 759
+    },
+    {
+      "name": "Keck Science Center",
+      "type": "college",
+      "x": 734,
+      "z": 790
+    },
+    {
+      "name": "Malott Commons (Scripps)",
+      "type": "college",
+      "x": 735,
+      "z": 704
+    },
+    {
+      "name": "Seal Court (Scripps)",
+      "type": "college",
+      "x": 688,
+      "z": 715
+    },
+    {
+      "name": "Denison Library (Scripps)",
+      "type": "college",
+      "x": 643,
+      "z": 694
+    },
+    {
+      "name": "Performing Arts Center (Scripps)",
+      "type": "college",
+      "x": 689,
+      "z": 638
+    },
+    {
+      "name": "Humanities Building (Scripps)",
+      "type": "college",
+      "x": 661,
+      "z": 737
+    },
+    {
+      "name": "Browning Hall (Scripps)",
+      "type": "college",
+      "x": 652,
+      "z": 770
+    },
+    {
+      "name": "Toll Hall (Scripps)",
+      "type": "college",
+      "x": 615,
+      "z": 759
+    },
+    {
+      "name": "Dorsey Hall (Scripps)",
+      "type": "college",
+      "x": 588,
+      "z": 749
+    },
+    {
+      "name": "Clark Hall (Scripps)",
+      "type": "college",
+      "x": 726,
+      "z": 671
+    },
+    {
+      "name": "Frankel Hall (Scripps)",
+      "type": "college",
+      "x": 754,
+      "z": 649
+    },
+    {
+      "name": "Routt Hall (Scripps)",
+      "type": "college",
+      "x": 773,
+      "z": 682
+    },
+    {
+      "name": "Edwards Humanities Center (Scripps)",
+      "type": "college",
+      "x": 671,
+      "z": 660
+    },
+    {
+      "name": "Gabriella Scripps Hall",
+      "type": "college",
+      "x": 726,
+      "z": 627
+    },
+    {
+      "name": "Scott Hall (Pitzer)",
+      "type": "college",
+      "x": 1096,
+      "z": 847
+    },
+    {
+      "name": "Avery Hall (Pitzer)",
+      "type": "college",
+      "x": 1059,
+      "z": 869
+    },
+    {
+      "name": "Fletcher Hall (Pitzer)",
+      "type": "college",
+      "x": 1133,
+      "z": 836
+    },
+    {
+      "name": "McConnell Center (Pitzer)",
+      "type": "college",
+      "x": 1104,
+      "z": 803
+    },
+    {
+      "name": "Gold Student Center (Pitzer)",
+      "type": "college",
+      "x": 1059,
+      "z": 815
+    },
+    {
+      "name": "Broad Center (Pitzer)",
+      "type": "college",
+      "x": 1114,
+      "z": 891
+    },
+    {
+      "name": "Kaleidoscope Hall (Pitzer)",
+      "type": "college",
+      "x": 1151,
+      "z": 870
+    },
+    {
+      "name": "Pitzer Hall",
+      "type": "college",
+      "x": 1170,
+      "z": 825
+    },
+    {
+      "name": "Sanborn Hall (Pitzer)",
+      "type": "college",
+      "x": 1013,
+      "z": 881
+    },
+    {
+      "name": "Holden Hall (Pitzer)",
+      "type": "college",
+      "x": 994,
+      "z": 859
+    },
+    {
+      "name": "Mead Hall (Pitzer)",
+      "type": "college",
+      "x": 1031,
+      "z": 903
+    },
+    {
+      "name": "Atherton Hall (Pitzer)",
+      "type": "college",
+      "x": 1068,
+      "z": 914
+    },
+    {
+      "name": "East Hall (Pitzer)",
+      "type": "college",
+      "x": 1151,
+      "z": 781
+    },
+    {
+      "name": "West Hall (Pitzer)",
+      "type": "college",
+      "x": 1049,
+      "z": 793
+    },
+    {
+      "name": "Bernard Hall (Pitzer)",
+      "type": "college",
+      "x": 1096,
+      "z": 770
+    },
+    {
+      "name": "Pitzer Mounds (Robert Redford Conservancy)",
+      "type": "college",
+      "x": 1150,
+      "z": 934
+    },
+    {
+      "name": "Harper Hall (CGU)",
+      "type": "college",
+      "x": 394,
+      "z": 405
+    },
+    {
+      "name": "Burkle Hall (CGU)",
+      "type": "college",
+      "x": 431,
+      "z": 384
+    },
+    {
+      "name": "McManus Hall (CGU)",
+      "type": "college",
+      "x": 431,
+      "z": 428
+    },
+    {
+      "name": "Stauffer Hall (CGU)",
+      "type": "college",
+      "x": 394,
+      "z": 450
+    },
+    {
+      "name": "Albrecht Auditorium (CGU)",
+      "type": "college",
+      "x": 357,
+      "z": 395
+    },
+    {
+      "name": "CGU Admissions & Financial Aid",
+      "type": "college",
+      "x": 376,
+      "z": 362
+    },
+    {
+      "name": "School of Arts & Humanities (CGU)",
+      "type": "college",
+      "x": 459,
+      "z": 417
+    },
+    {
+      "name": "Drucker School of Management (CGU)",
+      "type": "college",
+      "x": 458,
+      "z": 438
+    },
+    {
+      "name": "CGU Library",
+      "type": "college",
+      "x": 367,
+      "z": 428
+    },
+    {
+      "name": "Center for Information Systems & Technology (CGU)",
+      "type": "college",
+      "x": 440,
+      "z": 462
+    },
+    {
+      "name": "Pegasus Plaza (CGU)",
+      "type": "college",
+      "x": 394,
+      "z": 418
+    },
+    {
+      "name": "KGI Main Building",
+      "type": "college",
+      "x": 412,
+      "z": 548
+    },
+    {
+      "name": "KGI Pharmacy Building",
+      "type": "college",
+      "x": 440,
+      "z": 571
+    },
+    {
+      "name": "KGI Henry Riggs Hall",
+      "type": "college",
+      "x": 440,
+      "z": 528
+    },
+    {
+      "name": "KGI Student Commons",
+      "type": "college",
+      "x": 385,
+      "z": 539
+    },
+    {
+      "name": "KGI Research Labs",
+      "type": "college",
+      "x": 468,
+      "z": 561
+    },
+    {
+      "name": "Honnold-Mudd Library",
+      "type": "college",
+      "x": 595,
+      "z": 470
+    },
+    {
+      "name": "The Claremont Colleges Services (TCCS)",
+      "type": "college",
+      "x": 541,
+      "z": 494
+    },
+    {
+      "name": "Pendleton Business Building",
+      "type": "college",
+      "x": 597,
+      "z": 505
+    },
+    {
+      "name": "McAlister Center",
+      "type": "college",
+      "x": 505,
+      "z": 484
+    },
+    {
+      "name": "Huntley Bookstore",
+      "type": "college",
+      "x": 542,
+      "z": 462
+    },
+    {
+      "name": "Ducey Gymnasium",
+      "type": "college",
+      "x": 642,
+      "z": 603
+    },
+    {
+      "name": "Axelrood Pool",
+      "type": "college",
+      "x": 670,
+      "z": 627
+    },
+    {
+      "name": "Zinda Tennis Center",
+      "type": "college",
+      "x": 781,
+      "z": 659
+    },
+    {
+      "name": "Stag Field (CMS)",
+      "type": "college",
+      "x": 869,
+      "z": 653
+    },
+    {
+      "name": "Alumni Field (CMS)",
+      "type": "college",
+      "x": 916,
+      "z": 599
+    },
+    {
+      "name": "Garrison Theater",
+      "type": "college",
+      "x": 643,
+      "z": 505
+    },
+    {
+      "name": "Mgrublian Hall of Science",
+      "type": "college",
+      "x": 643,
+      "z": 539
+    },
+    {
+      "name": "Tranquada Student Services Center",
+      "type": "college",
+      "x": 560,
+      "z": 484
+    },
+    {
+      "name": "Baxter Lecture Hall",
+      "type": "college",
+      "x": 625,
+      "z": 495
+    },
+    {
+      "name": "Claremont Colleges Library South",
+      "type": "college",
+      "x": 597,
+      "z": 450
+    },
+    {
+      "name": "Claremont School of Theology",
+      "type": "college",
+      "x": 338,
+      "z": 295
+    },
+    {
+      "name": "CST Chapel",
+      "type": "college",
+      "x": 302,
+      "z": 307
+    },
+    {
+      "name": "Sontag Greek Theatre",
+      "type": "college",
+      "x": 577,
+      "z": 74
+    },
+    {
+      "name": "Haldeman Pool",
+      "type": "college",
+      "x": 283,
+      "z": 106
+    },
+    {
+      "name": "Rembrandt Hall",
+      "type": "college",
+      "x": 689,
+      "z": 174
+    },
+    {
+      "name": "Margaret Fowler Garden",
+      "type": "college",
+      "x": 531,
+      "z": 704
+    },
+    {
+      "name": "Graffiti Wall (Scripps)",
+      "type": "college",
+      "x": 525,
+      "z": 672
+    },
+    {
+      "name": "Revelle Commons (Scripps)",
+      "type": "college",
+      "x": 597,
+      "z": 627
+    },
+    {
+      "name": "Grove House (Pitzer)",
+      "type": "college",
+      "x": 1115,
+      "z": 837
+    },
+    {
+      "name": "The Nucleus (Pitzer)",
+      "type": "college",
+      "x": 1077,
+      "z": 757
+    },
+    {
+      "name": "Benson Auditorium (Pitzer)",
+      "type": "college",
+      "x": 1068,
+      "z": 881
+    },
+    {
+      "name": "Libra Complex (HMC)",
+      "type": "college",
+      "x": 825,
+      "z": 999
+    },
+    {
+      "name": "Jacobs Science Center (HMC)",
+      "type": "college",
+      "x": 717,
+      "z": 1036
+    },
+    {
+      "name": "Emett Student Center (CMC)",
+      "type": "college",
+      "x": 920,
+      "z": 527
+    },
+    {
+      "name": "Flamson Plaza (CMC)",
+      "type": "college",
+      "x": 899,
+      "z": 492
+    },
+    {
+      "name": "Mgrublian Center for Human Rights (CMC)",
+      "type": "college",
+      "x": 967,
+      "z": 506
+    },
+    {
+      "name": "Botany Building (CGU)",
+      "type": "college",
+      "x": 441,
+      "z": 462
+    },
+    {
+      "name": "DesCombes Family Quadrangle (CGU)",
+      "type": "college",
+      "x": 411,
+      "z": 415
+    },
+    {
+      "name": "Yuhaaviatam Center for Health Studies (CGU)",
+      "type": "college",
+      "x": 486,
+      "z": 438
+    },
+    {
+      "name": "KGI Minerva Building",
+      "type": "college",
+      "x": 467,
+      "z": 571
+    },
+    {
+      "name": "KGI Oasis Commons East",
+      "type": "college",
+      "x": 430,
+      "z": 581
+    },
+    {
+      "name": "KGI Oasis Commons West",
+      "type": "college",
+      "x": 393,
+      "z": 592
+    },
+    {
+      "name": "Technip Building (KGI)",
+      "type": "college",
+      "x": 504,
+      "z": 559
+    },
+    {
+      "name": "EmPOWER Center",
+      "type": "college",
+      "x": 524,
+      "z": 484
+    },
+    {
+      "name": "Campus Safety Building",
+      "type": "college",
+      "x": 579,
+      "z": 473
+    },
+    {
+      "name": "Claremont University Consortium Office",
+      "type": "college",
+      "x": 578,
+      "z": 494
+    }
   ],
-
   "heightOverrides": [
-    { "name": "Hotel Casa 425 + Lounge",       "height": 16 },
-    { "name": "Laemmle's Claremont 5",         "height": 10 },
-    { "name": "The Packing House",              "height": 10 },
-    { "name": "Claremont Bible Chapel",         "height": 13 },
-    { "name": "Claremont City Hall",            "height": 9  },
-    { "name": "Claremont Helen Renwick Library","height": 8  },
-    { "name": "Carnegie Hall",                  "height": 10 },
-    { "name": "Hahn Hall",                      "height": 10 },
-    { "name": "Benton Museum of Art",           "height": 9  },
-    { "name": "Baldwin House",                  "height": 9  },
-    { "name": "Sumner House",                   "height": 9  },
-    { "name": "Renwick House",                  "height": 9  },
-    { "name": "Cook House",                     "height": 9  },
-    { "name": "Seaver House",                   "height": 9  },
-    { "name": "CEDG",                           "height": 6  },
-    { "name": "Chase",                          "height": 6  },
-    { "name": "The Back Abbey",                 "height": 6  },
-    { "name": "Indian Hill Office Suites",      "height": 6  },
-    { "name": "Verbal Building",                "height": 6  },
-    { "name": "Claremont Post Office",          "height": 6  },
-    { "name": "Folk Music Center",              "height": 5  }
+    {
+      "name": "Hotel Casa 425 + Lounge",
+      "height": 16
+    },
+    {
+      "name": "Laemmle's Claremont 5",
+      "height": 10
+    },
+    {
+      "name": "The Packing House",
+      "height": 10
+    },
+    {
+      "name": "Claremont Bible Chapel",
+      "height": 13
+    },
+    {
+      "name": "Claremont City Hall",
+      "height": 9
+    },
+    {
+      "name": "Claremont Helen Renwick Library",
+      "height": 8
+    },
+    {
+      "name": "Carnegie Hall",
+      "height": 10
+    },
+    {
+      "name": "Hahn Hall",
+      "height": 10
+    },
+    {
+      "name": "Benton Museum of Art",
+      "height": 9
+    },
+    {
+      "name": "Baldwin House",
+      "height": 9
+    },
+    {
+      "name": "Sumner House",
+      "height": 9
+    },
+    {
+      "name": "Renwick House",
+      "height": 9
+    },
+    {
+      "name": "Cook House",
+      "height": 9
+    },
+    {
+      "name": "Seaver House",
+      "height": 9
+    },
+    {
+      "name": "CEDG",
+      "height": 6
+    },
+    {
+      "name": "Chase",
+      "height": 6
+    },
+    {
+      "name": "The Back Abbey",
+      "height": 6
+    },
+    {
+      "name": "Indian Hill Office Suites",
+      "height": 6
+    },
+    {
+      "name": "Verbal Building",
+      "height": 6
+    },
+    {
+      "name": "Claremont Post Office",
+      "height": 6
+    },
+    {
+      "name": "Folk Music Center",
+      "height": 5
+    }
   ],
-
   "typeHeightDefaults": {
-    "hotel":       16,
-    "church":      13,
-    "college":     9,
-    "commercial":  6,
-    "retail":      5,
-    "house":       4,
-    "apartments":  8,
-    "theater":     10,
-    "museum":      8,
-    "office":      6
+    "hotel": 16,
+    "church": 13,
+    "college": 9,
+    "commercial": 6,
+    "retail": 5,
+    "house": 4,
+    "apartments": 8,
+    "theater": 10,
+    "museum": 8,
+    "office": 6
   }
 }

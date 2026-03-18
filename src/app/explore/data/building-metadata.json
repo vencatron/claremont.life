@@ -4,135 +4,1480 @@
     "source": "Claremont Heritage, city records, and local knowledge"
   },
   "buildings": {
-    "Some Crust Bakery": { "yearBuilt": 1948, "description": "Artisan bakery known for handcrafted breads and pastries in the Village.", "use": "Food & Drink" },
-    "Bua Thai": { "yearBuilt": 1950, "description": "Authentic Thai cuisine in the heart of Claremont Village.", "use": "Food & Drink" },
-    "Viva Madrid": { "yearBuilt": 1935, "description": "Spanish-inspired tapas bar and restaurant with live music.", "use": "Food & Drink" },
-    "Candlelight Pavilion": { "yearBuilt": 1984, "description": "Dinner theater showcasing Broadway-style musicals and live performances.", "use": "Entertainment" },
-    "Nick's Cafe": { "yearBuilt": 1948, "description": "Classic American diner serving hearty breakfast and lunch since the 1940s.", "use": "Food & Drink" },
-    "Rhino Records": { "yearBuilt": 1972, "description": "Legendary independent record store and vinyl destination.", "use": "Retail" },
-    "The Village Grind": { "yearBuilt": 1955, "description": "Neighborhood coffee shop and local gathering spot.", "use": "Food & Drink" },
-    "Le Petit Paris": { "yearBuilt": 1940, "description": "French bistro offering classic Parisian cuisine in the Village.", "use": "Food & Drink" },
-    "Eureka! Burger": { "yearBuilt": 1952, "description": "Gourmet burger restaurant with craft beer and American fare.", "use": "Food & Drink" },
-    "Walter's Restaurant": { "yearBuilt": 1965, "description": "Upscale farm-to-table dining with seasonal California cuisine.", "use": "Food & Drink" },
-    "The Press": { "yearBuilt": 1938, "description": "Craft cocktail bar in a converted newspaper press building.", "use": "Food & Drink" },
-    "Tutti Mangia": { "yearBuilt": 1945, "description": "Italian restaurant serving traditional pasta and wood-fired pizza.", "use": "Food & Drink" },
-    "Cafe Molise": { "yearBuilt": 1940, "description": "Cozy Italian cafe with espresso, paninis, and homemade gelato.", "use": "Food & Drink" },
-    "Village Wine": { "yearBuilt": 1948, "description": "Curated wine shop offering tastings and local wine selections.", "use": "Retail" },
-    "Chamber of Commerce": { "yearBuilt": 1930, "description": "Claremont Chamber of Commerce supporting local businesses.", "use": "Civic" },
-    "Wheeler Steffen Sotheby's": { "yearBuilt": 1935, "description": "Premier real estate brokerage serving the Claremont community.", "use": "Office" },
-    "Espiau's": { "yearBuilt": 1958, "description": "Family-owned Mexican restaurant, a Village staple for decades.", "use": "Food & Drink" },
-    "Sushi Kawa": { "yearBuilt": 1955, "description": "Japanese sushi restaurant with fresh fish and traditional rolls.", "use": "Food & Drink" },
-    "Bardot": { "yearBuilt": 1945, "description": "Wine bar and bistro with a chic Parisian-inspired atmosphere.", "use": "Food & Drink" },
-    "Folk Music Center": { "yearBuilt": 1958, "description": "Historic music store and concert venue founded by the Chase family, home to rare instruments.", "use": "Culture" },
-    "Folk Music Center Annex": { "yearBuilt": 1960, "description": "Extension of the Folk Music Center with performance space and workshops.", "use": "Culture" },
-    "Aruffo's Italian": { "yearBuilt": 1976, "description": "Traditional Italian trattoria with homemade pasta and family recipes.", "use": "Food & Drink" },
-    "21 Choices": { "yearBuilt": 1990, "description": "Custom frozen yogurt shop with unique toppings and flavors.", "use": "Food & Drink" },
-    "Provisions Market": { "yearBuilt": 1955, "description": "Gourmet market and deli with locally sourced provisions.", "use": "Retail" },
-    "Claremont Courier": { "yearBuilt": 1908, "description": "Claremont's community newspaper since 1908, covering local news.", "use": "Office" },
-    "Double Peak Brewing": { "yearBuilt": 2018, "description": "Craft brewery with rotating taps and a communal taproom.", "use": "Food & Drink" },
-    "Steel City Pizza": { "yearBuilt": 1995, "description": "Pittsburgh-style pizza with thick-cut, square slices.", "use": "Food & Drink" },
-    "Vincenzo's Ristorante": { "yearBuilt": 1970, "description": "Romantic Italian dining with an extensive wine list.", "use": "Food & Drink" },
-    "Claremont Heritage": { "yearBuilt": 1925, "description": "Historic preservation society protecting Claremont's architectural heritage.", "use": "Culture" },
-    "Wolfe's Market": { "yearBuilt": 1950, "description": "Family-owned grocery market serving Claremont since the 1950s.", "use": "Retail" },
-    "Augie's Coffee": { "yearBuilt": 2011, "description": "Award-winning specialty coffee roaster and cafe.", "use": "Food & Drink" },
-    "Pomona Valley Workshop": { "yearBuilt": 1965, "description": "Creative workshop space for art, crafts, and community classes.", "use": "Retail" },
-    "Pizzeria Classico": { "yearBuilt": 1985, "description": "Classic Italian pizzeria with traditional recipes.", "use": "Food & Drink" },
-    "The Claremont Inn": { "yearBuilt": 1927, "description": "Historic inn turned boutique hotel in the Village center.", "use": "Hospitality" },
-    "The Copper Door": { "yearBuilt": 1945, "description": "Gastropub with craft cocktails and elevated bar fare.", "use": "Food & Drink" },
-    "El Mezcal": { "yearBuilt": 1988, "description": "Mexican restaurant with fresh tortillas and traditional mole.", "use": "Food & Drink" },
-    "Claremont Yoga": { "yearBuilt": 1960, "description": "Yoga studio offering classes for all levels in a peaceful setting.", "use": "Wellness" },
-    "Village Barber": { "yearBuilt": 1952, "description": "Traditional barbershop serving the community with classic cuts.", "use": "Services" },
-    "Bonita Boutique": { "yearBuilt": 1955, "description": "Women's clothing boutique with curated fashion selections.", "use": "Retail" },
-    "Indian Hill Pharmacy": { "yearBuilt": 1948, "description": "Independent pharmacy and neighborhood drugstore.", "use": "Retail" },
-    "Baja Fresh": { "yearBuilt": 1990, "description": "Fresh Mexican cuisine with made-to-order burritos and tacos.", "use": "Food & Drink" },
-    "Arrow Trading Co.": { "yearBuilt": 1975, "description": "Vintage goods and antiques trading company.", "use": "Retail" },
-    "Claremont McKenna Caf\u00e9": { "yearBuilt": 1946, "description": "Campus dining hall at Claremont McKenna College.", "use": "Education" },
-    "Village Books": { "yearBuilt": 1950, "description": "Independent bookstore with curated selections and author events.", "use": "Retail" },
-    "The Hub Claremont": { "yearBuilt": 2015, "description": "Modern coworking space and community hub for entrepreneurs.", "use": "Office" },
-    "Uncommon Good": { "yearBuilt": 2012, "description": "Nonprofit community organization empowering local youth and families.", "use": "Civic" },
-    "Claremont Art Glass": { "yearBuilt": 1978, "description": "Artisan stained glass studio and gallery.", "use": "Culture" },
-    "Brick & Mortar Coffee": { "yearBuilt": 2019, "description": "Specialty coffee shop with industrial-chic design.", "use": "Food & Drink" },
-    "Montana Smokehouse": { "yearBuilt": 2017, "description": "BBQ smokehouse serving slow-smoked meats and craft beers.", "use": "Food & Drink" },
-    "Pomona College Bookstore": { "yearBuilt": 1920, "description": "Campus bookstore at Pomona College, serving students since 1920.", "use": "Education" },
-    "Hotel Casa 425 + Lounge": { "yearBuilt": 1925, "description": "Boutique hotel in a restored 1925 Spanish Colonial building with rooftop lounge.", "use": "Hospitality" },
-    "Laemmle's Claremont 5": { "yearBuilt": 1998, "description": "Independent art-house cinema showing curated films and first-run features.", "use": "Entertainment" },
-    "The Packing House": { "yearBuilt": 1920, "description": "Historic citrus packing house converted into event and retail space.", "use": "Culture" },
-    "Claremont Bible Chapel": { "yearBuilt": 1952, "description": "Community church with mid-century architecture and stained glass.", "use": "Worship" },
-    "Claremont City Hall": { "yearBuilt": 1941, "description": "Municipal government building in Mediterranean Revival style.", "use": "Civic" },
-    "Claremont Helen Renwick Library": { "yearBuilt": 1913, "description": "Public library named after community benefactor Helen Renwick.", "use": "Civic" },
-    "Carnegie Hall": { "yearBuilt": 1907, "description": "Andrew Carnegie-funded library building, now a Claremont Heritage landmark.", "use": "Culture" },
-    "Hahn Hall": { "yearBuilt": 1928, "description": "Academic hall at the Claremont Colleges with Spanish Colonial architecture.", "use": "Education" },
-    "Benton Museum of Art": { "yearBuilt": 2020, "description": "Contemporary art museum at Pomona College with rotating exhibitions.", "use": "Culture" },
-    "Baldwin House": { "yearBuilt": 1907, "description": "Historic Craftsman home, an example of early Claremont residential architecture.", "use": "Historic" },
-    "Sumner House": { "yearBuilt": 1910, "description": "Restored Craftsman bungalow reflecting Claremont's early 20th-century charm.", "use": "Historic" },
-    "Renwick House": { "yearBuilt": 1908, "description": "Historic residence named for the prominent Renwick family of Claremont.", "use": "Historic" },
-    "Cook House": { "yearBuilt": 1912, "description": "Well-preserved Craftsman home with original architectural details.", "use": "Historic" },
-    "Seaver House": { "yearBuilt": 1915, "description": "Historic home with ties to the Seaver family and Pomona College.", "use": "Historic" },
-    "CEDG": { "yearBuilt": 1960, "description": "Claremont Economic Development Group promoting local business growth.", "use": "Office" },
-    "Chase": { "yearBuilt": 1970, "description": "Chase Bank branch serving the Claremont community.", "use": "Finance" },
-    "The Back Abbey": { "yearBuilt": 1940, "description": "Belgian-inspired gastropub with craft beers and gourmet sausages.", "use": "Food & Drink" },
-    "Indian Hill Office Suites": { "yearBuilt": 1965, "description": "Professional office complex on Indian Hill Boulevard.", "use": "Office" },
-    "Verbal Building": { "yearBuilt": 1955, "description": "Mixed-use commercial building in the Village core.", "use": "Office" },
-    "Claremont Post Office": { "yearBuilt": 1935, "description": "U.S. Post Office branch with New Deal-era architectural details.", "use": "Civic" },
-    "Eureka! Claremont": { "yearBuilt": 2016, "description": "Gourmet restaurant and bar at the eastern end of the Village.", "use": "Food & Drink" },
-    "Bardot Wine Bar": { "yearBuilt": 2018, "description": "Intimate wine bar with curated selections from around the world.", "use": "Food & Drink" },
-    "Harvest House": { "yearBuilt": 2019, "description": "Farm-to-table restaurant with seasonal California-inspired menu.", "use": "Food & Drink" },
-    "Claremont Community Bank": { "yearBuilt": 1985, "description": "Local community bank serving residents and small businesses.", "use": "Finance" },
-    "The Garlic Brothers": { "yearBuilt": 2005, "description": "Italian restaurant known for garlic-centric dishes and family dining.", "use": "Food & Drink" },
-    "Padua Floral": { "yearBuilt": 1968, "description": "Full-service florist providing arrangements for all occasions.", "use": "Retail" },
-    "Stonefire Grill": { "yearBuilt": 2010, "description": "Casual dining with stone-fired rotisserie and BBQ.", "use": "Food & Drink" },
-    "Claremont Auto Spa": { "yearBuilt": 1975, "description": "Full-service car wash and auto detailing center.", "use": "Services" },
-    "The Shoe Zoo": { "yearBuilt": 1992, "description": "Family shoe store with a wide selection of brands.", "use": "Retail" },
-    "Heritage Wine Bar": { "yearBuilt": 2014, "description": "Upscale wine bar celebrating local and international vintages.", "use": "Food & Drink" },
-    "Claremont Florist": { "yearBuilt": 1960, "description": "Established florist serving the Claremont area with fresh arrangements.", "use": "Retail" },
-
-    "Forte Salon": { "yearBuilt": 1955, "description": "Hair salon in the heart of Claremont Village.", "use": "Services" },
-    "42nd Street Bagel Cafe": { "yearBuilt": 1950, "description": "Fresh-baked bagels and deli cafe on Yale Avenue.", "use": "Food & Drink" },
-    "California Bank & Trust": { "yearBuilt": 1960, "description": "Banking branch at 102 Yale Avenue in the Village.", "use": "Finance" },
-    "Acme Dry Cleaners": { "yearBuilt": 1955, "description": "Long-standing dry cleaning service on Yale Avenue.", "use": "Services" },
-    "Everett's Shoe Repair": { "yearBuilt": 1955, "description": "Beloved independent shoe repair shop, a Village institution.", "use": "Services" },
-    "Claremont Juice Co.": { "yearBuilt": 1955, "description": "Fresh-pressed juice and smoothie bar on Yale Avenue.", "use": "Food & Drink" },
-    "Ecoterra Holistic Health": { "yearBuilt": 1955, "description": "Compounding pharmacy, natural supplements, and acupuncture center.", "use": "Wellness" },
-    "Buddhamouse Emporium": { "yearBuilt": 1955, "description": "Spiritual gifts, jewelry, crystals, and metaphysical supplies.", "use": "Retail" },
-    "The Hens' Kitchen Shoppe": { "yearBuilt": 1950, "description": "Kitchen gadgets, cookware, and gourmet cooking supplies.", "use": "Retail" },
-    "Village Grille": { "yearBuilt": 1950, "description": "Classic 1950s-style American diner serving breakfast and lunch.", "use": "Food & Drink" },
-    "Menkoi Ya Ramen": { "yearBuilt": 1960, "description": "Japanese ramen and rice bowls on Bonita Avenue.", "use": "Food & Drink" },
-    "Himalayan Collection": { "yearBuilt": 1955, "description": "Women's clothing and accessories with Himalayan and Nepali imports.", "use": "Retail" },
-    "Eye of Buddha": { "yearBuilt": 1955, "description": "Home decor and spiritual goods store on 2nd Street.", "use": "Retail" },
-    "Miller's Laundry": { "yearBuilt": 1950, "description": "Long-established laundry and dry cleaning on Indian Hill Boulevard.", "use": "Services" },
-    "J. Brown Violin Maker": { "yearBuilt": 1950, "description": "Artisan violin maker and instrument repair shop.", "use": "Retail" },
-    "Claremont Village Salon": { "yearBuilt": 1955, "description": "Full-service hair salon on Indian Hill Boulevard.", "use": "Services" },
-    "Escape Salon & Day Spa": { "yearBuilt": 1955, "description": "Hair salon and day spa with full beauty services.", "use": "Services" },
-    "Daddy Ji Indian Cuisine": { "yearBuilt": 1960, "description": "Indian street food and fine dining, opened 2024 in Village Square.", "use": "Food & Drink" },
-    "Starbucks": { "yearBuilt": 1955, "description": "Coffee chain location on Yale Avenue in the Village.", "use": "Food & Drink" },
-    "Nosy Neighbors Coffee": { "yearBuilt": 1955, "description": "Artisan coffee and gourmet donuts, relocated to Yale Avenue.", "use": "Food & Drink" },
-    "Nectar Clothing": { "yearBuilt": 1945, "description": "Women's clothing boutique with boho-chic and contemporary styles.", "use": "Retail" },
-    "Aromatique Skin Care": { "yearBuilt": 1945, "description": "Skin care and body treatment spa on 1st Street.", "use": "Wellness" },
-    "Hendricks Pharmacy": { "yearBuilt": 1948, "description": "Independent community pharmacy on Harvard Avenue, a Village staple.", "use": "Retail" },
-    "Finney's Crafthouse": { "yearBuilt": 1948, "description": "New American gastropub with craft cocktails, opened November 2025.", "use": "Food & Drink" },
-    "Lizzie's Goldmine": { "yearBuilt": 1955, "description": "Custom jewelry design and repair, fine jewelry store on 2nd Street.", "use": "Retail" },
-    "La Popular CDMX": { "yearBuilt": 1950, "description": "Upscale Mexican cocktail bar with Mexico City-inspired cuisine.", "use": "Food & Drink" },
-    "Union on Yale": { "yearBuilt": 1950, "description": "Chef-driven New American with wood-fired pizza and house-made pasta.", "use": "Food & Drink" },
-    "CK Cafe": { "yearBuilt": 1960, "description": "Coffee and tea study cafe popular with college students.", "use": "Food & Drink" },
-    "Bert & Rocky's Ice Cream": { "yearBuilt": 1950, "description": "Ice cream shop with creative flavors on Yale Avenue.", "use": "Food & Drink" },
-    "The Diamond Center": { "yearBuilt": 1950, "description": "Fine jewelry store specializing in diamonds at 2nd and Yale.", "use": "Retail" },
-    "Yogurtland": { "yearBuilt": 2000, "description": "Self-serve frozen yogurt in Village Square.", "use": "Food & Drink" },
-    "Insomnia Cookies": { "yearBuilt": 2000, "description": "Late-night warm cookie delivery and storefront in Village Square.", "use": "Food & Drink" },
-    "Poke Dot": { "yearBuilt": 2000, "description": "Hawaiian poke bowl restaurant in Village Square.", "use": "Food & Drink" },
-    "A Shop Called Quest": { "yearBuilt": 2000, "description": "Comic book store in Village Square.", "use": "Retail" },
-    "Chico's": { "yearBuilt": 2000, "description": "Women's clothing chain boutique in Village Square.", "use": "Retail" },
-    "O My Sole": { "yearBuilt": 2000, "description": "Shoe boutique in Village Square.", "use": "Retail" },
-    "Sanctuary Pilates": { "yearBuilt": 2000, "description": "Pilates studio in Village Square.", "use": "Wellness" },
-    "Village Postmark": { "yearBuilt": 1955, "description": "Shipping, packing, mailbox services, and notary on Harvard Avenue.", "use": "Services" },
-    "Square i Gallery": { "yearBuilt": 1955, "description": "Contemporary art gallery featuring local and regional artists.", "use": "Culture" },
-    "Bunny Gunner": { "yearBuilt": 1960, "description": "Art gallery and custom framing service on Bonita Avenue.", "use": "Culture" },
-    "Claremont Museum of Art": { "yearBuilt": 1938, "description": "Community art museum with rotating exhibitions on 1st Street.", "use": "Culture" },
-    "Crepes of Wrath": { "yearBuilt": 1960, "description": "Sweet and savory crepe cafe on Bonita Avenue.", "use": "Food & Drink" },
-    "Vintage Odyssey": { "yearBuilt": 1960, "description": "Vintage clothing, accessories, and antiques on Bonita Avenue.", "use": "Retail" },
-    "The UPS Store": { "yearBuilt": 1965, "description": "Shipping, printing, and mailbox services on Indian Hill Boulevard.", "use": "Services" },
-    "Le Pain Quotidien": { "yearBuilt": 2000, "description": "Belgian bakery-restaurant with communal tables in Village Square.", "use": "Food & Drink" },
-    "The Method Lagree": { "yearBuilt": 2000, "description": "Lagree fitness and interval training studio in Village Square.", "use": "Wellness" },
-    "Claremont Lincoln Univ.": { "yearBuilt": 1955, "description": "University administrative offices in a Village storefront.", "use": "Education" },
-    "Wilkinson Law Offices": { "yearBuilt": 1945, "description": "Legal practice serving the Claremont community on 1st Street.", "use": "Office" }
+    "Some Crust Bakery": {
+      "yearBuilt": 1948,
+      "description": "Artisan bakery known for handcrafted breads and pastries in the Village.",
+      "use": "Food & Drink"
+    },
+    "Bua Thai": {
+      "yearBuilt": 1950,
+      "description": "Authentic Thai cuisine in the heart of Claremont Village.",
+      "use": "Food & Drink"
+    },
+    "Viva Madrid": {
+      "yearBuilt": 1935,
+      "description": "Spanish-inspired tapas bar and restaurant with live music.",
+      "use": "Food & Drink"
+    },
+    "Candlelight Pavilion": {
+      "yearBuilt": 1984,
+      "description": "Dinner theater showcasing Broadway-style musicals and live performances.",
+      "use": "Entertainment"
+    },
+    "Nick's Cafe": {
+      "yearBuilt": 1948,
+      "description": "Classic American diner serving hearty breakfast and lunch since the 1940s.",
+      "use": "Food & Drink"
+    },
+    "Rhino Records": {
+      "yearBuilt": 1972,
+      "description": "Legendary independent record store and vinyl destination.",
+      "use": "Retail"
+    },
+    "The Village Grind": {
+      "yearBuilt": 1955,
+      "description": "Neighborhood coffee shop and local gathering spot.",
+      "use": "Food & Drink"
+    },
+    "Le Petit Paris": {
+      "yearBuilt": 1940,
+      "description": "French bistro offering classic Parisian cuisine in the Village.",
+      "use": "Food & Drink"
+    },
+    "Eureka! Burger": {
+      "yearBuilt": 1952,
+      "description": "Gourmet burger restaurant with craft beer and American fare.",
+      "use": "Food & Drink"
+    },
+    "Walter's Restaurant": {
+      "yearBuilt": 1965,
+      "description": "Upscale farm-to-table dining with seasonal California cuisine.",
+      "use": "Food & Drink"
+    },
+    "The Press": {
+      "yearBuilt": 1938,
+      "description": "Craft cocktail bar in a converted newspaper press building.",
+      "use": "Food & Drink"
+    },
+    "Tutti Mangia": {
+      "yearBuilt": 1945,
+      "description": "Italian restaurant serving traditional pasta and wood-fired pizza.",
+      "use": "Food & Drink"
+    },
+    "Cafe Molise": {
+      "yearBuilt": 1940,
+      "description": "Cozy Italian cafe with espresso, paninis, and homemade gelato.",
+      "use": "Food & Drink"
+    },
+    "Village Wine": {
+      "yearBuilt": 1948,
+      "description": "Curated wine shop offering tastings and local wine selections.",
+      "use": "Retail"
+    },
+    "Chamber of Commerce": {
+      "yearBuilt": 1930,
+      "description": "Claremont Chamber of Commerce supporting local businesses.",
+      "use": "Civic"
+    },
+    "Wheeler Steffen Sotheby's": {
+      "yearBuilt": 1935,
+      "description": "Premier real estate brokerage serving the Claremont community.",
+      "use": "Office"
+    },
+    "Espiau's": {
+      "yearBuilt": 1958,
+      "description": "Family-owned Mexican restaurant, a Village staple for decades.",
+      "use": "Food & Drink"
+    },
+    "Sushi Kawa": {
+      "yearBuilt": 1955,
+      "description": "Japanese sushi restaurant with fresh fish and traditional rolls.",
+      "use": "Food & Drink"
+    },
+    "Bardot": {
+      "yearBuilt": 1945,
+      "description": "Wine bar and bistro with a chic Parisian-inspired atmosphere.",
+      "use": "Food & Drink"
+    },
+    "Folk Music Center": {
+      "yearBuilt": 1958,
+      "description": "Historic music store and concert venue founded by the Chase family, home to rare instruments.",
+      "use": "Culture"
+    },
+    "Folk Music Center Annex": {
+      "yearBuilt": 1960,
+      "description": "Extension of the Folk Music Center with performance space and workshops.",
+      "use": "Culture"
+    },
+    "Aruffo's Italian": {
+      "yearBuilt": 1976,
+      "description": "Traditional Italian trattoria with homemade pasta and family recipes.",
+      "use": "Food & Drink"
+    },
+    "21 Choices": {
+      "yearBuilt": 1990,
+      "description": "Custom frozen yogurt shop with unique toppings and flavors.",
+      "use": "Food & Drink"
+    },
+    "Provisions Market": {
+      "yearBuilt": 1955,
+      "description": "Gourmet market and deli with locally sourced provisions.",
+      "use": "Retail"
+    },
+    "Claremont Courier": {
+      "yearBuilt": 1908,
+      "description": "Claremont's community newspaper since 1908, covering local news.",
+      "use": "Office"
+    },
+    "Double Peak Brewing": {
+      "yearBuilt": 2018,
+      "description": "Craft brewery with rotating taps and a communal taproom.",
+      "use": "Food & Drink"
+    },
+    "Steel City Pizza": {
+      "yearBuilt": 1995,
+      "description": "Pittsburgh-style pizza with thick-cut, square slices.",
+      "use": "Food & Drink"
+    },
+    "Vincenzo's Ristorante": {
+      "yearBuilt": 1970,
+      "description": "Romantic Italian dining with an extensive wine list.",
+      "use": "Food & Drink"
+    },
+    "Claremont Heritage": {
+      "yearBuilt": 1925,
+      "description": "Historic preservation society protecting Claremont's architectural heritage.",
+      "use": "Culture"
+    },
+    "Wolfe's Market": {
+      "yearBuilt": 1950,
+      "description": "Family-owned grocery market serving Claremont since the 1950s.",
+      "use": "Retail"
+    },
+    "Augie's Coffee": {
+      "yearBuilt": 2011,
+      "description": "Award-winning specialty coffee roaster and cafe.",
+      "use": "Food & Drink"
+    },
+    "Pomona Valley Workshop": {
+      "yearBuilt": 1965,
+      "description": "Creative workshop space for art, crafts, and community classes.",
+      "use": "Retail"
+    },
+    "Pizzeria Classico": {
+      "yearBuilt": 1985,
+      "description": "Classic Italian pizzeria with traditional recipes.",
+      "use": "Food & Drink"
+    },
+    "The Claremont Inn": {
+      "yearBuilt": 1927,
+      "description": "Historic inn turned boutique hotel in the Village center.",
+      "use": "Hospitality"
+    },
+    "The Copper Door": {
+      "yearBuilt": 1945,
+      "description": "Gastropub with craft cocktails and elevated bar fare.",
+      "use": "Food & Drink"
+    },
+    "El Mezcal": {
+      "yearBuilt": 1988,
+      "description": "Mexican restaurant with fresh tortillas and traditional mole.",
+      "use": "Food & Drink"
+    },
+    "Claremont Yoga": {
+      "yearBuilt": 1960,
+      "description": "Yoga studio offering classes for all levels in a peaceful setting.",
+      "use": "Wellness"
+    },
+    "Village Barber": {
+      "yearBuilt": 1952,
+      "description": "Traditional barbershop serving the community with classic cuts.",
+      "use": "Services"
+    },
+    "Bonita Boutique": {
+      "yearBuilt": 1955,
+      "description": "Women's clothing boutique with curated fashion selections.",
+      "use": "Retail"
+    },
+    "Indian Hill Pharmacy": {
+      "yearBuilt": 1948,
+      "description": "Independent pharmacy and neighborhood drugstore.",
+      "use": "Retail"
+    },
+    "Baja Fresh": {
+      "yearBuilt": 1990,
+      "description": "Fresh Mexican cuisine with made-to-order burritos and tacos.",
+      "use": "Food & Drink"
+    },
+    "Arrow Trading Co.": {
+      "yearBuilt": 1975,
+      "description": "Vintage goods and antiques trading company.",
+      "use": "Retail"
+    },
+    "Claremont McKenna Caf\u00e9": {
+      "yearBuilt": 1946,
+      "description": "Campus dining hall at Claremont McKenna College.",
+      "use": "Education"
+    },
+    "Village Books": {
+      "yearBuilt": 1950,
+      "description": "Independent bookstore with curated selections and author events.",
+      "use": "Retail"
+    },
+    "The Hub Claremont": {
+      "yearBuilt": 2015,
+      "description": "Modern coworking space and community hub for entrepreneurs.",
+      "use": "Office"
+    },
+    "Uncommon Good": {
+      "yearBuilt": 2012,
+      "description": "Nonprofit community organization empowering local youth and families.",
+      "use": "Civic"
+    },
+    "Claremont Art Glass": {
+      "yearBuilt": 1978,
+      "description": "Artisan stained glass studio and gallery.",
+      "use": "Culture"
+    },
+    "Brick & Mortar Coffee": {
+      "yearBuilt": 2019,
+      "description": "Specialty coffee shop with industrial-chic design.",
+      "use": "Food & Drink"
+    },
+    "Montana Smokehouse": {
+      "yearBuilt": 2017,
+      "description": "BBQ smokehouse serving slow-smoked meats and craft beers.",
+      "use": "Food & Drink"
+    },
+    "Pomona College Bookstore": {
+      "yearBuilt": 1920,
+      "description": "Campus bookstore at Pomona College, serving students since 1920.",
+      "use": "Education"
+    },
+    "Hotel Casa 425 + Lounge": {
+      "yearBuilt": 1925,
+      "description": "Boutique hotel in a restored 1925 Spanish Colonial building with rooftop lounge.",
+      "use": "Hospitality"
+    },
+    "Laemmle's Claremont 5": {
+      "yearBuilt": 1998,
+      "description": "Independent art-house cinema showing curated films and first-run features.",
+      "use": "Entertainment"
+    },
+    "The Packing House": {
+      "yearBuilt": 1920,
+      "description": "Historic citrus packing house converted into event and retail space.",
+      "use": "Culture"
+    },
+    "Claremont Bible Chapel": {
+      "yearBuilt": 1952,
+      "description": "Community church with mid-century architecture and stained glass.",
+      "use": "Worship"
+    },
+    "Claremont City Hall": {
+      "yearBuilt": 1941,
+      "description": "Municipal government building in Mediterranean Revival style.",
+      "use": "Civic"
+    },
+    "Claremont Helen Renwick Library": {
+      "yearBuilt": 1913,
+      "description": "Public library named after community benefactor Helen Renwick.",
+      "use": "Civic"
+    },
+    "Carnegie Hall": {
+      "yearBuilt": 1907,
+      "description": "Andrew Carnegie-funded library building, now a Claremont Heritage landmark.",
+      "use": "Culture"
+    },
+    "Hahn Hall": {
+      "yearBuilt": 1928,
+      "description": "Academic hall at the Claremont Colleges with Spanish Colonial architecture.",
+      "use": "Education"
+    },
+    "Benton Museum of Art": {
+      "yearBuilt": 2020,
+      "description": "Contemporary art museum at Pomona College with rotating exhibitions.",
+      "use": "Culture"
+    },
+    "Baldwin House": {
+      "yearBuilt": 1907,
+      "description": "Historic Craftsman home, an example of early Claremont residential architecture.",
+      "use": "Historic"
+    },
+    "Sumner House": {
+      "yearBuilt": 1910,
+      "description": "Restored Craftsman bungalow reflecting Claremont's early 20th-century charm.",
+      "use": "Historic"
+    },
+    "Renwick House": {
+      "yearBuilt": 1908,
+      "description": "Historic residence named for the prominent Renwick family of Claremont.",
+      "use": "Historic"
+    },
+    "Cook House": {
+      "yearBuilt": 1912,
+      "description": "Well-preserved Craftsman home with original architectural details.",
+      "use": "Historic"
+    },
+    "Seaver House": {
+      "yearBuilt": 1915,
+      "description": "Historic home with ties to the Seaver family and Pomona College.",
+      "use": "Historic"
+    },
+    "CEDG": {
+      "yearBuilt": 1960,
+      "description": "Claremont Economic Development Group promoting local business growth.",
+      "use": "Office"
+    },
+    "Chase": {
+      "yearBuilt": 1970,
+      "description": "Chase Bank branch serving the Claremont community.",
+      "use": "Finance"
+    },
+    "The Back Abbey": {
+      "yearBuilt": 1940,
+      "description": "Belgian-inspired gastropub with craft beers and gourmet sausages.",
+      "use": "Food & Drink"
+    },
+    "Indian Hill Office Suites": {
+      "yearBuilt": 1965,
+      "description": "Professional office complex on Indian Hill Boulevard.",
+      "use": "Office"
+    },
+    "Verbal Building": {
+      "yearBuilt": 1955,
+      "description": "Mixed-use commercial building in the Village core.",
+      "use": "Office"
+    },
+    "Claremont Post Office": {
+      "yearBuilt": 1935,
+      "description": "U.S. Post Office branch with New Deal-era architectural details.",
+      "use": "Civic"
+    },
+    "Eureka! Claremont": {
+      "yearBuilt": 2016,
+      "description": "Gourmet restaurant and bar at the eastern end of the Village.",
+      "use": "Food & Drink"
+    },
+    "Bardot Wine Bar": {
+      "yearBuilt": 2018,
+      "description": "Intimate wine bar with curated selections from around the world.",
+      "use": "Food & Drink"
+    },
+    "Harvest House": {
+      "yearBuilt": 2019,
+      "description": "Farm-to-table restaurant with seasonal California-inspired menu.",
+      "use": "Food & Drink"
+    },
+    "Claremont Community Bank": {
+      "yearBuilt": 1985,
+      "description": "Local community bank serving residents and small businesses.",
+      "use": "Finance"
+    },
+    "The Garlic Brothers": {
+      "yearBuilt": 2005,
+      "description": "Italian restaurant known for garlic-centric dishes and family dining.",
+      "use": "Food & Drink"
+    },
+    "Padua Floral": {
+      "yearBuilt": 1968,
+      "description": "Full-service florist providing arrangements for all occasions.",
+      "use": "Retail"
+    },
+    "Stonefire Grill": {
+      "yearBuilt": 2010,
+      "description": "Casual dining with stone-fired rotisserie and BBQ.",
+      "use": "Food & Drink"
+    },
+    "Claremont Auto Spa": {
+      "yearBuilt": 1975,
+      "description": "Full-service car wash and auto detailing center.",
+      "use": "Services"
+    },
+    "The Shoe Zoo": {
+      "yearBuilt": 1992,
+      "description": "Family shoe store with a wide selection of brands.",
+      "use": "Retail"
+    },
+    "Heritage Wine Bar": {
+      "yearBuilt": 2014,
+      "description": "Upscale wine bar celebrating local and international vintages.",
+      "use": "Food & Drink"
+    },
+    "Claremont Florist": {
+      "yearBuilt": 1960,
+      "description": "Established florist serving the Claremont area with fresh arrangements.",
+      "use": "Retail"
+    },
+    "Forte Salon": {
+      "yearBuilt": 1955,
+      "description": "Hair salon in the heart of Claremont Village.",
+      "use": "Services"
+    },
+    "42nd Street Bagel Cafe": {
+      "yearBuilt": 1950,
+      "description": "Fresh-baked bagels and deli cafe on Yale Avenue.",
+      "use": "Food & Drink"
+    },
+    "California Bank & Trust": {
+      "yearBuilt": 1960,
+      "description": "Banking branch at 102 Yale Avenue in the Village.",
+      "use": "Finance"
+    },
+    "Acme Dry Cleaners": {
+      "yearBuilt": 1955,
+      "description": "Long-standing dry cleaning service on Yale Avenue.",
+      "use": "Services"
+    },
+    "Everett's Shoe Repair": {
+      "yearBuilt": 1955,
+      "description": "Beloved independent shoe repair shop, a Village institution.",
+      "use": "Services"
+    },
+    "Claremont Juice Co.": {
+      "yearBuilt": 1955,
+      "description": "Fresh-pressed juice and smoothie bar on Yale Avenue.",
+      "use": "Food & Drink"
+    },
+    "Ecoterra Holistic Health": {
+      "yearBuilt": 1955,
+      "description": "Compounding pharmacy, natural supplements, and acupuncture center.",
+      "use": "Wellness"
+    },
+    "Buddhamouse Emporium": {
+      "yearBuilt": 1955,
+      "description": "Spiritual gifts, jewelry, crystals, and metaphysical supplies.",
+      "use": "Retail"
+    },
+    "The Hens' Kitchen Shoppe": {
+      "yearBuilt": 1950,
+      "description": "Kitchen gadgets, cookware, and gourmet cooking supplies.",
+      "use": "Retail"
+    },
+    "Village Grille": {
+      "yearBuilt": 1950,
+      "description": "Classic 1950s-style American diner serving breakfast and lunch.",
+      "use": "Food & Drink"
+    },
+    "Menkoi Ya Ramen": {
+      "yearBuilt": 1960,
+      "description": "Japanese ramen and rice bowls on Bonita Avenue.",
+      "use": "Food & Drink"
+    },
+    "Himalayan Collection": {
+      "yearBuilt": 1955,
+      "description": "Women's clothing and accessories with Himalayan and Nepali imports.",
+      "use": "Retail"
+    },
+    "Eye of Buddha": {
+      "yearBuilt": 1955,
+      "description": "Home decor and spiritual goods store on 2nd Street.",
+      "use": "Retail"
+    },
+    "Miller's Laundry": {
+      "yearBuilt": 1950,
+      "description": "Long-established laundry and dry cleaning on Indian Hill Boulevard.",
+      "use": "Services"
+    },
+    "J. Brown Violin Maker": {
+      "yearBuilt": 1950,
+      "description": "Artisan violin maker and instrument repair shop.",
+      "use": "Retail"
+    },
+    "Claremont Village Salon": {
+      "yearBuilt": 1955,
+      "description": "Full-service hair salon on Indian Hill Boulevard.",
+      "use": "Services"
+    },
+    "Escape Salon & Day Spa": {
+      "yearBuilt": 1955,
+      "description": "Hair salon and day spa with full beauty services.",
+      "use": "Services"
+    },
+    "Daddy Ji Indian Cuisine": {
+      "yearBuilt": 1960,
+      "description": "Indian street food and fine dining, opened 2024 in Village Square.",
+      "use": "Food & Drink"
+    },
+    "Starbucks": {
+      "yearBuilt": 1955,
+      "description": "Coffee chain location on Yale Avenue in the Village.",
+      "use": "Food & Drink"
+    },
+    "Nosy Neighbors Coffee": {
+      "yearBuilt": 1955,
+      "description": "Artisan coffee and gourmet donuts, relocated to Yale Avenue.",
+      "use": "Food & Drink"
+    },
+    "Nectar Clothing": {
+      "yearBuilt": 1945,
+      "description": "Women's clothing boutique with boho-chic and contemporary styles.",
+      "use": "Retail"
+    },
+    "Aromatique Skin Care": {
+      "yearBuilt": 1945,
+      "description": "Skin care and body treatment spa on 1st Street.",
+      "use": "Wellness"
+    },
+    "Hendricks Pharmacy": {
+      "yearBuilt": 1948,
+      "description": "Independent community pharmacy on Harvard Avenue, a Village staple.",
+      "use": "Retail"
+    },
+    "Finney's Crafthouse": {
+      "yearBuilt": 1948,
+      "description": "New American gastropub with craft cocktails, opened November 2025.",
+      "use": "Food & Drink"
+    },
+    "Lizzie's Goldmine": {
+      "yearBuilt": 1955,
+      "description": "Custom jewelry design and repair, fine jewelry store on 2nd Street.",
+      "use": "Retail"
+    },
+    "La Popular CDMX": {
+      "yearBuilt": 1950,
+      "description": "Upscale Mexican cocktail bar with Mexico City-inspired cuisine.",
+      "use": "Food & Drink"
+    },
+    "Union on Yale": {
+      "yearBuilt": 1950,
+      "description": "Chef-driven New American with wood-fired pizza and house-made pasta.",
+      "use": "Food & Drink"
+    },
+    "CK Cafe": {
+      "yearBuilt": 1960,
+      "description": "Coffee and tea study cafe popular with college students.",
+      "use": "Food & Drink"
+    },
+    "Bert & Rocky's Ice Cream": {
+      "yearBuilt": 1950,
+      "description": "Ice cream shop with creative flavors on Yale Avenue.",
+      "use": "Food & Drink"
+    },
+    "The Diamond Center": {
+      "yearBuilt": 1950,
+      "description": "Fine jewelry store specializing in diamonds at 2nd and Yale.",
+      "use": "Retail"
+    },
+    "Yogurtland": {
+      "yearBuilt": 2000,
+      "description": "Self-serve frozen yogurt in Village Square.",
+      "use": "Food & Drink"
+    },
+    "Insomnia Cookies": {
+      "yearBuilt": 2000,
+      "description": "Late-night warm cookie delivery and storefront in Village Square.",
+      "use": "Food & Drink"
+    },
+    "Poke Dot": {
+      "yearBuilt": 2000,
+      "description": "Hawaiian poke bowl restaurant in Village Square.",
+      "use": "Food & Drink"
+    },
+    "A Shop Called Quest": {
+      "yearBuilt": 2000,
+      "description": "Comic book store in Village Square.",
+      "use": "Retail"
+    },
+    "Chico's": {
+      "yearBuilt": 2000,
+      "description": "Women's clothing chain boutique in Village Square.",
+      "use": "Retail"
+    },
+    "O My Sole": {
+      "yearBuilt": 2000,
+      "description": "Shoe boutique in Village Square.",
+      "use": "Retail"
+    },
+    "Sanctuary Pilates": {
+      "yearBuilt": 2000,
+      "description": "Pilates studio in Village Square.",
+      "use": "Wellness"
+    },
+    "Village Postmark": {
+      "yearBuilt": 1955,
+      "description": "Shipping, packing, mailbox services, and notary on Harvard Avenue.",
+      "use": "Services"
+    },
+    "Square i Gallery": {
+      "yearBuilt": 1955,
+      "description": "Contemporary art gallery featuring local and regional artists.",
+      "use": "Culture"
+    },
+    "Bunny Gunner": {
+      "yearBuilt": 1960,
+      "description": "Art gallery and custom framing service on Bonita Avenue.",
+      "use": "Culture"
+    },
+    "Claremont Museum of Art": {
+      "yearBuilt": 1938,
+      "description": "Community art museum with rotating exhibitions on 1st Street.",
+      "use": "Culture"
+    },
+    "Crepes of Wrath": {
+      "yearBuilt": 1960,
+      "description": "Sweet and savory crepe cafe on Bonita Avenue.",
+      "use": "Food & Drink"
+    },
+    "Vintage Odyssey": {
+      "yearBuilt": 1960,
+      "description": "Vintage clothing, accessories, and antiques on Bonita Avenue.",
+      "use": "Retail"
+    },
+    "The UPS Store": {
+      "yearBuilt": 1965,
+      "description": "Shipping, printing, and mailbox services on Indian Hill Boulevard.",
+      "use": "Services"
+    },
+    "Le Pain Quotidien": {
+      "yearBuilt": 2000,
+      "description": "Belgian bakery-restaurant with communal tables in Village Square.",
+      "use": "Food & Drink"
+    },
+    "The Method Lagree": {
+      "yearBuilt": 2000,
+      "description": "Lagree fitness and interval training studio in Village Square.",
+      "use": "Wellness"
+    },
+    "Claremont Lincoln Univ.": {
+      "yearBuilt": 1955,
+      "description": "University administrative offices in a Village storefront.",
+      "use": "Education"
+    },
+    "Wilkinson Law Offices": {
+      "yearBuilt": 1945,
+      "description": "Legal practice serving the Claremont community on 1st Street.",
+      "use": "Office"
+    },
+    "CGU Student Housing C": {
+      "yearBuilt": 1975,
+      "description": "Graduate student apartments on 6th Street.",
+      "use": "Education"
+    },
+    "CGU Student Housing A": {
+      "yearBuilt": 1970,
+      "description": "Graduate student apartments at Claremont Graduate University.",
+      "use": "Education"
+    },
+    "Pomona College Walker Hall": {
+      "yearBuilt": 1960,
+      "description": "Residence hall at Pomona College's south campus.",
+      "use": "Education"
+    },
+    "CGU Faculty House": {
+      "yearBuilt": 1950,
+      "description": "Faculty residence near Claremont Graduate University.",
+      "use": "Education"
+    },
+    "Pomona College Lawry Court": {
+      "yearBuilt": 1968,
+      "description": "Residential courtyard at Pomona College.",
+      "use": "Education"
+    },
+    "Pomona College Gibson Hall": {
+      "yearBuilt": 1962,
+      "description": "Residence hall at Pomona College.",
+      "use": "Education"
+    },
+    "CGU Student Housing B": {
+      "yearBuilt": 1972,
+      "description": "Graduate student apartments at Claremont Graduate University.",
+      "use": "Education"
+    },
+    "Pomona College Pendleton Pool": {
+      "yearBuilt": 1968,
+      "description": "Pomona College swimming and recreational pool.",
+      "use": "Education"
+    },
+    "Bridges Auditorium": {
+      "yearBuilt": 1932,
+      "description": "Iconic 2,500-seat auditorium, the largest performance venue at the Claremont Colleges.",
+      "use": "Education"
+    },
+    "Bridges Hall of Music (Little Bridges)": {
+      "yearBuilt": 1915,
+      "description": "Intimate concert hall with exceptional acoustics for chamber music and recitals.",
+      "use": "Education"
+    },
+    "Smith Campus Center": {
+      "yearBuilt": 1999,
+      "description": "Central student center with dining, lounges, and campus mailroom.",
+      "use": "Education"
+    },
+    "Frary Dining Hall": {
+      "yearBuilt": 1929,
+      "description": "Historic dining hall with Orozco mural 'Prometheus', a Pomona landmark.",
+      "use": "Education"
+    },
+    "Frank Dining Hall": {
+      "yearBuilt": 2012,
+      "description": "Modern dining facility adjacent to Frary Hall.",
+      "use": "Education"
+    },
+    "Mason Hall": {
+      "yearBuilt": 1952,
+      "description": "Academic building housing humanities departments.",
+      "use": "Education"
+    },
+    "Pearsons Hall": {
+      "yearBuilt": 1890,
+      "description": "Historic academic building, one of the oldest on campus.",
+      "use": "Education"
+    },
+    "Crookshank Hall": {
+      "yearBuilt": 1926,
+      "description": "Academic hall for humanities and social sciences.",
+      "use": "Education"
+    },
+    "Carnegie Building (Pomona)": {
+      "yearBuilt": 1908,
+      "description": "Historic building originally funded by Andrew Carnegie.",
+      "use": "Education"
+    },
+    "Millikan Laboratory": {
+      "yearBuilt": 1958,
+      "description": "Physics laboratory named after Nobel laureate Robert Millikan.",
+      "use": "Education"
+    },
+    "Seaver Chemistry Laboratory": {
+      "yearBuilt": 1958,
+      "description": "Chemistry research and teaching laboratories.",
+      "use": "Education"
+    },
+    "Andrew Science Hall": {
+      "yearBuilt": 1963,
+      "description": "Biology and environmental science building.",
+      "use": "Education"
+    },
+    "Lincoln Hall": {
+      "yearBuilt": 1965,
+      "description": "Academic building for computer science and mathematics.",
+      "use": "Education"
+    },
+    "Edmunds Hall": {
+      "yearBuilt": 1958,
+      "description": "Mathematics and computing center.",
+      "use": "Education"
+    },
+    "Rains Center (Pomona)": {
+      "yearBuilt": 1964,
+      "description": "Athletic and recreation center with gym and pool.",
+      "use": "Education"
+    },
+    "Alexander Hall": {
+      "yearBuilt": 1927,
+      "description": "Academic hall housing social science departments.",
+      "use": "Education"
+    },
+    "Thatcher Music Building": {
+      "yearBuilt": 1970,
+      "description": "Music department with practice rooms and studios.",
+      "use": "Education"
+    },
+    "Oldenborg Center": {
+      "yearBuilt": 1964,
+      "description": "Language learning center with international dining hall.",
+      "use": "Education"
+    },
+    "Sumner Hall (Pomona)": {
+      "yearBuilt": 1915,
+      "description": "Academic building for humanities and languages.",
+      "use": "Education"
+    },
+    "Seaver Theatre": {
+      "yearBuilt": 1962,
+      "description": "Black box and main stage theater for performing arts.",
+      "use": "Education"
+    },
+    "Harwood Court": {
+      "yearBuilt": 1921,
+      "description": "Historic residential courtyard, Pomona's first student housing.",
+      "use": "Education"
+    },
+    "Sontag Hall": {
+      "yearBuilt": 1914,
+      "description": "Residential hall with Greek Revival architecture.",
+      "use": "Education"
+    },
+    "Clark Hall (Pomona)": {
+      "yearBuilt": 1961,
+      "description": "Large residence hall complex on north campus.",
+      "use": "Education"
+    },
+    "Wig Hall": {
+      "yearBuilt": 1959,
+      "description": "Residential hall for upperclass students.",
+      "use": "Education"
+    },
+    "Mudd-Blaisdell Hall": {
+      "yearBuilt": 1955,
+      "description": "Residential hall on Pomona's north campus.",
+      "use": "Education"
+    },
+    "Pomona College Admissions": {
+      "yearBuilt": 1920,
+      "description": "Admissions office in the Sumner Hall complex.",
+      "use": "Education"
+    },
+    "Marston Quad": {
+      "yearBuilt": 1909,
+      "description": "Central green quadrangle at Pomona College, the heart of campus.",
+      "use": "Education"
+    },
+    "Smiley Hall": {
+      "yearBuilt": 1908,
+      "description": "Residence hall overlooking Marston Quad.",
+      "use": "Education"
+    },
+    "Norton-Clark Hall": {
+      "yearBuilt": 1962,
+      "description": "Residence hall on Pomona's north campus.",
+      "use": "Education"
+    },
+    "Dialynas Hall": {
+      "yearBuilt": 2003,
+      "description": "Newer residence hall at Pomona College.",
+      "use": "Education"
+    },
+    "Pomona College Studio Art Hall": {
+      "yearBuilt": 1974,
+      "description": "Studio spaces for visual arts students.",
+      "use": "Education"
+    },
+    "Roberts Hall (CMC)": {
+      "yearBuilt": 1946,
+      "description": "Administrative center and main academic building at CMC.",
+      "use": "Education"
+    },
+    "Kravis Center (CMC)": {
+      "yearBuilt": 2011,
+      "description": "Leadership and conference center, hub for the Kravis Leadership Institute.",
+      "use": "Education"
+    },
+    "Bauer Center (CMC)": {
+      "yearBuilt": 2007,
+      "description": "Center for student life and campus activities.",
+      "use": "Education"
+    },
+    "Collins Dining Hall (CMC)": {
+      "yearBuilt": 1966,
+      "description": "Main dining hall at Claremont McKenna College.",
+      "use": "Education"
+    },
+    "Marian Miner Cook Athenaeum": {
+      "yearBuilt": 1983,
+      "description": "Speaker program venue and formal dining hall, a CMC signature institution.",
+      "use": "Education"
+    },
+    "Seaman Hall (CMC)": {
+      "yearBuilt": 1967,
+      "description": "Academic building housing economics and government departments.",
+      "use": "Education"
+    },
+    "Adams Hall (CMC)": {
+      "yearBuilt": 1957,
+      "description": "Academic hall for social sciences at CMC.",
+      "use": "Education"
+    },
+    "Beckett Hall (CMC)": {
+      "yearBuilt": 1965,
+      "description": "Academic building for humanities.",
+      "use": "Education"
+    },
+    "Berger Hall (CMC)": {
+      "yearBuilt": 1957,
+      "description": "Residence hall at Claremont McKenna College.",
+      "use": "Education"
+    },
+    "Green Hall (CMC)": {
+      "yearBuilt": 1972,
+      "description": "Residence hall named for benefactor.",
+      "use": "Education"
+    },
+    "Stark Hall (CMC)": {
+      "yearBuilt": 1969,
+      "description": "Residence hall at CMC.",
+      "use": "Education"
+    },
+    "Phillips Hall (CMC)": {
+      "yearBuilt": 1966,
+      "description": "Residence hall at CMC's south campus.",
+      "use": "Education"
+    },
+    "Boswell Hall (CMC)": {
+      "yearBuilt": 1999,
+      "description": "Residence hall on CMC's east side.",
+      "use": "Education"
+    },
+    "CMC Admissions": {
+      "yearBuilt": 1960,
+      "description": "Admissions and financial aid offices.",
+      "use": "Education"
+    },
+    "Poppa Hall (CMC)": {
+      "yearBuilt": 2013,
+      "description": "Science building at CMC.",
+      "use": "Education"
+    },
+    "Rose Institute (CMC)": {
+      "yearBuilt": 1985,
+      "description": "Home of the Rose Institute of State and Local Government.",
+      "use": "Education"
+    },
+    "Roberts Pavilion (CMC)": {
+      "yearBuilt": 2016,
+      "description": "State-of-the-art athletics and recreation center.",
+      "use": "Education"
+    },
+    "Parent Field (CMC)": {
+      "yearBuilt": 1970,
+      "description": "Main athletic field and track.",
+      "use": "Education"
+    },
+    "Shanahan Center (HMC)": {
+      "yearBuilt": 2013,
+      "description": "Academic center housing classrooms, labs, and the Hive makerspace.",
+      "use": "Education"
+    },
+    "Olin Science Center (HMC)": {
+      "yearBuilt": 1958,
+      "description": "Science building with chemistry, biology, and physics labs.",
+      "use": "Education"
+    },
+    "Parsons Engineering (HMC)": {
+      "yearBuilt": 1963,
+      "description": "Engineering building with project labs and machine shops.",
+      "use": "Education"
+    },
+    "Sprague Library (HMC)": {
+      "yearBuilt": 1963,
+      "description": "Harvey Mudd College library and study center.",
+      "use": "Education"
+    },
+    "Galileo Hall (HMC)": {
+      "yearBuilt": 1962,
+      "description": "Mathematics and computer science building.",
+      "use": "Education"
+    },
+    "Kingston Hall (HMC)": {
+      "yearBuilt": 1957,
+      "description": "Administrative offices and faculty building.",
+      "use": "Education"
+    },
+    "Platt Campus Center (HMC)": {
+      "yearBuilt": 1963,
+      "description": "Student center with dining, lounge, and game room.",
+      "use": "Education"
+    },
+    "Hoch-Shanahan Dining Commons (HMC)": {
+      "yearBuilt": 2005,
+      "description": "Main dining hall at Harvey Mudd College.",
+      "use": "Education"
+    },
+    "Thomas-Garrett Hall (HMC)": {
+      "yearBuilt": 2004,
+      "description": "Humanities and social science classrooms.",
+      "use": "Education"
+    },
+    "Drinkward Recital Hall (HMC)": {
+      "yearBuilt": 2014,
+      "description": "Performance venue for music and presentations.",
+      "use": "Education"
+    },
+    "Linde Activities Center (HMC)": {
+      "yearBuilt": 2006,
+      "description": "Gymnasium and fitness center.",
+      "use": "Education"
+    },
+    "East Dorm (HMC)": {
+      "yearBuilt": 1957,
+      "description": "Residence hall on east campus.",
+      "use": "Education"
+    },
+    "West Dorm (HMC)": {
+      "yearBuilt": 1957,
+      "description": "Residence hall on west campus.",
+      "use": "Education"
+    },
+    "North Dorm (HMC)": {
+      "yearBuilt": 1963,
+      "description": "Residence hall on north campus.",
+      "use": "Education"
+    },
+    "South Dorm (HMC)": {
+      "yearBuilt": 1963,
+      "description": "Residence hall on south campus.",
+      "use": "Education"
+    },
+    "Sontag Dorm (HMC)": {
+      "yearBuilt": 2017,
+      "description": "Newest residence hall at Harvey Mudd.",
+      "use": "Education"
+    },
+    "McGregor Computer Science Center (HMC)": {
+      "yearBuilt": 1990,
+      "description": "Computer science department and labs.",
+      "use": "Education"
+    },
+    "Balch Hall (Scripps)": {
+      "yearBuilt": 1930,
+      "description": "Administrative building and Scripps landmark with its iconic arched entrance.",
+      "use": "Education"
+    },
+    "Vita Nova Hall (Scripps)": {
+      "yearBuilt": 1935,
+      "description": "Academic building for humanities and social sciences.",
+      "use": "Education"
+    },
+    "Lang Art Building (Scripps)": {
+      "yearBuilt": 1992,
+      "description": "Art studios, gallery space, and the Ruth Chandler Williamson Gallery.",
+      "use": "Education"
+    },
+    "Williamson Gallery (Scripps)": {
+      "yearBuilt": 1993,
+      "description": "Art gallery with rotating exhibitions of contemporary and historical art.",
+      "use": "Education"
+    },
+    "Steele Hall (Scripps)": {
+      "yearBuilt": 1947,
+      "description": "Science building with biology and chemistry labs.",
+      "use": "Education"
+    },
+    "Keck Science Center": {
+      "yearBuilt": 1963,
+      "description": "Joint science facility shared by Scripps, CMC, and Pitzer for advanced STEM research.",
+      "use": "Education"
+    },
+    "Malott Commons (Scripps)": {
+      "yearBuilt": 1968,
+      "description": "Dining hall and student center at Scripps College.",
+      "use": "Education"
+    },
+    "Seal Court (Scripps)": {
+      "yearBuilt": 1930,
+      "description": "Central courtyard with the iconic Scripps College seal in the pavement.",
+      "use": "Education"
+    },
+    "Denison Library (Scripps)": {
+      "yearBuilt": 1931,
+      "description": "Scripps College library with rare book collections.",
+      "use": "Education"
+    },
+    "Performing Arts Center (Scripps)": {
+      "yearBuilt": 2003,
+      "description": "Theater and dance performance venue.",
+      "use": "Education"
+    },
+    "Humanities Building (Scripps)": {
+      "yearBuilt": 1951,
+      "description": "Classrooms and faculty offices for humanities departments.",
+      "use": "Education"
+    },
+    "Browning Hall (Scripps)": {
+      "yearBuilt": 1934,
+      "description": "Residence hall with Spanish Colonial architecture.",
+      "use": "Education"
+    },
+    "Toll Hall (Scripps)": {
+      "yearBuilt": 1930,
+      "description": "Residence hall and oldest dormitory at Scripps.",
+      "use": "Education"
+    },
+    "Dorsey Hall (Scripps)": {
+      "yearBuilt": 1935,
+      "description": "Residence hall in the historic campus core.",
+      "use": "Education"
+    },
+    "Clark Hall (Scripps)": {
+      "yearBuilt": 1942,
+      "description": "Residence hall at Scripps College.",
+      "use": "Education"
+    },
+    "Frankel Hall (Scripps)": {
+      "yearBuilt": 1952,
+      "description": "Residence hall at Scripps College.",
+      "use": "Education"
+    },
+    "Routt Hall (Scripps)": {
+      "yearBuilt": 1960,
+      "description": "Residence hall at Scripps College.",
+      "use": "Education"
+    },
+    "Edwards Humanities Center (Scripps)": {
+      "yearBuilt": 2000,
+      "description": "Academic building for writing and humanities.",
+      "use": "Education"
+    },
+    "Gabriella Scripps Hall": {
+      "yearBuilt": 2018,
+      "description": "Modern residence hall opened for upperclass students.",
+      "use": "Education"
+    },
+    "Scott Hall (Pitzer)": {
+      "yearBuilt": 1965,
+      "description": "Academic building housing social science departments.",
+      "use": "Education"
+    },
+    "Avery Hall (Pitzer)": {
+      "yearBuilt": 1966,
+      "description": "Classroom building for humanities at Pitzer.",
+      "use": "Education"
+    },
+    "Fletcher Hall (Pitzer)": {
+      "yearBuilt": 1966,
+      "description": "Administrative offices and faculty building.",
+      "use": "Education"
+    },
+    "McConnell Center (Pitzer)": {
+      "yearBuilt": 1967,
+      "description": "Student center with dining, lounges, and activity spaces.",
+      "use": "Education"
+    },
+    "Gold Student Center (Pitzer)": {
+      "yearBuilt": 2002,
+      "description": "Student life center and campus hub.",
+      "use": "Education"
+    },
+    "Broad Center (Pitzer)": {
+      "yearBuilt": 2007,
+      "description": "Academic building focused on art and environmental studies.",
+      "use": "Education"
+    },
+    "Kaleidoscope Hall (Pitzer)": {
+      "yearBuilt": 2008,
+      "description": "Environmentally sustainable residence hall.",
+      "use": "Education"
+    },
+    "Pitzer Hall": {
+      "yearBuilt": 1968,
+      "description": "Main academic and administrative building.",
+      "use": "Education"
+    },
+    "Sanborn Hall (Pitzer)": {
+      "yearBuilt": 1966,
+      "description": "Residence hall at Pitzer College.",
+      "use": "Education"
+    },
+    "Holden Hall (Pitzer)": {
+      "yearBuilt": 1966,
+      "description": "Residence hall at Pitzer College.",
+      "use": "Education"
+    },
+    "Mead Hall (Pitzer)": {
+      "yearBuilt": 1966,
+      "description": "Residence hall at Pitzer College.",
+      "use": "Education"
+    },
+    "Atherton Hall (Pitzer)": {
+      "yearBuilt": 1965,
+      "description": "Residence hall on Pitzer's north side.",
+      "use": "Education"
+    },
+    "East Hall (Pitzer)": {
+      "yearBuilt": 2005,
+      "description": "Newer residence hall at Pitzer.",
+      "use": "Education"
+    },
+    "West Hall (Pitzer)": {
+      "yearBuilt": 1995,
+      "description": "Residence hall on Pitzer's western edge.",
+      "use": "Education"
+    },
+    "Bernard Hall (Pitzer)": {
+      "yearBuilt": 1974,
+      "description": "Academic building for environmental analysis.",
+      "use": "Education"
+    },
+    "Pitzer Mounds (Robert Redford Conservancy)": {
+      "yearBuilt": 2008,
+      "description": "Environmental education center and native plant garden.",
+      "use": "Education"
+    },
+    "Harper Hall (CGU)": {
+      "yearBuilt": 1930,
+      "description": "Main academic building at CGU housing multiple programs.",
+      "use": "Education"
+    },
+    "Burkle Hall (CGU)": {
+      "yearBuilt": 1950,
+      "description": "Building for economics and politics programs.",
+      "use": "Education"
+    },
+    "McManus Hall (CGU)": {
+      "yearBuilt": 1955,
+      "description": "Academic hall for education and humanities.",
+      "use": "Education"
+    },
+    "Stauffer Hall (CGU)": {
+      "yearBuilt": 1962,
+      "description": "Classrooms and administrative offices.",
+      "use": "Education"
+    },
+    "Albrecht Auditorium (CGU)": {
+      "yearBuilt": 1970,
+      "description": "Lecture hall and event space at CGU.",
+      "use": "Education"
+    },
+    "CGU Admissions & Financial Aid": {
+      "yearBuilt": 1960,
+      "description": "Admissions office for Claremont Graduate University.",
+      "use": "Education"
+    },
+    "School of Arts & Humanities (CGU)": {
+      "yearBuilt": 1975,
+      "description": "Art studios and humanities classrooms.",
+      "use": "Education"
+    },
+    "Drucker School of Management (CGU)": {
+      "yearBuilt": 1971,
+      "description": "Peter F. Drucker and Masatoshi Ito Graduate School of Management.",
+      "use": "Education"
+    },
+    "CGU Library": {
+      "yearBuilt": 1965,
+      "description": "Academic library for graduate research.",
+      "use": "Education"
+    },
+    "Center for Information Systems & Technology (CGU)": {
+      "yearBuilt": 1990,
+      "description": "CISAT building for information technology programs.",
+      "use": "Education"
+    },
+    "Pegasus Plaza (CGU)": {
+      "yearBuilt": 1955,
+      "description": "Central courtyard and gathering space at CGU.",
+      "use": "Education"
+    },
+    "KGI Main Building": {
+      "yearBuilt": 1997,
+      "description": "Primary academic building for bioscience and pharmacy programs.",
+      "use": "Education"
+    },
+    "KGI Pharmacy Building": {
+      "yearBuilt": 2010,
+      "description": "School of Pharmacy and Health Sciences.",
+      "use": "Education"
+    },
+    "KGI Henry Riggs Hall": {
+      "yearBuilt": 2004,
+      "description": "Academic building with labs and classrooms.",
+      "use": "Education"
+    },
+    "KGI Student Commons": {
+      "yearBuilt": 2005,
+      "description": "Student center and lounge.",
+      "use": "Education"
+    },
+    "KGI Research Labs": {
+      "yearBuilt": 2008,
+      "description": "Biotech research and teaching laboratories.",
+      "use": "Education"
+    },
+    "Honnold-Mudd Library": {
+      "yearBuilt": 1952,
+      "description": "Shared academic library of The Claremont Colleges, the largest open-stack library in Southern California.",
+      "use": "Education"
+    },
+    "The Claremont Colleges Services (TCCS)": {
+      "yearBuilt": 1960,
+      "description": "Administrative hub providing shared services to all seven Claremont Colleges.",
+      "use": "Education"
+    },
+    "Pendleton Business Building": {
+      "yearBuilt": 1965,
+      "description": "Shared classroom and conference facility.",
+      "use": "Education"
+    },
+    "McAlister Center": {
+      "yearBuilt": 1963,
+      "description": "Interfaith center serving all Claremont Colleges.",
+      "use": "Education"
+    },
+    "Huntley Bookstore": {
+      "yearBuilt": 1965,
+      "description": "Shared bookstore serving all seven Claremont Colleges.",
+      "use": "Education"
+    },
+    "Ducey Gymnasium": {
+      "yearBuilt": 1963,
+      "description": "Shared gymnasium facility for CMS athletics.",
+      "use": "Education"
+    },
+    "Axelrood Pool": {
+      "yearBuilt": 1963,
+      "description": "Shared swimming and diving facility.",
+      "use": "Education"
+    },
+    "Zinda Tennis Center": {
+      "yearBuilt": 1980,
+      "description": "Tennis courts shared by the Claremont Colleges.",
+      "use": "Education"
+    },
+    "Stag Field (CMS)": {
+      "yearBuilt": 1960,
+      "description": "Shared football and soccer field for Claremont-Mudd-Scripps athletics.",
+      "use": "Education"
+    },
+    "Alumni Field (CMS)": {
+      "yearBuilt": 1965,
+      "description": "Additional athletic field for CMS sports.",
+      "use": "Education"
+    },
+    "Garrison Theater": {
+      "yearBuilt": 1966,
+      "description": "Performance venue for theater and music shared by the colleges.",
+      "use": "Education"
+    },
+    "Mgrublian Hall of Science": {
+      "yearBuilt": 1968,
+      "description": "Science facility for the Claremont Colleges.",
+      "use": "Education"
+    },
+    "Tranquada Student Services Center": {
+      "yearBuilt": 1973,
+      "description": "Shared student health and counseling services.",
+      "use": "Education"
+    },
+    "Baxter Lecture Hall": {
+      "yearBuilt": 1968,
+      "description": "Large shared lecture hall for the Claremont Colleges.",
+      "use": "Education"
+    },
+    "Claremont Colleges Library South": {
+      "yearBuilt": 1970,
+      "description": "Extension of the shared library complex.",
+      "use": "Education"
+    },
+    "Claremont School of Theology": {
+      "yearBuilt": 1957,
+      "description": "Historic theological seminary campus, part of the Claremont consortium.",
+      "use": "Education"
+    },
+    "CST Chapel": {
+      "yearBuilt": 1960,
+      "description": "Modernist chapel at the School of Theology.",
+      "use": "Education"
+    },
+    "Sontag Greek Theatre": {
+      "yearBuilt": 1914,
+      "description": "Open-air amphitheatre for outdoor performances, lectures, and commencement.",
+      "use": "Education"
+    },
+    "Haldeman Pool": {
+      "yearBuilt": 1968,
+      "description": "Competition swimming and diving facility with a 50-meter outdoor pool.",
+      "use": "Education"
+    },
+    "Rembrandt Hall": {
+      "yearBuilt": 1959,
+      "description": "Art department studio with painting, drawing, and printmaking facilities.",
+      "use": "Education"
+    },
+    "Margaret Fowler Garden": {
+      "yearBuilt": 1930,
+      "description": "Iconic walled garden and meditative courtyard at the heart of Scripps, a beloved landmark.",
+      "use": "Education"
+    },
+    "Graffiti Wall (Scripps)": {
+      "yearBuilt": 1960,
+      "description": "Iconic campus landmark where students freely paint messages and artwork.",
+      "use": "Education"
+    },
+    "Revelle Commons (Scripps)": {
+      "yearBuilt": 2013,
+      "description": "Multipurpose student gathering space with study rooms and lounge seating.",
+      "use": "Education"
+    },
+    "Grove House (Pitzer)": {
+      "yearBuilt": 1975,
+      "description": "Community space with Grove House Cafe, Women's Center, and the EcoCenter.",
+      "use": "Education"
+    },
+    "The Nucleus (Pitzer)": {
+      "yearBuilt": 2024,
+      "description": "State-of-the-art science facility opened 2024, Pitzer-Scripps STEM partnership.",
+      "use": "Education"
+    },
+    "Benson Auditorium (Pitzer)": {
+      "yearBuilt": 1966,
+      "description": "Primary lecture and performance auditorium for campus events.",
+      "use": "Education"
+    },
+    "Libra Complex (HMC)": {
+      "yearBuilt": 1967,
+      "description": "Largest residential complex at HMC with famous student-painted tunnels beneath.",
+      "use": "Education"
+    },
+    "Jacobs Science Center (HMC)": {
+      "yearBuilt": 1988,
+      "description": "Advanced research labs and collaborative workspaces for students.",
+      "use": "Education"
+    },
+    "Emett Student Center (CMC)": {
+      "yearBuilt": 1990,
+      "description": "Student union with lounges, the Hub dining venue, and organization offices.",
+      "use": "Education"
+    },
+    "Flamson Plaza (CMC)": {
+      "yearBuilt": 1965,
+      "description": "Central campus plaza at the heart of CMC, anchored by the Kravis Center.",
+      "use": "Education"
+    },
+    "Mgrublian Center for Human Rights (CMC)": {
+      "yearBuilt": 2011,
+      "description": "Center for human rights education, research, and advocacy.",
+      "use": "Education"
+    },
+    "Botany Building (CGU)": {
+      "yearBuilt": 1951,
+      "description": "Houses Rancho Santa Ana Botanic Garden herbarium and botanical research.",
+      "use": "Education"
+    },
+    "DesCombes Family Quadrangle (CGU)": {
+      "yearBuilt": 1955,
+      "description": "Central green courtyard and gathering space at the heart of CGU.",
+      "use": "Education"
+    },
+    "Yuhaaviatam Center for Health Studies (CGU)": {
+      "yearBuilt": 2019,
+      "description": "Community health research center on CGU's campus.",
+      "use": "Education"
+    },
+    "KGI Minerva Building": {
+      "yearBuilt": 2006,
+      "description": "Research and classroom building for pharmacy, genetics, and biotech.",
+      "use": "Education"
+    },
+    "KGI Oasis Commons East": {
+      "yearBuilt": 2018,
+      "description": "Four-story residential building with 419 beds and ground-floor classrooms.",
+      "use": "Education"
+    },
+    "KGI Oasis Commons West": {
+      "yearBuilt": 2018,
+      "description": "Residential tower with pool, spa, fitness center, and study areas.",
+      "use": "Education"
+    },
+    "Technip Building (KGI)": {
+      "yearBuilt": 2000,
+      "description": "Administrative offices and support services building.",
+      "use": "Education"
+    },
+    "EmPOWER Center": {
+      "yearBuilt": 2015,
+      "description": "Consortium center for sexual violence prevention, education, and support.",
+      "use": "Education"
+    },
+    "Campus Safety Building": {
+      "yearBuilt": 1970,
+      "description": "Campus safety and security HQ serving all seven Claremont Colleges.",
+      "use": "Education"
+    },
+    "Claremont University Consortium Office": {
+      "yearBuilt": 1960,
+      "description": "Central admin offices coordinating shared services across the seven colleges.",
+      "use": "Education"
+    }
   }
 }

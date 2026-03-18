@@ -4,10 +4,10 @@
     "lng": -117.7185
   },
   "bounds": {
-    "south": 34.094,
-    "north": 34.099,
-    "west": -117.722,
-    "east": -117.7145
+    "south": 34.093,
+    "north": 34.1077,
+    "west": -117.723,
+    "east": -117.7046
   },
   "buildings": [
     {
@@ -14312,8 +14312,8 @@
     },
     {
       "id": 470530766,
-      "name": "",
-      "type": "apartments",
+      "name": "CGU Student Housing C",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -14377,8 +14377,8 @@
     },
     {
       "id": 470530779,
-      "name": "",
-      "type": "apartments",
+      "name": "CGU Student Housing A",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -14660,8 +14660,8 @@
     },
     {
       "id": 470530857,
-      "name": "",
-      "type": "apartments",
+      "name": "Pomona College Walker Hall",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -14693,8 +14693,8 @@
     },
     {
       "id": 470530860,
-      "name": "",
-      "type": "house",
+      "name": "CGU Faculty House",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -14726,8 +14726,8 @@
     },
     {
       "id": 470530873,
-      "name": "",
-      "type": "apartments",
+      "name": "Pomona College Lawry Court",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -14767,8 +14767,8 @@
     },
     {
       "id": 470530875,
-      "name": "",
-      "type": "apartments",
+      "name": "Pomona College Gibson Hall",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -14857,8 +14857,8 @@
     },
     {
       "id": 470530903,
-      "name": "",
-      "type": "apartments",
+      "name": "CGU Student Housing B",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -15134,8 +15134,8 @@
     },
     {
       "id": 736263457,
-      "name": "",
-      "type": "yes",
+      "name": "Pomona College Pendleton Pool",
+      "type": "college",
       "shop": "",
       "amenity": "",
       "cuisine": "",
@@ -15162,6 +15162,5220 @@
         [
           240.39,
           47.26
+        ]
+      ]
+    },
+    {
+      "id": 800000001,
+      "name": "Bridges Auditorium",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 15.0,
+      "levels": 3,
+      "footprint": [
+        [
+          514.83,
+          101.25
+        ],
+        [
+          549.7,
+          98.2
+        ],
+        [
+          554.49,
+          152.99
+        ],
+        [
+          519.62,
+          156.04
+        ],
+        [
+          514.83,
+          101.25
+        ]
+      ]
+    },
+    {
+      "id": 800000002,
+      "name": "Bridges Hall of Music (Little Bridges)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 2,
+      "footprint": [
+        [
+          483.59,
+          58.55
+        ],
+        [
+          508.5,
+          56.37
+        ],
+        [
+          511.99,
+          96.21
+        ],
+        [
+          487.08,
+          98.39
+        ],
+        [
+          483.59,
+          58.55
+        ]
+      ]
+    },
+    {
+      "id": 800000003,
+      "name": "Smith Campus Center",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          602.63,
+          74.49
+        ],
+        [
+          632.63,
+          74.49
+        ],
+        [
+          632.63,
+          124.49
+        ],
+        [
+          602.63,
+          124.49
+        ],
+        [
+          602.63,
+          74.49
+        ]
+      ]
+    },
+    {
+      "id": 800000004,
+      "name": "Frary Dining Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 2,
+      "footprint": [
+        [
+          557.13,
+          122.38
+        ],
+        [
+          582.03,
+          120.2
+        ],
+        [
+          585.95,
+          165.02
+        ],
+        [
+          561.05,
+          167.2
+        ],
+        [
+          557.13,
+          122.38
+        ]
+      ]
+    },
+    {
+      "id": 800000005,
+      "name": "Frank Dining Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          586.71,
+          116.18
+        ],
+        [
+          608.62,
+          114.26
+        ],
+        [
+          611.67,
+          149.12
+        ],
+        [
+          589.76,
+          151.04
+        ],
+        [
+          586.71,
+          116.18
+        ]
+      ]
+    },
+    {
+      "id": 800000006,
+      "name": "Mason Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          522.95,
+          47.27
+        ],
+        [
+          542.88,
+          45.52
+        ],
+        [
+          546.37,
+          85.37
+        ],
+        [
+          526.44,
+          87.12
+        ],
+        [
+          522.95,
+          47.27
+        ]
+      ]
+    },
+    {
+      "id": 800000007,
+      "name": "Pearsons Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          531.96,
+          22.68
+        ],
+        [
+          551.88,
+          20.93
+        ],
+        [
+          555.8,
+          65.76
+        ],
+        [
+          535.88,
+          67.51
+        ],
+        [
+          531.96,
+          22.68
+        ]
+      ]
+    },
+    {
+      "id": 800000008,
+      "name": "Crookshank Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          569.27,
+          38.71
+        ],
+        [
+          589.2,
+          36.97
+        ],
+        [
+          592.25,
+          71.83
+        ],
+        [
+          572.32,
+          73.57
+        ],
+        [
+          569.27,
+          38.71
+        ]
+      ]
+    },
+    {
+      "id": 800000009,
+      "name": "Carnegie Building (Pomona)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          546.44,
+          168.32
+        ],
+        [
+          566.36,
+          166.58
+        ],
+        [
+          568.98,
+          196.46
+        ],
+        [
+          549.06,
+          198.2
+        ],
+        [
+          546.44,
+          168.32
+        ]
+      ]
+    },
+    {
+      "id": 800000010,
+      "name": "Millikan Laboratory",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          586.69,
+          21.72
+        ],
+        [
+          611.69,
+          21.72
+        ],
+        [
+          611.69,
+          66.72
+        ],
+        [
+          586.69,
+          66.72
+        ],
+        [
+          586.69,
+          21.72
+        ]
+      ]
+    },
+    {
+      "id": 800000011,
+      "name": "Seaver Chemistry Laboratory",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          623.57,
+          8.16
+        ],
+        [
+          648.57,
+          8.16
+        ],
+        [
+          648.57,
+          58.16
+        ],
+        [
+          623.57,
+          58.16
+        ],
+        [
+          623.57,
+          8.16
+        ]
+      ]
+    },
+    {
+      "id": 800000012,
+      "name": "Andrew Science Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          652.72,
+          2.11
+        ],
+        [
+          674.72,
+          2.11
+        ],
+        [
+          674.72,
+          42.11
+        ],
+        [
+          652.72,
+          42.11
+        ],
+        [
+          652.72,
+          2.11
+        ]
+      ]
+    },
+    {
+      "id": 800000013,
+      "name": "Lincoln Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          633.57,
+          69.38
+        ],
+        [
+          653.5,
+          67.63
+        ],
+        [
+          656.99,
+          107.48
+        ],
+        [
+          637.06,
+          109.23
+        ],
+        [
+          633.57,
+          69.38
+        ]
+      ]
+    },
+    {
+      "id": 800000014,
+      "name": "Edmunds Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          661.45,
+          82.93
+        ],
+        [
+          681.38,
+          81.19
+        ],
+        [
+          684.43,
+          116.05
+        ],
+        [
+          664.5,
+          117.79
+        ],
+        [
+          661.45,
+          82.93
+        ]
+      ]
+    },
+    {
+      "id": 800000015,
+      "name": "Rains Center (Pomona)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          706.53,
+          93.04
+        ],
+        [
+          731.53,
+          93.04
+        ],
+        [
+          731.53,
+          128.04
+        ],
+        [
+          706.53,
+          128.04
+        ],
+        [
+          706.53,
+          93.04
+        ]
+      ]
+    },
+    {
+      "id": 800000016,
+      "name": "Alexander Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          458.22,
+          66.89
+        ],
+        [
+          478.14,
+          65.14
+        ],
+        [
+          482.06,
+          109.97
+        ],
+        [
+          462.14,
+          111.72
+        ],
+        [
+          458.22,
+          66.89
+        ]
+      ]
+    },
+    {
+      "id": 800000017,
+      "name": "Thatcher Music Building",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          457.66,
+          49.85
+        ],
+        [
+          479.57,
+          47.93
+        ],
+        [
+          482.62,
+          82.79
+        ],
+        [
+          460.71,
+          84.71
+        ],
+        [
+          457.66,
+          49.85
+        ]
+      ]
+    },
+    {
+      "id": 800000018,
+      "name": "Oldenborg Center",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          457.44,
+          102.62
+        ],
+        [
+          479.36,
+          100.71
+        ],
+        [
+          482.84,
+          140.56
+        ],
+        [
+          460.92,
+          142.47
+        ],
+        [
+          457.44,
+          102.62
+        ]
+      ]
+    },
+    {
+      "id": 800000019,
+      "name": "Sumner Hall (Pomona)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          487.3,
+          33.09
+        ],
+        [
+          505.23,
+          31.52
+        ],
+        [
+          508.28,
+          66.39
+        ],
+        [
+          490.35,
+          67.96
+        ],
+        [
+          487.3,
+          33.09
+        ]
+      ]
+    },
+    {
+      "id": 800000020,
+      "name": "Seaver Theatre",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 2,
+      "footprint": [
+        [
+          511.47,
+          11.3
+        ],
+        [
+          536.38,
+          9.12
+        ],
+        [
+          539.43,
+          43.98
+        ],
+        [
+          514.52,
+          46.16
+        ],
+        [
+          511.47,
+          11.3
+        ]
+      ]
+    },
+    {
+      "id": 800000021,
+      "name": "Harwood Court",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          627.9,
+          164.69
+        ],
+        [
+          657.45,
+          159.48
+        ],
+        [
+          662.66,
+          189.03
+        ],
+        [
+          633.11,
+          194.24
+        ],
+        [
+          627.9,
+          164.69
+        ]
+      ]
+    },
+    {
+      "id": 800000022,
+      "name": "Sontag Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          606.14,
+          171.36
+        ],
+        [
+          626.07,
+          169.62
+        ],
+        [
+          629.12,
+          204.48
+        ],
+        [
+          609.19,
+          206.22
+        ],
+        [
+          606.14,
+          171.36
+        ]
+      ]
+    },
+    {
+      "id": 800000023,
+      "name": "Clark Hall (Pomona)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          536.2,
+          199.97
+        ],
+        [
+          566.08,
+          197.36
+        ],
+        [
+          570.0,
+          242.19
+        ],
+        [
+          540.12,
+          244.8
+        ],
+        [
+          536.2,
+          199.97
+        ]
+      ]
+    },
+    {
+      "id": 800000024,
+      "name": "Wig Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          586.71,
+          199.08
+        ],
+        [
+          608.62,
+          197.16
+        ],
+        [
+          611.67,
+          232.02
+        ],
+        [
+          589.76,
+          233.94
+        ],
+        [
+          586.71,
+          199.08
+        ]
+      ]
+    },
+    {
+      "id": 800000025,
+      "name": "Mudd-Blaisdell Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          483.59,
+          185.67
+        ],
+        [
+          508.5,
+          183.49
+        ],
+        [
+          511.99,
+          223.33
+        ],
+        [
+          487.08,
+          225.51
+        ],
+        [
+          483.59,
+          185.67
+        ]
+      ]
+    },
+    {
+      "id": 800000026,
+      "name": "Pomona College Admissions",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          487.73,
+          -11.67
+        ],
+        [
+          505.67,
+          -13.24
+        ],
+        [
+          507.85,
+          11.67
+        ],
+        [
+          489.91,
+          13.24
+        ],
+        [
+          487.73,
+          -11.67
+        ]
+      ]
+    },
+    {
+      "id": 800000027,
+      "name": "Marston Quad",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          519.07,
+          85.11
+        ],
+        [
+          563.9,
+          81.18
+        ],
+        [
+          568.69,
+          135.97
+        ],
+        [
+          523.86,
+          139.9
+        ],
+        [
+          519.07,
+          85.11
+        ]
+      ]
+    },
+    {
+      "id": 800000028,
+      "name": "Smiley Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          503.53,
+          135.79
+        ],
+        [
+          525.45,
+          133.88
+        ],
+        [
+          528.93,
+          173.73
+        ],
+        [
+          507.01,
+          175.64
+        ],
+        [
+          503.53,
+          135.79
+        ]
+      ]
+    },
+    {
+      "id": 800000029,
+      "name": "Norton-Clark Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          633.79,
+          215.57
+        ],
+        [
+          653.72,
+          213.83
+        ],
+        [
+          656.77,
+          248.69
+        ],
+        [
+          636.84,
+          250.43
+        ],
+        [
+          633.79,
+          215.57
+        ]
+      ]
+    },
+    {
+      "id": 800000030,
+      "name": "Dialynas Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          679.89,
+          182.41
+        ],
+        [
+          699.82,
+          180.67
+        ],
+        [
+          702.87,
+          215.53
+        ],
+        [
+          682.94,
+          217.27
+        ],
+        [
+          679.89,
+          182.41
+        ]
+      ]
+    },
+    {
+      "id": 800000031,
+      "name": "Pomona College Studio Art Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          449.65,
+          -3.02
+        ],
+        [
+          469.57,
+          -4.76
+        ],
+        [
+          472.19,
+          25.12
+        ],
+        [
+          452.27,
+          26.86
+        ],
+        [
+          449.65,
+          -3.02
+        ]
+      ]
+    },
+    {
+      "id": 800000032,
+      "name": "Roberts Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          884.96,
+          459.97
+        ],
+        [
+          906.88,
+          461.88
+        ],
+        [
+          903.4,
+          501.73
+        ],
+        [
+          881.48,
+          499.82
+        ],
+        [
+          884.96,
+          459.97
+        ]
+      ]
+    },
+    {
+      "id": 800000033,
+      "name": "Kravis Center (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          927.29,
+          495.82
+        ],
+        [
+          957.17,
+          498.43
+        ],
+        [
+          953.25,
+          543.26
+        ],
+        [
+          923.37,
+          540.65
+        ],
+        [
+          927.29,
+          495.82
+        ]
+      ]
+    },
+    {
+      "id": 800000034,
+      "name": "Bauer Center (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          929.56,
+          443.26
+        ],
+        [
+          954.47,
+          445.44
+        ],
+        [
+          950.98,
+          485.28
+        ],
+        [
+          926.07,
+          483.1
+        ],
+        [
+          929.56,
+          443.26
+        ]
+      ]
+    },
+    {
+      "id": 800000035,
+      "name": "Collins Dining Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          863.24,
+          479.93
+        ],
+        [
+          888.24,
+          479.93
+        ],
+        [
+          888.24,
+          514.93
+        ],
+        [
+          863.24,
+          514.93
+        ],
+        [
+          863.24,
+          479.93
+        ]
+      ]
+    },
+    {
+      "id": 800000036,
+      "name": "Marian Miner Cook Athenaeum",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 2,
+      "footprint": [
+        [
+          863.24,
+          435.71
+        ],
+        [
+          888.24,
+          435.71
+        ],
+        [
+          888.24,
+          470.71
+        ],
+        [
+          863.24,
+          470.71
+        ],
+        [
+          863.24,
+          435.71
+        ]
+      ]
+    },
+    {
+      "id": 800000037,
+      "name": "Seaman Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          913.39,
+          423.86
+        ],
+        [
+          933.32,
+          425.6
+        ],
+        [
+          930.27,
+          460.46
+        ],
+        [
+          910.34,
+          458.72
+        ],
+        [
+          913.39,
+          423.86
+        ]
+      ]
+    },
+    {
+      "id": 800000038,
+      "name": "Adams Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          875.96,
+          413.61
+        ],
+        [
+          893.96,
+          413.61
+        ],
+        [
+          893.96,
+          448.61
+        ],
+        [
+          875.96,
+          448.61
+        ],
+        [
+          875.96,
+          413.61
+        ]
+      ]
+    },
+    {
+      "id": 800000039,
+      "name": "Beckett Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          932.61,
+          409.85
+        ],
+        [
+          950.54,
+          411.42
+        ],
+        [
+          947.93,
+          441.31
+        ],
+        [
+          930.0,
+          439.74
+        ],
+        [
+          932.61,
+          409.85
+        ]
+      ]
+    },
+    {
+      "id": 800000040,
+      "name": "Berger Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          884.75,
+          512.2
+        ],
+        [
+          906.66,
+          514.12
+        ],
+        [
+          903.61,
+          548.98
+        ],
+        [
+          881.7,
+          547.06
+        ],
+        [
+          884.75,
+          512.2
+        ]
+      ]
+    },
+    {
+      "id": 800000041,
+      "name": "Green Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          912.4,
+          523.26
+        ],
+        [
+          934.31,
+          525.18
+        ],
+        [
+          931.26,
+          560.04
+        ],
+        [
+          909.35,
+          558.12
+        ],
+        [
+          912.4,
+          523.26
+        ]
+      ]
+    },
+    {
+      "id": 800000042,
+      "name": "Stark Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          894.96,
+          390.7
+        ],
+        [
+          914.89,
+          392.44
+        ],
+        [
+          911.84,
+          427.3
+        ],
+        [
+          891.91,
+          425.56
+        ],
+        [
+          894.96,
+          390.7
+        ]
+      ]
+    },
+    {
+      "id": 800000043,
+      "name": "Phillips Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          903.97,
+          371.08
+        ],
+        [
+          923.89,
+          372.82
+        ],
+        [
+          921.27,
+          402.7
+        ],
+        [
+          901.35,
+          400.96
+        ],
+        [
+          903.97,
+          371.08
+        ]
+      ]
+    },
+    {
+      "id": 800000044,
+      "name": "Boswell Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          994.8,
+          443.74
+        ],
+        [
+          1014.8,
+          443.74
+        ],
+        [
+          1014.8,
+          473.74
+        ],
+        [
+          994.8,
+          473.74
+        ],
+        [
+          994.8,
+          443.74
+        ]
+      ]
+    },
+    {
+      "id": 800000045,
+      "name": "CMC Admissions",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          859.02,
+          363.34
+        ],
+        [
+          874.02,
+          363.34
+        ],
+        [
+          874.02,
+          388.34
+        ],
+        [
+          859.02,
+          388.34
+        ],
+        [
+          859.02,
+          363.34
+        ]
+      ]
+    },
+    {
+      "id": 800000046,
+      "name": "Poppa Hall (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          967.14,
+          460.32
+        ],
+        [
+          987.14,
+          460.32
+        ],
+        [
+          987.14,
+          490.32
+        ],
+        [
+          967.14,
+          490.32
+        ],
+        [
+          967.14,
+          460.32
+        ]
+      ]
+    },
+    {
+      "id": 800000047,
+      "name": "Rose Institute (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          952.33,
+          429.05
+        ],
+        [
+          967.27,
+          430.36
+        ],
+        [
+          965.09,
+          455.27
+        ],
+        [
+          950.15,
+          453.96
+        ],
+        [
+          952.33,
+          429.05
+        ]
+      ]
+    },
+    {
+      "id": 800000048,
+      "name": "Roberts Pavilion (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 14.0,
+      "levels": 2,
+      "footprint": [
+        [
+          959.61,
+          534.61
+        ],
+        [
+          999.46,
+          538.1
+        ],
+        [
+          994.67,
+          592.89
+        ],
+        [
+          954.82,
+          589.4
+        ],
+        [
+          959.61,
+          534.61
+        ]
+      ]
+    },
+    {
+      "id": 800000049,
+      "name": "Parent Field (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          895.87,
+          538.42
+        ],
+        [
+          955.64,
+          543.65
+        ],
+        [
+          947.79,
+          633.3
+        ],
+        [
+          888.02,
+          628.07
+        ],
+        [
+          895.87,
+          538.42
+        ]
+      ]
+    },
+    {
+      "id": 800000050,
+      "name": "Shanahan Center (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          722.47,
+          1025.13
+        ],
+        [
+          752.47,
+          1025.13
+        ],
+        [
+          752.47,
+          1075.13
+        ],
+        [
+          722.47,
+          1075.13
+        ],
+        [
+          722.47,
+          1025.13
+        ]
+      ]
+    },
+    {
+      "id": 800000051,
+      "name": "Olin Science Center (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          678.88,
+          1005.52
+        ],
+        [
+          703.88,
+          1005.52
+        ],
+        [
+          703.88,
+          1050.52
+        ],
+        [
+          678.88,
+          1050.52
+        ],
+        [
+          678.88,
+          1005.52
+        ]
+      ]
+    },
+    {
+      "id": 800000052,
+      "name": "Parsons Engineering (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          717.25,
+          985.91
+        ],
+        [
+          739.25,
+          985.91
+        ],
+        [
+          739.25,
+          1025.91
+        ],
+        [
+          717.25,
+          1025.91
+        ],
+        [
+          717.25,
+          985.91
+        ]
+      ]
+    },
+    {
+      "id": 800000053,
+      "name": "Sprague Library (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          782.78,
+          1010.52
+        ],
+        [
+          802.78,
+          1010.52
+        ],
+        [
+          802.78,
+          1045.52
+        ],
+        [
+          782.78,
+          1045.52
+        ],
+        [
+          782.78,
+          1010.52
+        ]
+      ]
+    },
+    {
+      "id": 800000054,
+      "name": "Galileo Hall (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          774.56,
+          1046.18
+        ],
+        [
+          792.56,
+          1046.18
+        ],
+        [
+          792.56,
+          1076.18
+        ],
+        [
+          774.56,
+          1076.18
+        ],
+        [
+          774.56,
+          1046.18
+        ]
+      ]
+    },
+    {
+      "id": 800000055,
+      "name": "Kingston Hall (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          774.56,
+          990.91
+        ],
+        [
+          792.56,
+          990.91
+        ],
+        [
+          792.56,
+          1020.91
+        ],
+        [
+          774.56,
+          1020.91
+        ],
+        [
+          774.56,
+          990.91
+        ]
+      ]
+    },
+    {
+      "id": 800000056,
+      "name": "Platt Campus Center (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          724.97,
+          966.31
+        ],
+        [
+          749.97,
+          966.31
+        ],
+        [
+          749.97,
+          1001.31
+        ],
+        [
+          724.97,
+          1001.31
+        ],
+        [
+          724.97,
+          966.31
+        ]
+      ]
+    },
+    {
+      "id": 800000057,
+      "name": "Hoch-Shanahan Dining Commons (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 1,
+      "footprint": [
+        [
+          771.06,
+          957.75
+        ],
+        [
+          796.06,
+          957.75
+        ],
+        [
+          796.06,
+          987.75
+        ],
+        [
+          771.06,
+          987.75
+        ],
+        [
+          771.06,
+          957.75
+        ]
+      ]
+    },
+    {
+      "id": 800000058,
+      "name": "Thomas-Garrett Hall (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          699.81,
+          957.75
+        ],
+        [
+          719.81,
+          957.75
+        ],
+        [
+          719.81,
+          987.75
+        ],
+        [
+          699.81,
+          987.75
+        ],
+        [
+          699.81,
+          957.75
+        ]
+      ]
+    },
+    {
+      "id": 800000059,
+      "name": "Drinkward Recital Hall (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          739.19,
+          949.2
+        ],
+        [
+          754.19,
+          949.2
+        ],
+        [
+          754.19,
+          974.2
+        ],
+        [
+          739.19,
+          974.2
+        ],
+        [
+          739.19,
+          949.2
+        ]
+      ]
+    },
+    {
+      "id": 800000060,
+      "name": "Linde Activities Center (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          713.25,
+          1052.24
+        ],
+        [
+          743.25,
+          1052.24
+        ],
+        [
+          743.25,
+          1092.24
+        ],
+        [
+          713.25,
+          1092.24
+        ],
+        [
+          713.25,
+          1052.24
+        ]
+      ]
+    },
+    {
+      "id": 800000061,
+      "name": "East Dorm (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 3,
+      "footprint": [
+        [
+          818.65,
+          983.41
+        ],
+        [
+          840.65,
+          983.41
+        ],
+        [
+          840.65,
+          1028.41
+        ],
+        [
+          818.65,
+          1028.41
+        ],
+        [
+          818.65,
+          983.41
+        ]
+      ]
+    },
+    {
+      "id": 800000062,
+      "name": "West Dorm (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 3,
+      "footprint": [
+        [
+          671.16,
+          1049.74
+        ],
+        [
+          693.16,
+          1049.74
+        ],
+        [
+          693.16,
+          1094.74
+        ],
+        [
+          671.16,
+          1094.74
+        ],
+        [
+          671.16,
+          1049.74
+        ]
+      ]
+    },
+    {
+      "id": 800000063,
+      "name": "North Dorm (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 3,
+      "footprint": [
+        [
+          726.47,
+          1082.9
+        ],
+        [
+          748.47,
+          1082.9
+        ],
+        [
+          748.47,
+          1127.9
+        ],
+        [
+          726.47,
+          1127.9
+        ],
+        [
+          726.47,
+          1082.9
+        ]
+      ]
+    },
+    {
+      "id": 800000064,
+      "name": "South Dorm (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 3,
+      "footprint": [
+        [
+          726.47,
+          930.64
+        ],
+        [
+          748.47,
+          930.64
+        ],
+        [
+          748.47,
+          970.64
+        ],
+        [
+          726.47,
+          970.64
+        ],
+        [
+          726.47,
+          930.64
+        ]
+      ]
+    },
+    {
+      "id": 800000065,
+      "name": "Sontag Dorm (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 3,
+      "footprint": [
+        [
+          782.78,
+          933.14
+        ],
+        [
+          802.78,
+          933.14
+        ],
+        [
+          802.78,
+          968.14
+        ],
+        [
+          782.78,
+          968.14
+        ],
+        [
+          782.78,
+          933.14
+        ]
+      ]
+    },
+    {
+      "id": 800000066,
+      "name": "McGregor Computer Science Center (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          728.47,
+          1024.08
+        ],
+        [
+          746.47,
+          1024.08
+        ],
+        [
+          746.47,
+          1054.08
+        ],
+        [
+          728.47,
+          1054.08
+        ],
+        [
+          728.47,
+          1024.08
+        ]
+      ]
+    },
+    {
+      "id": 800000067,
+      "name": "Balch Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          641.58,
+          708.1
+        ],
+        [
+          663.5,
+          706.19
+        ],
+        [
+          667.42,
+          751.02
+        ],
+        [
+          645.5,
+          752.93
+        ],
+        [
+          641.58,
+          708.1
+        ]
+      ]
+    },
+    {
+      "id": 800000068,
+      "name": "Vita Nova Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          679.89,
+          679.84
+        ],
+        [
+          699.82,
+          678.1
+        ],
+        [
+          702.87,
+          712.96
+        ],
+        [
+          682.94,
+          714.7
+        ],
+        [
+          679.89,
+          679.84
+        ]
+      ]
+    },
+    {
+      "id": 800000069,
+      "name": "Lang Art Building (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          633.79,
+          657.73
+        ],
+        [
+          653.72,
+          655.99
+        ],
+        [
+          656.77,
+          690.85
+        ],
+        [
+          636.84,
+          692.59
+        ],
+        [
+          633.79,
+          657.73
+        ]
+      ]
+    },
+    {
+      "id": 800000070,
+      "name": "Williamson Gallery (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 1,
+      "footprint": [
+        [
+          607.57,
+          651.57
+        ],
+        [
+          625.51,
+          650.0
+        ],
+        [
+          627.69,
+          674.91
+        ],
+        [
+          609.75,
+          676.48
+        ],
+        [
+          607.57,
+          651.57
+        ]
+      ]
+    },
+    {
+      "id": 800000071,
+      "name": "Steele Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          687.89,
+          743.76
+        ],
+        [
+          709.81,
+          741.85
+        ],
+        [
+          713.29,
+          781.7
+        ],
+        [
+          691.37,
+          783.61
+        ],
+        [
+          687.89,
+          743.76
+        ]
+      ]
+    },
+    {
+      "id": 800000072,
+      "name": "Keck Science Center",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 14.0,
+      "levels": 3,
+      "footprint": [
+        [
+          722.47,
+          768.39
+        ],
+        [
+          752.47,
+          768.39
+        ],
+        [
+          752.47,
+          823.39
+        ],
+        [
+          722.47,
+          823.39
+        ],
+        [
+          722.47,
+          768.39
+        ]
+      ]
+    },
+    {
+      "id": 800000073,
+      "name": "Malott Commons (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          726.47,
+          689.96
+        ],
+        [
+          748.47,
+          689.96
+        ],
+        [
+          748.47,
+          724.96
+        ],
+        [
+          726.47,
+          724.96
+        ],
+        [
+          726.47,
+          689.96
+        ]
+      ]
+    },
+    {
+      "id": 800000074,
+      "name": "Seal Court (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          674.69,
+          699.89
+        ],
+        [
+          704.58,
+          697.28
+        ],
+        [
+          708.07,
+          737.13
+        ],
+        [
+          678.18,
+          739.74
+        ],
+        [
+          674.69,
+          699.89
+        ]
+      ]
+    },
+    {
+      "id": 800000075,
+      "name": "Denison Library (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          635.01,
+          682.24
+        ],
+        [
+          652.94,
+          680.67
+        ],
+        [
+          655.55,
+          710.56
+        ],
+        [
+          637.62,
+          712.13
+        ],
+        [
+          635.01,
+          682.24
+        ]
+      ]
+    },
+    {
+      "id": 800000076,
+      "name": "Performing Arts Center (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 2,
+      "footprint": [
+        [
+          677.4,
+          624.79
+        ],
+        [
+          702.31,
+          622.61
+        ],
+        [
+          705.36,
+          657.47
+        ],
+        [
+          680.45,
+          659.65
+        ],
+        [
+          677.4,
+          624.79
+        ]
+      ]
+    },
+    {
+      "id": 800000077,
+      "name": "Humanities Building (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          652.23,
+          724.06
+        ],
+        [
+          672.16,
+          722.32
+        ],
+        [
+          675.21,
+          757.18
+        ],
+        [
+          655.28,
+          758.92
+        ],
+        [
+          652.23,
+          724.06
+        ]
+      ]
+    },
+    {
+      "id": 800000078,
+      "name": "Browning Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          642.02,
+          757.31
+        ],
+        [
+          663.93,
+          755.39
+        ],
+        [
+          666.98,
+          790.25
+        ],
+        [
+          645.07,
+          792.17
+        ],
+        [
+          642.02,
+          757.31
+        ]
+      ]
+    },
+    {
+      "id": 800000079,
+      "name": "Toll Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          605.15,
+          746.26
+        ],
+        [
+          627.06,
+          744.34
+        ],
+        [
+          630.11,
+          779.2
+        ],
+        [
+          608.2,
+          781.12
+        ],
+        [
+          605.15,
+          746.26
+        ]
+      ]
+    },
+    {
+      "id": 800000080,
+      "name": "Dorsey Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          578.7,
+          737.6
+        ],
+        [
+          598.62,
+          735.86
+        ],
+        [
+          601.24,
+          765.74
+        ],
+        [
+          581.32,
+          767.48
+        ],
+        [
+          578.7,
+          737.6
+        ]
+      ]
+    },
+    {
+      "id": 800000081,
+      "name": "Clark Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          719.25,
+          659.29
+        ],
+        [
+          737.25,
+          659.29
+        ],
+        [
+          737.25,
+          689.29
+        ],
+        [
+          719.25,
+          689.29
+        ],
+        [
+          719.25,
+          659.29
+        ]
+      ]
+    },
+    {
+      "id": 800000082,
+      "name": "Frankel Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          746.9,
+          637.19
+        ],
+        [
+          764.9,
+          637.19
+        ],
+        [
+          764.9,
+          667.19
+        ],
+        [
+          746.9,
+          667.19
+        ],
+        [
+          746.9,
+          637.19
+        ]
+      ]
+    },
+    {
+      "id": 800000083,
+      "name": "Routt Hall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          765.34,
+          670.35
+        ],
+        [
+          783.34,
+          670.35
+        ],
+        [
+          783.34,
+          700.35
+        ],
+        [
+          765.34,
+          700.35
+        ],
+        [
+          765.34,
+          670.35
+        ]
+      ]
+    },
+    {
+      "id": 800000084,
+      "name": "Edwards Humanities Center (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          662.67,
+          649.08
+        ],
+        [
+          680.6,
+          647.51
+        ],
+        [
+          683.21,
+          677.4
+        ],
+        [
+          665.28,
+          678.97
+        ],
+        [
+          662.67,
+          649.08
+        ]
+      ]
+    },
+    {
+      "id": 800000085,
+      "name": "Gabriella Scripps Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          717.25,
+          612.58
+        ],
+        [
+          739.25,
+          612.58
+        ],
+        [
+          739.25,
+          647.58
+        ],
+        [
+          717.25,
+          647.58
+        ],
+        [
+          717.25,
+          612.58
+        ]
+      ]
+    },
+    {
+      "id": 800000086,
+      "name": "Scott Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1091.53,
+          828.99
+        ],
+        [
+          1112.78,
+          834.69
+        ],
+        [
+          1102.43,
+          873.33
+        ],
+        [
+          1081.18,
+          867.63
+        ],
+        [
+          1091.53,
+          828.99
+        ]
+      ]
+    },
+    {
+      "id": 800000087,
+      "name": "Avery Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1054.98,
+          853.78
+        ],
+        [
+          1074.3,
+          858.95
+        ],
+        [
+          1065.24,
+          892.76
+        ],
+        [
+          1045.92,
+          887.59
+        ],
+        [
+          1054.98,
+          853.78
+        ]
+      ]
+    },
+    {
+      "id": 800000088,
+      "name": "Fletcher Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1128.73,
+          820.61
+        ],
+        [
+          1148.05,
+          825.78
+        ],
+        [
+          1138.99,
+          859.59
+        ],
+        [
+          1119.67,
+          854.42
+        ],
+        [
+          1128.73,
+          820.61
+        ]
+      ]
+    },
+    {
+      "id": 800000089,
+      "name": "McConnell Center (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1097.36,
+          785.07
+        ],
+        [
+          1121.98,
+          789.41
+        ],
+        [
+          1115.04,
+          828.81
+        ],
+        [
+          1090.42,
+          824.47
+        ],
+        [
+          1097.36,
+          785.07
+        ]
+      ]
+    },
+    {
+      "id": 800000090,
+      "name": "Gold Student Center (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1052.87,
+          801.49
+        ],
+        [
+          1072.56,
+          804.96
+        ],
+        [
+          1067.35,
+          834.51
+        ],
+        [
+          1047.66,
+          831.04
+        ],
+        [
+          1052.87,
+          801.49
+        ]
+      ]
+    },
+    {
+      "id": 800000091,
+      "name": "Broad Center (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1107.88,
+          875.23
+        ],
+        [
+          1132.02,
+          881.7
+        ],
+        [
+          1122.96,
+          915.51
+        ],
+        [
+          1098.82,
+          909.04
+        ],
+        [
+          1107.88,
+          875.23
+        ]
+      ]
+    },
+    {
+      "id": 800000092,
+      "name": "Kaleidoscope Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1147.48,
+          856.45
+        ],
+        [
+          1164.87,
+          861.11
+        ],
+        [
+          1157.1,
+          890.09
+        ],
+        [
+          1139.71,
+          885.43
+        ],
+        [
+          1147.48,
+          856.45
+        ]
+      ]
+    },
+    {
+      "id": 800000093,
+      "name": "Pitzer Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1165.6,
+          809.56
+        ],
+        [
+          1184.92,
+          814.73
+        ],
+        [
+          1175.86,
+          848.54
+        ],
+        [
+          1156.54,
+          843.37
+        ],
+        [
+          1165.6,
+          809.56
+        ]
+      ]
+    },
+    {
+      "id": 800000094,
+      "name": "Sanborn Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1007.21,
+          865.35
+        ],
+        [
+          1026.91,
+          868.82
+        ],
+        [
+          1020.83,
+          903.29
+        ],
+        [
+          1001.13,
+          899.82
+        ],
+        [
+          1007.21,
+          865.35
+        ]
+      ]
+    },
+    {
+      "id": 800000095,
+      "name": "Holden Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          988.34,
+          845.7
+        ],
+        [
+          1008.03,
+          849.17
+        ],
+        [
+          1002.82,
+          878.72
+        ],
+        [
+          983.13,
+          875.25
+        ],
+        [
+          988.34,
+          845.7
+        ]
+      ]
+    },
+    {
+      "id": 800000096,
+      "name": "Mead Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1025.65,
+          887.46
+        ],
+        [
+          1045.35,
+          890.93
+        ],
+        [
+          1039.27,
+          925.4
+        ],
+        [
+          1019.57,
+          921.93
+        ],
+        [
+          1025.65,
+          887.46
+        ]
+      ]
+    },
+    {
+      "id": 800000097,
+      "name": "Atherton Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1062.09,
+          900.97
+        ],
+        [
+          1081.78,
+          904.44
+        ],
+        [
+          1076.57,
+          933.99
+        ],
+        [
+          1056.88,
+          930.52
+        ],
+        [
+          1062.09,
+          900.97
+        ]
+      ]
+    },
+    {
+      "id": 800000098,
+      "name": "East Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1147.16,
+          765.34
+        ],
+        [
+          1166.48,
+          770.51
+        ],
+        [
+          1157.42,
+          804.32
+        ],
+        [
+          1138.1,
+          799.15
+        ],
+        [
+          1147.16,
+          765.34
+        ]
+      ]
+    },
+    {
+      "id": 800000099,
+      "name": "West Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1043.65,
+          779.38
+        ],
+        [
+          1063.34,
+          782.85
+        ],
+        [
+          1058.13,
+          812.4
+        ],
+        [
+          1038.44,
+          808.93
+        ],
+        [
+          1043.65,
+          779.38
+        ]
+      ]
+    },
+    {
+      "id": 800000100,
+      "name": "Bernard Hall (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1092.17,
+          756.96
+        ],
+        [
+          1109.56,
+          761.62
+        ],
+        [
+          1101.79,
+          790.6
+        ],
+        [
+          1084.4,
+          785.94
+        ],
+        [
+          1092.17,
+          756.96
+        ]
+      ]
+    },
+    {
+      "id": 800000101,
+      "name": "Pitzer Mounds (Robert Redford Conservancy)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 6.0,
+      "levels": 1,
+      "footprint": [
+        [
+          1141.21,
+          913.33
+        ],
+        [
+          1175.02,
+          922.39
+        ],
+        [
+          1163.37,
+          965.85
+        ],
+        [
+          1129.56,
+          956.79
+        ],
+        [
+          1141.21,
+          913.33
+        ]
+      ]
+    },
+    {
+      "id": 800000102,
+      "name": "Harper Hall (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          383.69,
+          390.03
+        ],
+        [
+          405.61,
+          388.12
+        ],
+        [
+          409.09,
+          427.97
+        ],
+        [
+          387.17,
+          429.88
+        ],
+        [
+          383.69,
+          390.03
+        ]
+      ]
+    },
+    {
+      "id": 800000103,
+      "name": "Burkle Hall (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          422.99,
+          372.73
+        ],
+        [
+          440.92,
+          371.16
+        ],
+        [
+          443.53,
+          401.05
+        ],
+        [
+          425.6,
+          402.62
+        ],
+        [
+          422.99,
+          372.73
+        ]
+      ]
+    },
+    {
+      "id": 800000104,
+      "name": "McManus Hall (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          421.77,
+          414.55
+        ],
+        [
+          441.7,
+          412.81
+        ],
+        [
+          444.75,
+          447.67
+        ],
+        [
+          424.82,
+          449.41
+        ],
+        [
+          421.77,
+          414.55
+        ]
+      ]
+    },
+    {
+      "id": 800000105,
+      "name": "Stauffer Hall (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          384.9,
+          436.65
+        ],
+        [
+          404.83,
+          434.91
+        ],
+        [
+          407.88,
+          469.77
+        ],
+        [
+          387.95,
+          471.51
+        ],
+        [
+          384.9,
+          436.65
+        ]
+      ]
+    },
+    {
+      "id": 800000106,
+      "name": "Albrecht Auditorium (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          348.25,
+          383.87
+        ],
+        [
+          368.17,
+          382.13
+        ],
+        [
+          370.79,
+          412.01
+        ],
+        [
+          350.87,
+          413.75
+        ],
+        [
+          348.25,
+          383.87
+        ]
+      ]
+    },
+    {
+      "id": 800000107,
+      "name": "CGU Admissions & Financial Aid",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          369.39,
+          352.98
+        ],
+        [
+          384.33,
+          351.67
+        ],
+        [
+          386.51,
+          376.58
+        ],
+        [
+          371.57,
+          377.89
+        ],
+        [
+          369.39,
+          352.98
+        ]
+      ]
+    },
+    {
+      "id": 800000108,
+      "name": "School of Arts & Humanities (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          450.65,
+          405.89
+        ],
+        [
+          468.58,
+          404.32
+        ],
+        [
+          471.19,
+          434.21
+        ],
+        [
+          453.26,
+          435.78
+        ],
+        [
+          450.65,
+          405.89
+        ]
+      ]
+    },
+    {
+      "id": 800000109,
+      "name": "Drucker School of Management (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          448.22,
+          423.19
+        ],
+        [
+          470.14,
+          421.28
+        ],
+        [
+          473.62,
+          461.13
+        ],
+        [
+          451.7,
+          463.04
+        ],
+        [
+          448.22,
+          423.19
+        ]
+      ]
+    },
+    {
+      "id": 800000110,
+      "name": "CGU Library",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          358.46,
+          416.95
+        ],
+        [
+          376.39,
+          415.38
+        ],
+        [
+          379.0,
+          445.27
+        ],
+        [
+          361.07,
+          446.84
+        ],
+        [
+          358.46,
+          416.95
+        ]
+      ]
+    },
+    {
+      "id": 800000111,
+      "name": "Center for Information Systems & Technology (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          432.29,
+          451.11
+        ],
+        [
+          450.23,
+          449.54
+        ],
+        [
+          452.67,
+          477.43
+        ],
+        [
+          434.73,
+          479.0
+        ],
+        [
+          432.29,
+          451.11
+        ]
+      ]
+    },
+    {
+      "id": 800000112,
+      "name": "Pegasus Plaza (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          383.89,
+          407.55
+        ],
+        [
+          408.89,
+          407.55
+        ],
+        [
+          408.89,
+          432.55
+        ],
+        [
+          383.89,
+          432.55
+        ],
+        [
+          383.89,
+          407.55
+        ]
+      ]
+    },
+    {
+      "id": 800000113,
+      "name": "KGI Main Building",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          400.42,
+          531.38
+        ],
+        [
+          425.32,
+          529.2
+        ],
+        [
+          429.24,
+          574.02
+        ],
+        [
+          404.34,
+          576.2
+        ],
+        [
+          400.42,
+          531.38
+        ]
+      ]
+    },
+    {
+      "id": 800000114,
+      "name": "KGI Pharmacy Building",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          430.99,
+          558.25
+        ],
+        [
+          450.92,
+          556.51
+        ],
+        [
+          453.97,
+          591.37
+        ],
+        [
+          434.04,
+          593.11
+        ],
+        [
+          430.99,
+          558.25
+        ]
+      ]
+    },
+    {
+      "id": 800000115,
+      "name": "KGI Henry Riggs Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          431.21,
+          516.52
+        ],
+        [
+          451.13,
+          514.78
+        ],
+        [
+          453.75,
+          544.66
+        ],
+        [
+          433.83,
+          546.4
+        ],
+        [
+          431.21,
+          516.52
+        ]
+      ]
+    },
+    {
+      "id": 800000116,
+      "name": "KGI Student Commons",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          377.11,
+          529.98
+        ],
+        [
+          395.05,
+          528.41
+        ],
+        [
+          397.23,
+          553.32
+        ],
+        [
+          379.29,
+          554.89
+        ],
+        [
+          377.11,
+          529.98
+        ]
+      ]
+    },
+    {
+      "id": 800000117,
+      "name": "KGI Research Labs",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          459.87,
+          549.59
+        ],
+        [
+          477.8,
+          548.02
+        ],
+        [
+          480.41,
+          577.91
+        ],
+        [
+          462.48,
+          579.48
+        ],
+        [
+          459.87,
+          549.59
+        ]
+      ]
+    },
+    {
+      "id": 800000118,
+      "name": "Honnold-Mudd Library",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 14.0,
+      "levels": 3,
+      "footprint": [
+        [
+          579.36,
+          449.45
+        ],
+        [
+          614.23,
+          446.4
+        ],
+        [
+          619.02,
+          501.19
+        ],
+        [
+          584.15,
+          504.24
+        ],
+        [
+          579.36,
+          449.45
+        ]
+      ]
+    },
+    {
+      "id": 800000119,
+      "name": "The Claremont Colleges Services (TCCS)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          531.18,
+          478.46
+        ],
+        [
+          553.1,
+          476.55
+        ],
+        [
+          556.58,
+          516.4
+        ],
+        [
+          534.66,
+          518.31
+        ],
+        [
+          531.18,
+          478.46
+        ]
+      ]
+    },
+    {
+      "id": 800000120,
+      "name": "Pendleton Business Building",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          587.7,
+          491.92
+        ],
+        [
+          607.63,
+          490.18
+        ],
+        [
+          610.68,
+          525.04
+        ],
+        [
+          590.75,
+          526.78
+        ],
+        [
+          587.7,
+          491.92
+        ]
+      ]
+    },
+    {
+      "id": 800000121,
+      "name": "McAlister Center",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          496.95,
+          474.71
+        ],
+        [
+          514.89,
+          473.14
+        ],
+        [
+          517.07,
+          498.05
+        ],
+        [
+          499.13,
+          499.62
+        ],
+        [
+          496.95,
+          474.71
+        ]
+      ]
+    },
+    {
+      "id": 800000122,
+      "name": "Huntley Bookstore",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          532.83,
+          452.69
+        ],
+        [
+          552.75,
+          450.95
+        ],
+        [
+          554.93,
+          475.85
+        ],
+        [
+          535.01,
+          477.59
+        ],
+        [
+          532.83,
+          452.69
+        ]
+      ]
+    },
+    {
+      "id": 800000123,
+      "name": "Ducey Gymnasium",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 2,
+      "footprint": [
+        [
+          630.28,
+          585.47
+        ],
+        [
+          660.28,
+          585.47
+        ],
+        [
+          660.28,
+          630.47
+        ],
+        [
+          630.28,
+          630.47
+        ],
+        [
+          630.28,
+          585.47
+        ]
+      ]
+    },
+    {
+      "id": 800000124,
+      "name": "Axelrood Pool",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 4.0,
+      "levels": 1,
+      "footprint": [
+        [
+          660.44,
+          612.58
+        ],
+        [
+          685.44,
+          612.58
+        ],
+        [
+          685.44,
+          647.58
+        ],
+        [
+          660.44,
+          647.58
+        ],
+        [
+          660.44,
+          612.58
+        ]
+      ]
+    },
+    {
+      "id": 800000125,
+      "name": "Zinda Tennis Center",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 4.0,
+      "levels": 1,
+      "footprint": [
+        [
+          768.56,
+          640.74
+        ],
+        [
+          798.56,
+          640.74
+        ],
+        [
+          798.56,
+          685.74
+        ],
+        [
+          768.56,
+          685.74
+        ],
+        [
+          768.56,
+          640.74
+        ]
+      ]
+    },
+    {
+      "id": 800000126,
+      "name": "Stag Field (CMS)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          843.24,
+          613.24
+        ],
+        [
+          908.24,
+          613.24
+        ],
+        [
+          908.24,
+          713.24
+        ],
+        [
+          843.24,
+          713.24
+        ],
+        [
+          843.24,
+          613.24
+        ]
+      ]
+    },
+    {
+      "id": 800000127,
+      "name": "Alumni Field (CMS)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          891.83,
+          562.97
+        ],
+        [
+          951.83,
+          562.97
+        ],
+        [
+          951.83,
+          652.97
+        ],
+        [
+          891.83,
+          652.97
+        ],
+        [
+          891.83,
+          562.97
+        ]
+      ]
+    },
+    {
+      "id": 800000128,
+      "name": "Garrison Theater",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 2,
+      "footprint": [
+        [
+          632.8,
+          492.01
+        ],
+        [
+          654.71,
+          490.09
+        ],
+        [
+          657.76,
+          524.95
+        ],
+        [
+          635.85,
+          526.87
+        ],
+        [
+          632.8,
+          492.01
+        ]
+      ]
+    },
+    {
+      "id": 800000129,
+      "name": "Mgrublian Hall of Science",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          634.01,
+          527.58
+        ],
+        [
+          653.93,
+          525.84
+        ],
+        [
+          656.55,
+          555.72
+        ],
+        [
+          636.63,
+          557.46
+        ],
+        [
+          634.01,
+          527.58
+        ]
+      ]
+    },
+    {
+      "id": 800000130,
+      "name": "Tranquada Student Services Center",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          552.13,
+          473.22
+        ],
+        [
+          570.07,
+          471.65
+        ],
+        [
+          572.51,
+          499.54
+        ],
+        [
+          554.57,
+          501.11
+        ],
+        [
+          552.13,
+          473.22
+        ]
+      ]
+    },
+    {
+      "id": 800000131,
+      "name": "Baxter Lecture Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 1,
+      "footprint": [
+        [
+          616.79,
+          485.76
+        ],
+        [
+          634.73,
+          484.19
+        ],
+        [
+          636.91,
+          509.1
+        ],
+        [
+          618.97,
+          510.67
+        ],
+        [
+          616.79,
+          485.76
+        ]
+      ]
+    },
+    {
+      "id": 800000132,
+      "name": "Claremont Colleges Library South",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          587.92,
+          439.14
+        ],
+        [
+          607.84,
+          437.4
+        ],
+        [
+          610.46,
+          467.28
+        ],
+        [
+          590.54,
+          469.02
+        ],
+        [
+          587.92,
+          439.14
+        ]
+      ]
+    },
+    {
+      "id": 800000133,
+      "name": "Claremont School of Theology",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          326.88,
+          279.63
+        ],
+        [
+          351.79,
+          277.45
+        ],
+        [
+          355.28,
+          317.29
+        ],
+        [
+          330.37,
+          319.47
+        ],
+        [
+          326.88,
+          279.63
+        ]
+      ]
+    },
+    {
+      "id": 800000134,
+      "name": "CST Chapel",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 1,
+      "footprint": [
+        [
+          293.94,
+          295.35
+        ],
+        [
+          311.87,
+          293.78
+        ],
+        [
+          314.48,
+          323.67
+        ],
+        [
+          296.55,
+          325.24
+        ],
+        [
+          293.94,
+          295.35
+        ]
+      ]
+    },
+    {
+      "id": 900000001,
+      "name": "Sontag Greek Theatre",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 4.0,
+      "levels": 1,
+      "footprint": [
+        [
+          561.58,
+          58.98
+        ],
+        [
+          596.45,
+          55.93
+        ],
+        [
+          599.93,
+          95.78
+        ],
+        [
+          565.07,
+          98.83
+        ],
+        [
+          561.58,
+          58.98
+        ]
+      ]
+    },
+    {
+      "id": 900000002,
+      "name": "Haldeman Pool",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 2.0,
+      "levels": 1,
+      "footprint": [
+        [
+          273.27,
+          85.54
+        ],
+        [
+          298.27,
+          85.54
+        ],
+        [
+          298.27,
+          135.54
+        ],
+        [
+          273.27,
+          135.54
+        ],
+        [
+          273.27,
+          85.54
+        ]
+      ]
+    },
+    {
+      "id": 900000003,
+      "name": "Rembrandt Hall",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          679.89,
+          160.3
+        ],
+        [
+          699.81,
+          158.56
+        ],
+        [
+          702.86,
+          193.43
+        ],
+        [
+          682.94,
+          195.17
+        ],
+        [
+          679.89,
+          160.3
+        ]
+      ]
+    },
+    {
+      "id": 900000004,
+      "name": "Margaret Fowler Garden",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          517.98,
+          688.84
+        ],
+        [
+          547.86,
+          686.22
+        ],
+        [
+          551.35,
+          726.07
+        ],
+        [
+          521.46,
+          728.69
+        ],
+        [
+          517.98,
+          688.84
+        ]
+      ]
+    },
+    {
+      "id": 900000005,
+      "name": "Graffiti Wall (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 3.0,
+      "levels": 1,
+      "footprint": [
+        [
+          522.86,
+          661.97
+        ],
+        [
+          525.85,
+          661.71
+        ],
+        [
+          528.03,
+          686.62
+        ],
+        [
+          525.04,
+          686.88
+        ],
+        [
+          522.86,
+          661.97
+        ]
+      ]
+    },
+    {
+      "id": 900000006,
+      "name": "Revelle Commons (Scripps)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          589.19,
+          612.58
+        ],
+        [
+          609.19,
+          612.58
+        ],
+        [
+          609.19,
+          647.58
+        ],
+        [
+          589.19,
+          647.58
+        ],
+        [
+          589.19,
+          612.58
+        ]
+      ]
+    },
+    {
+      "id": 900000007,
+      "name": "Grove House (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          1111.41,
+          826.09
+        ],
+        [
+          1125.9,
+          829.97
+        ],
+        [
+          1119.43,
+          854.12
+        ],
+        [
+          1104.94,
+          850.24
+        ],
+        [
+          1111.41,
+          826.09
+        ]
+      ]
+    },
+    {
+      "id": 900000008,
+      "name": "The Nucleus (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          1070.53,
+          734.7
+        ],
+        [
+          1099.51,
+          742.46
+        ],
+        [
+          1086.57,
+          790.76
+        ],
+        [
+          1057.59,
+          782.99
+        ],
+        [
+          1070.53,
+          734.7
+        ]
+      ]
+    },
+    {
+      "id": 900000009,
+      "name": "Benson Auditorium (Pitzer)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 1,
+      "footprint": [
+        [
+          1064.52,
+          867.5
+        ],
+        [
+          1081.9,
+          872.16
+        ],
+        [
+          1074.14,
+          901.14
+        ],
+        [
+          1056.75,
+          896.48
+        ],
+        [
+          1064.52,
+          867.5
+        ]
+      ]
+    },
+    {
+      "id": 900000010,
+      "name": "Libra Complex (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 12.0,
+      "levels": 3,
+      "footprint": [
+        [
+          804.65,
+          970.91
+        ],
+        [
+          854.65,
+          970.91
+        ],
+        [
+          854.65,
+          1040.91
+        ],
+        [
+          804.65,
+          1040.91
+        ],
+        [
+          804.65,
+          970.91
+        ]
+      ]
+    },
+    {
+      "id": 900000011,
+      "name": "Jacobs Science Center (HMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          709.03,
+          1021.58
+        ],
+        [
+          729.03,
+          1021.58
+        ],
+        [
+          729.03,
+          1056.58
+        ],
+        [
+          709.03,
+          1056.58
+        ],
+        [
+          709.03,
+          1021.58
+        ]
+      ]
+    },
+    {
+      "id": 900000012,
+      "name": "Emett Student Center (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          913.4,
+          512.29
+        ],
+        [
+          933.32,
+          514.03
+        ],
+        [
+          930.27,
+          548.9
+        ],
+        [
+          910.35,
+          547.15
+        ],
+        [
+          913.4,
+          512.29
+        ]
+      ]
+    },
+    {
+      "id": 900000013,
+      "name": "Flamson Plaza (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          883.4,
+          472.43
+        ],
+        [
+          923.4,
+          472.43
+        ],
+        [
+          923.4,
+          522.43
+        ],
+        [
+          883.4,
+          522.43
+        ],
+        [
+          883.4,
+          472.43
+        ]
+      ]
+    },
+    {
+      "id": 900000014,
+      "name": "Mgrublian Center for Human Rights (CMC)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          961.54,
+          495.38
+        ],
+        [
+          976.49,
+          496.69
+        ],
+        [
+          974.31,
+          521.59
+        ],
+        [
+          959.37,
+          520.28
+        ],
+        [
+          961.54,
+          495.38
+        ]
+      ]
+    },
+    {
+      "id": 900000015,
+      "name": "Botany Building (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 8.0,
+      "levels": 2,
+      "footprint": [
+        [
+          433.92,
+          452.47
+        ],
+        [
+          448.86,
+          451.16
+        ],
+        [
+          451.04,
+          476.07
+        ],
+        [
+          436.1,
+          477.37
+        ],
+        [
+          433.92,
+          452.47
+        ]
+      ]
+    },
+    {
+      "id": 900000016,
+      "name": "DesCombes Family Quadrangle (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 0.3,
+      "levels": 1,
+      "footprint": [
+        [
+          394.83,
+          395.05
+        ],
+        [
+          434.83,
+          395.05
+        ],
+        [
+          434.83,
+          445.05
+        ],
+        [
+          394.83,
+          445.05
+        ],
+        [
+          394.83,
+          395.05
+        ]
+      ]
+    },
+    {
+      "id": 900000017,
+      "name": "Yuhaaviatam Center for Health Studies (CGU)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          474.38,
+          423.33
+        ],
+        [
+          499.28,
+          421.15
+        ],
+        [
+          502.77,
+          460.99
+        ],
+        [
+          477.86,
+          463.17
+        ],
+        [
+          474.38,
+          423.33
+        ]
+      ]
+    },
+    {
+      "id": 900000018,
+      "name": "KGI Minerva Building",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          455.72,
+          553.48
+        ],
+        [
+          480.63,
+          551.3
+        ],
+        [
+          484.55,
+          596.13
+        ],
+        [
+          459.64,
+          598.31
+        ],
+        [
+          455.72,
+          553.48
+        ]
+      ]
+    },
+    {
+      "id": 900000019,
+      "name": "KGI Oasis Commons East",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 16.0,
+      "levels": 4,
+      "footprint": [
+        [
+          418.41,
+          559.56
+        ],
+        [
+          443.32,
+          557.38
+        ],
+        [
+          448.11,
+          612.17
+        ],
+        [
+          423.21,
+          614.35
+        ],
+        [
+          418.41,
+          559.56
+        ]
+      ]
+    },
+    {
+      "id": 900000020,
+      "name": "KGI Oasis Commons West",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 16.0,
+      "levels": 4,
+      "footprint": [
+        [
+          381.54,
+          570.61
+        ],
+        [
+          406.44,
+          568.43
+        ],
+        [
+          411.24,
+          623.22
+        ],
+        [
+          386.33,
+          625.4
+        ],
+        [
+          381.54,
+          570.61
+        ]
+      ]
+    },
+    {
+      "id": 900000021,
+      "name": "Technip Building (KGI)",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          492.38,
+          539.94
+        ],
+        [
+          517.28,
+          537.76
+        ],
+        [
+          521.64,
+          587.57
+        ],
+        [
+          496.74,
+          589.75
+        ],
+        [
+          492.38,
+          539.94
+        ]
+      ]
+    },
+    {
+      "id": 900000022,
+      "name": "EmPOWER Center",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 6.0,
+      "levels": 1,
+      "footprint": [
+        [
+          518.6,
+          476.94
+        ],
+        [
+          530.55,
+          475.89
+        ],
+        [
+          532.29,
+          495.82
+        ],
+        [
+          520.34,
+          496.86
+        ],
+        [
+          518.6,
+          476.94
+        ]
+      ]
+    },
+    {
+      "id": 900000023,
+      "name": "Campus Safety Building",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 6.0,
+      "levels": 1,
+      "footprint": [
+        [
+          572.2,
+          463.52
+        ],
+        [
+          587.14,
+          462.22
+        ],
+        [
+          589.32,
+          487.12
+        ],
+        [
+          574.37,
+          488.43
+        ],
+        [
+          572.2,
+          463.52
+        ]
+      ]
+    },
+    {
+      "id": 900000024,
+      "name": "Claremont University Consortium Office",
+      "type": "college",
+      "shop": "",
+      "amenity": "",
+      "cuisine": "",
+      "address": "",
+      "height": 10.0,
+      "levels": 2,
+      "footprint": [
+        [
+          569.05,
+          478.38
+        ],
+        [
+          588.97,
+          476.63
+        ],
+        [
+          592.46,
+          516.48
+        ],
+        [
+          572.54,
+          518.23
+        ],
+        [
+          569.05,
+          478.38
         ]
       ]
     }

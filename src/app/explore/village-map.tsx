@@ -106,7 +106,7 @@ const LEGEND_ITEMS = [
   { color: '#A855F7', label: 'Entertainment' },
   { color: '#34D399', label: 'Culture' },
   { color: '#60A5FA', label: 'Hospitality' },
-  { color: '#F472B6', label: 'Community' },
+  { color: '#F472B6', label: 'Education' },
   { color: '#9CA3AF', label: 'Services' },
   { color: '#A78BFA', label: 'Residential' },
 ];
@@ -539,11 +539,11 @@ export default function VillageMap() {
       map = new maplibregl.Map({
         container: mapContainerRef.current!,
         style: MAP_STYLE,
-        center: [CENTER_LNG, CENTER_LAT],
-        zoom: 16.8,
-        pitch: 60,
+        center: [CENTER_LNG + 0.003, CENTER_LAT + 0.003],
+        zoom: 15.5,
+        pitch: 55,
         bearing: -15,
-        minZoom: 15,
+        minZoom: 13,
         maxZoom: 19,
       });
 
@@ -604,7 +604,7 @@ export default function VillageMap() {
           id: 'business-labels',
           type: 'symbol',
           source: 'businesses',
-          minzoom: 17,
+          minzoom: 15.5,
           layout: {
             'text-field': ['get', 'name'],
             'text-font': ['Noto Sans Regular'],
