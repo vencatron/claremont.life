@@ -34,6 +34,12 @@ interface MatchedDeal extends Deal {
   businessName: string;
 }
 
+interface DealPopupInfo {
+  deal: MatchedDeal;
+  x: number;
+  y: number;
+}
+
 // ─── Coordinate conversion ─────────────────────────────────────────────────
 const CENTER_LAT = 34.0965;
 const CENTER_LNG = -117.7185;
@@ -622,6 +628,231 @@ function DetailItem({ label, value, fullWidth }: { label: string; value: string;
   );
 }
 
+// ─── Deal Popup Tile ────────────────────────────────────────────────────────
+function DealPopupTile({
+  info,
+  onClose,
+}: {
+  info: DealPopupInfo;
+  onClose: () => void;
+}) {
+  const { deal, x, y } = info;
+  const catMeta = DEAL_CATEGORY_META[deal.category] || { color: '#9CA3AF', icon: '\uD83C\uDFF7\uFE0F' };
+
+  // Position tile above the dot, clamped to viewport
+  const tileW = 300;
+  const tileH = 220; // approximate
+  const pad = 16;
+  const vpW = typeof window !== 'undefined' ? window.innerWidth : 800;
+  const left = Math.max(pad, Math.min(x - tileW / 2, vpW - tileW - pad));
+  const top = Math.max(pad, y - tileH - 24);
+  // Arrow tracks the marker's x position relative to tile
+  const arrowLeft = Math.max(20, Math.min(x - left, tileW - 20));
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        left,
+        top,
+        width: tileW,
+        zIndex: 60,
+        background: 'rgba(10, 12, 18, 0.95)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderRadius: 14,
+        border: '1px solid rgba(34,197,94,0.35)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(34,197,94,0.15)',
+        color: 'white',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        animation: 'dealTileIn 0.2s ease',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Green accent bar */}
+      <div style={{ height: 3, background: 'linear-gradient(90deg, #22C55E, #10B981)' }} />
+
+      <div style={{ padding: '14px 16px 16px' }}>
+        {/* Header row */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.3, margin: 0, letterSpacing: '-0.01em' }}>
+              {deal.businessName}
+            </h3>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                marginTop: 6,
+                fontSize: 10,
+                padding: '2px 8px',
+                borderRadius: 6,
+                background: catMeta.color + '22',
+                color: catMeta.color,
+                fontWeight: 600,
+              }}
+            >
+              {catMeta.icon} {deal.category}
+            </span>
+          </div>
+          {/* Discount badge */}
+          {deal.discount_pct ? (
+            <div
+              style={{
+                flexShrink: 0,
+                padding: '6px 10px',
+                borderRadius: 10,
+                background: 'linear-gradient(135deg, #22C55E, #16A34A)',
+                color: '#000',
+                fontSize: 15,
+                fontWeight: 900,
+                lineHeight: 1,
+                textAlign: 'center',
+              }}
+            >
+              {deal.discount_pct}%
+              <div style={{ fontSize: 8, fontWeight: 700, marginTop: 1 }}>OFF</div>
+            </div>
+          ) : (
+            <div
+              style={{
+                flexShrink: 0,
+                padding: '6px 10px',
+                borderRadius: 10,
+                background: 'linear-gradient(135deg, #22C55E, #16A34A)',
+                color: '#000',
+                fontSize: 11,
+                fontWeight: 800,
+                lineHeight: 1,
+              }}
+            >
+              DEAL
+            </div>
+          )}
+          {/* Close */}
+          <button
+            onClick={onClose}
+            style={{
+              flexShrink: 0,
+              width: 22,
+              height: 22,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+              border: 'none',
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: 12,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              lineHeight: 1,
+              marginTop: -2,
+            }}
+          >
+            x
+          </button>
+        </div>
+
+        {/* Description */}
+        <p style={{
+          fontSize: 12,
+          lineHeight: 1.5,
+          color: 'rgba(255,255,255,0.7)',
+          margin: '10px 0 0',
+        }}>
+          {deal.deal_description}
+        </p>
+
+        {/* Footer: requirements + links */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginTop: 12,
+          paddingTop: 10,
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            {deal.requires_student_id && (
+              <span style={{
+                fontSize: 10,
+                padding: '2px 8px',
+                borderRadius: 6,
+                background: 'rgba(234,179,8,0.15)',
+                color: '#EAB308',
+                fontWeight: 600,
+              }}>
+                ID Required
+              </span>
+            )}
+            {deal.expiration && (
+              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
+                Exp: {deal.expiration}
+              </span>
+            )}
+          </div>
+          <div style={{ display: 'flex', gap: 6 }}>
+            {deal.website && (
+              <a
+                href={deal.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+                style={{
+                  fontSize: 10,
+                  padding: '3px 8px',
+                  borderRadius: 6,
+                  background: 'rgba(255,255,255,0.08)',
+                  color: 'rgba(255,255,255,0.7)',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                }}
+              >
+                Website
+              </a>
+            )}
+            {deal.instagram && (
+              <a
+                href={deal.instagram.startsWith('http') ? deal.instagram : `https://instagram.com/${deal.instagram.replace('@', '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+                style={{
+                  fontSize: 10,
+                  padding: '3px 8px',
+                  borderRadius: 6,
+                  background: 'rgba(255,255,255,0.08)',
+                  color: 'rgba(255,255,255,0.7)',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                }}
+              >
+                Instagram
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Arrow pointer */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: -8,
+          left: arrowLeft,
+          transform: 'translateX(-50%) rotate(45deg)',
+          width: 14,
+          height: 14,
+          background: 'rgba(10, 12, 18, 0.95)',
+          borderRight: '1px solid rgba(34,197,94,0.35)',
+          borderBottom: '1px solid rgba(34,197,94,0.35)',
+        }}
+      />
+    </div>
+  );
+}
+
 // ─── Legend Component ───────────────────────────────────────────────────────
 function MapLegend({ visible }: { visible: boolean }) {
   const [expanded, setExpanded] = useState(false);
@@ -921,6 +1152,8 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
   const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
   const [dealsVisible, setDealsVisible] = useState(true);
+  const [dealPopup, setDealPopup] = useState<DealPopupInfo | null>(null);
+  const flyToDealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Match deals to business locations (3-tier: name → address → street)
   const matchedDeals = useMemo(() => {
@@ -994,6 +1227,10 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         from { transform: translateX(100%); opacity: 0; }
         to   { transform: translateX(0);    opacity: 1; }
       }
+      @keyframes dealTileIn {
+        from { transform: translateY(8px); opacity: 0; }
+        to   { transform: translateY(0);   opacity: 1; }
+      }
       @keyframes dealPulse {
         0%   { opacity: 0.7; transform: scale(1); }
         50%  { opacity: 0.3; transform: scale(2.2); }
@@ -1010,6 +1247,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
     description: string; use: string;
   }) => {
     if (!props.name || props.name === 'Building') return;
+    setDealPopup(null); // close deal popup when opening building panel
 
     const slug = nameToSlug(props.name);
     const hasPhoto = businessData.businesses.some(
@@ -1032,12 +1270,22 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
   const handleFlyToDeal = useCallback((deal: MatchedDeal) => {
     const map = mapRef.current;
     if (!map) return;
+    if (flyToDealTimerRef.current) clearTimeout(flyToDealTimerRef.current);
     map.flyTo({
       center: deal.lngLat,
       zoom: 17.5,
       pitch: 55,
       duration: 1200,
     });
+    // Show deal popup at center of viewport after fly animation
+    flyToDealTimerRef.current = setTimeout(() => {
+      const container = map.getContainer();
+      setDealPopup({
+        deal,
+        x: container.clientWidth / 2,
+        y: container.clientHeight / 2,
+      });
+    }, 1300);
   }, []);
 
   const handleToggleDeals = useCallback(() => {
@@ -1216,28 +1464,18 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
             },
           });
 
-          // Click on deal markers
+          // Click on deal markers → show deal popup tile
           map.on('click', 'deal-markers', (e) => {
             if (!e.features?.length) return;
             const props = e.features[0].properties;
             if (!props) return;
             const bizName = props.businessName || props.name;
-            // Find the matching building and open the detail panel
-            const biz = businessData.businesses.find(b => b.name === bizName);
-            if (biz) {
-              const slug = nameToSlug(biz.name);
-              const hasPhoto = businessData.businesses.some(b => nameToSlug(b.name) === slug);
-              const meta = getMeta(biz.name);
-              setPopupInfo({
-                name: biz.name,
-                type: biz.type,
-                address: '',
-                yearBuilt: meta.yearBuilt,
-                description: meta.description,
-                use: meta.use,
-                color: buildingColor(biz.type),
-                height: 6,
-                hasPhoto,
+            const matched = matchedDeals.find(d => d.businessName === bizName || d.name === bizName);
+            if (matched) {
+              setDealPopup({
+                deal: matched,
+                x: e.originalEvent.clientX,
+                y: e.originalEvent.clientY,
               });
             }
           });
@@ -1321,7 +1559,10 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         const layers = ['village-extrusions'];
         if (matchedDeals.length > 0) layers.push('deal-markers');
         const features = map.queryRenderedFeatures(e.point, { layers });
-        if (!features.length) setPopupInfo(null);
+        if (!features.length) {
+          setPopupInfo(null);
+          setDealPopup(null);
+        }
       });
 
     })();
@@ -1423,6 +1664,11 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       {/* Building detail panel (slide-in from right, like OneMap) */}
       {popupInfo && (
         <BuildingPanel info={popupInfo} deal={activeDeal} onClose={() => setPopupInfo(null)} />
+      )}
+
+      {/* Deal popup tile */}
+      {dealPopup && (
+        <DealPopupTile info={dealPopup} onClose={() => setDealPopup(null)} />
       )}
 
       {/* Deals overlay */}
