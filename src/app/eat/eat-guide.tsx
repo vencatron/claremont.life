@@ -52,18 +52,18 @@ export function EatGuide({ places }: EatGuideProps) {
   return (
     <div>
       {/* Search */}
-      <div className="px-4 pt-3">
+      <div className="px-4 md:px-6 pt-3">
         <input
           type="text"
           placeholder="Search places..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+          className="w-full md:max-w-md rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />
       </div>
 
       {/* Category filters */}
-      <div className="flex gap-2 overflow-x-auto py-3 px-4 [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-2 overflow-x-auto py-3 px-4 md:px-6 md:flex-wrap [&::-webkit-scrollbar]:hidden">
         {CATEGORIES.map((cat) => (
           <button
             key={cat.label}
@@ -80,12 +80,12 @@ export function EatGuide({ places }: EatGuideProps) {
       </div>
 
       {/* Count */}
-      <div className="px-4 pb-2">
+      <div className="px-4 md:px-6 pb-2">
         <p className="text-sm text-gray-500">{filtered.length} places</p>
       </div>
 
       {/* Place cards */}
-      <div className="px-4 pb-4 space-y-3">
+      <div className="px-4 md:px-6 pb-4 space-y-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:space-y-0">
         {filtered.map((place) => (
           <Card key={place.place_id} className="p-4 shadow-sm rounded-xl">
             <div className="flex items-start justify-between gap-2">
@@ -160,7 +160,7 @@ export function EatGuide({ places }: EatGuideProps) {
         ))}
 
         {filtered.length === 0 && (
-          <p className="text-center text-gray-400 py-8">No places found</p>
+          <p className="text-center text-gray-400 py-8 md:col-span-2 lg:col-span-3">No places found</p>
         )}
       </div>
     </div>

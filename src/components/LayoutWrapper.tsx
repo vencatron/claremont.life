@@ -13,6 +13,6 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <main className="min-h-screen pb-24 max-w-lg mx-auto">{children}</main>
+    <main className="min-h-screen pb-24 md:pb-8 max-w-lg md:max-w-4xl lg:max-w-6xl mx-auto">{children}</main>
   )
 }

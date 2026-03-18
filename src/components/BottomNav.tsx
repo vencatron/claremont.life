@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Calendar, UtensilsCrossed, Tag, Users, Building2 } from 'lucide-react'
+import { Calendar, UtensilsCrossed, Tag, Users, Building2, Compass } from 'lucide-react'
 
 const NAV_ITEMS = [
   { label: 'Events', href: '/events', icon: Calendar },
   { label: 'Eat', href: '/eat', icon: UtensilsCrossed },
+  { label: 'Explore', href: '/explore', icon: Compass },
   { label: 'Live', href: '/housing', icon: Building2 },
   { label: 'Community', href: '/know', icon: Users },
   { label: 'Deals', href: '/deals', icon: Tag },
@@ -19,7 +20,7 @@ export function BottomNav() {
   if (pathname === '/explore') return null
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
         {NAV_ITEMS.map((item) => {
           const isActive = item.href === '/' ? pathname === '/' : (pathname === item.href || pathname.startsWith(item.href + '/'))

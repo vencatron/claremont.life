@@ -13,7 +13,7 @@ export default function MorePage() {
   return (
     <div>
       <PageHeader title="More" />
-      <div className="px-4 pb-4 space-y-3">
+      <div className="px-4 md:px-6 pb-4 space-y-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:space-y-0">
         {MORE_LINKS.map((item) => {
           const Icon = item.icon
           return (

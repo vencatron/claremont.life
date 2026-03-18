@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
+import { HeroMap } from './HeroMap'
 
 // How many viewport heights of scroll = full video playback
 const RUNWAY_VH = 5
@@ -24,6 +25,15 @@ export function ScrollScrubHero() {
   const rafRef = useRef<number | null>(null)
   const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false, unlocked: false })
   const [frac, setFrac] = useState(0)
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   const unlockVideo = useCallback(() => {
     const video = videoRef.current
@@ -46,6 +56,10 @@ export function ScrollScrubHero() {
     if (!video) return
     const st = stateRef.current
 
+    // On desktop, the hero uses a live map — skip video setup
+    if (isDesktop) return
+
+    // Mobile: scroll-scrub behavior
     function init() {
       st.ready = true
       video!.pause()
@@ -93,8 +107,21 @@ export function ScrollScrubHero() {
       window.removeEventListener('touchstart', unlockVideo)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [unlockVideo])
+  }, [unlockVideo, isDesktop])
 
+  // ── Desktop: contained hero section ──
+  if (isDesktop) {
+    return (
+      <div className="relative h-[50vh] overflow-hidden rounded-2xl mx-6 mt-6 bg-black">
+        {/* Live map background — vector-based, sharp at any resolution */}
+        <HeroMap />
+        {/* Subtle dark gradient at bottom for polish */}
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 to-transparent z-[1]" />
+      </div>
+    )
+  }
+
+  // ── Mobile: full scroll-scrub experience ──
   return (
     <>
     {/* Video layer — behind everything */}

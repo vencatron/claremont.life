@@ -30,7 +30,7 @@ export function EventsFeed({ events }: EventsFeedProps) {
       <div className="sticky top-0 bg-background z-10">
         <CollegeFilter selected={selectedCollege} onChange={setSelectedCollege} />
       </div>
-      <div className="px-4 pb-4 space-y-6">
+      <div className="px-4 md:px-6 pb-4 space-y-6">
         {Object.keys(grouped).length === 0 ? (
           <p className="text-center text-gray-500 py-12">
             {selectedCollege === 'All' ? 'No upcoming events — check back soon.' : `No ${selectedCollege} events this week — check back soon.`}
@@ -39,7 +39,7 @@ export function EventsFeed({ events }: EventsFeedProps) {
           Object.entries(grouped).map(([day, dayEvents]) => (
             <div key={day}>
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">{day}</h2>
-              <div className="space-y-3">
+              <div className="space-y-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:space-y-0">
                 {dayEvents.map((event) => <EventCard key={event.id} event={event} />)}
               </div>
             </div>

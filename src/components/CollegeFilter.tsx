@@ -10,7 +10,7 @@ interface CollegeFilterProps {
 
 export function CollegeFilter({ selected, onChange }: CollegeFilterProps) {
   return (
-    <div className="flex gap-2 overflow-x-auto py-3 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="flex gap-2 overflow-x-auto py-3 px-4 md:px-6 md:flex-wrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {COLLEGES.map((college) => (
         <button
           key={college}

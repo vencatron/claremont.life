@@ -7,7 +7,7 @@ export default function NewPage() {
     <div>
       <PageHeader title="New to Claremont?" subtitle="Your cheat sheet for the first semester" />
       <NewGuide />
-      <div className="px-4 pb-8"><NewsletterSignup heading="Stay in the loop." /></div>
+      <div className="px-4 md:px-6 pb-8"><NewsletterSignup heading="Stay in the loop." /></div>
     </div>
   )
 }

@@ -48,7 +48,7 @@ function ChecklistSection({ items }: { items: string[] }) {
 
 export function NewGuide() {
   return (
-    <Tabs defaultValue="week1" className="px-4">
+    <Tabs defaultValue="week1" className="px-4 md:px-6">
       <TabsList className="w-full">
         <TabsTrigger value="week1" className="flex-1">Week 1</TabsTrigger>
         <TabsTrigger value="month1" className="flex-1">Month 1</TabsTrigger>

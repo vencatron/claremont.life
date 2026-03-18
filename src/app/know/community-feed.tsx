@@ -85,18 +85,18 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
   return (
     <div>
       {/* Search */}
-      <div className="px-4 pt-3">
+      <div className="px-4 md:px-6 pt-3">
         <input
           type="text"
           placeholder="Search posts..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setShowCount(30) }}
-          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+          className="w-full md:max-w-md rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 overflow-x-auto py-3 px-4 [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-2 overflow-x-auto py-3 px-4 md:px-6 md:flex-wrap [&::-webkit-scrollbar]:hidden">
         {FILTERS.map((f) => (
           <button
             key={f.label}
@@ -113,7 +113,7 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
       </div>
 
       {/* Sort + count */}
-      <div className="flex items-center justify-between px-4 pb-2">
+      <div className="flex items-center justify-between px-4 md:px-6 pb-2">
         <p className="text-sm text-gray-500">{filtered.length} posts</p>
         <div className="flex gap-1">
           {SORT_OPTIONS.map((s) => (
@@ -133,7 +133,7 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
       </div>
 
       {/* Posts */}
-      <div className="px-4 pb-4 space-y-3">
+      <div className="px-4 md:px-6 pb-4 space-y-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:space-y-0">
         {visible.map((post) => {
           const meta = SUBREDDIT_META[post.subreddit] || { label: post.subreddit, color: 'bg-gray-100 text-gray-700' }
           const preview = truncateBody(post.body)
@@ -208,14 +208,14 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
         {visible.length < filtered.length && (
           <button
             onClick={() => setShowCount(s => s + 30)}
-            className="w-full py-3 text-sm font-medium text-primary hover:bg-primary/5 rounded-xl transition-colors"
+            className="w-full py-3 text-sm font-medium text-primary hover:bg-primary/5 rounded-xl transition-colors md:col-span-2 lg:col-span-3"
           >
             Load more ({filtered.length - visible.length} remaining)
           </button>
         )}
 
         {filtered.length === 0 && (
-          <p className="text-center text-gray-400 py-8">No posts found</p>
+          <p className="text-center text-gray-400 py-8 md:col-span-2 lg:col-span-3">No posts found</p>
         )}
       </div>
     </div>
