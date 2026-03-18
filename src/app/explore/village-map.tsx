@@ -83,6 +83,8 @@ const TYPE_CATEGORIES: Record<string, { color: string; label: string; emoji: str
   fitness:    { color: '#10B981', label: 'Wellness', emoji: '\uD83E\uDDD8' },
   salon:      { color: '#9CA3AF', label: 'Services', emoji: '\u2702\uFE0F' },
   florist:    { color: '#34D399', label: 'Retail', emoji: '\uD83C\uDF3B' },
+  dessert:    { color: '#F97316', label: 'Dining', emoji: '\uD83C\uDF68' },
+  spa:        { color: '#10B981', label: 'Wellness', emoji: '\uD83D\uDC86' },
   service:    { color: '#9CA3AF', label: 'Services', emoji: '\uD83D\uDD27' },
   house:      { color: '#A78BFA', label: 'Residential', emoji: '\uD83C\uDFE0' },
   apartments: { color: '#A78BFA', label: 'Residential', emoji: '\uD83C\uDFE2' },
