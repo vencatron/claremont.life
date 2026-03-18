@@ -594,6 +594,57 @@ function BuildingPanel({
           </p>
         )}
 
+        {/* Yelp + Google Maps buttons — only for village businesses, not campus */}
+        {!['college'].includes(info.type) && (
+          <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
+            <a
+              href={`https://www.yelp.com/search?find_desc=${encodeURIComponent(info.name)}&find_loc=Claremont%2C+CA`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                padding: '10px 14px',
+                borderRadius: 10,
+                background: 'rgba(210,40,40,0.15)',
+                border: '1px solid rgba(210,40,40,0.35)',
+                color: '#FF3B30',
+                fontSize: 13,
+                fontWeight: 700,
+                textDecoration: 'none',
+                transition: 'background 0.15s',
+              }}
+            >
+              ⭐ Yelp Reviews
+            </a>
+            <a
+              href={`https://www.google.com/maps/search/${encodeURIComponent(info.name + ' Claremont CA')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                padding: '10px 14px',
+                borderRadius: 10,
+                background: 'rgba(66,133,244,0.12)',
+                border: '1px solid rgba(66,133,244,0.3)',
+                color: '#4285F4',
+                fontSize: 13,
+                fontWeight: 700,
+                textDecoration: 'none',
+              }}
+            >
+              📍 Google Maps
+            </a>
+          </div>
+        )}
+
         {/* Details grid */}
         <div style={{
           marginTop: 20,
