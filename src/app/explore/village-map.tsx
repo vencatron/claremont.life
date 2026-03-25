@@ -40,6 +40,21 @@ interface DealPopupInfo {
   y: number;
 }
 
+interface CrimeFeatureProps {
+  id: string;
+  type: string;
+  description: string;
+  date: string;
+  address: string;
+  color: string;
+}
+
+interface CrimePopupInfo {
+  props: CrimeFeatureProps;
+  x: number;
+  y: number;
+}
+
 // ─── Coordinate conversion ─────────────────────────────────────────────────
 const CENTER_LAT = 34.0965;
 const CENTER_LNG = -117.7185;
@@ -904,6 +919,308 @@ function DealPopupTile({
   );
 }
 
+// ─── Crime type metadata ─────────────────────────────────────────────────
+const CRIME_TYPE_META: Record<string, { color: string; icon: string }> = {
+  'Theft':         { color: '#EF4444', icon: '🔓' },
+  'Burglary':      { color: '#F97316', icon: '🏠' },
+  'Vehicle Theft': { color: '#DC2626', icon: '🚗' },
+  'Assault':       { color: '#FF0000', icon: '⚠' },
+  'Vandalism':     { color: '#F59E0B', icon: '🔨' },
+  'Robbery':       { color: '#B91C1C', icon: '💰' },
+  'DUI':           { color: '#8B5CF6', icon: '🍺' },
+  'Drugs':         { color: '#6366F1', icon: '💊' },
+  'Fraud':         { color: '#EC4899', icon: '💳' },
+  'Disturbance':   { color: '#F97316', icon: '📢' },
+  'Other':         { color: '#9CA3AF', icon: '📋' },
+};
+
+// ─── Crime Popup Tile ──────────────────────────────────────────────────────
+function CrimePopupTile({
+  info,
+  onClose,
+}: {
+  info: CrimePopupInfo;
+  onClose: () => void;
+}) {
+  const { props, x, y } = info;
+  const meta = CRIME_TYPE_META[props.type] || CRIME_TYPE_META['Other'];
+
+  const tileW = 280;
+  const tileH = 160;
+  const pad = 16;
+  const vpW = typeof window !== 'undefined' ? window.innerWidth : 800;
+  const left = Math.max(pad, Math.min(x - tileW / 2, vpW - tileW - pad));
+  const top = Math.max(pad, y - tileH - 24);
+  const arrowLeft = Math.max(20, Math.min(x - left, tileW - 20));
+
+  const dateStr = props.date
+    ? new Date(props.date).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : '';
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        left,
+        top,
+        width: tileW,
+        zIndex: 60,
+        background: 'rgba(10, 12, 18, 0.95)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderRadius: 14,
+        border: '1px solid rgba(239,68,68,0.35)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(239,68,68,0.15)',
+        color: 'white',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        animation: 'dealTileIn 0.2s ease',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Red accent bar */}
+      <div style={{ height: 3, background: 'linear-gradient(90deg, #EF4444, #DC2626)' }} />
+
+      <div style={{ padding: '14px 16px 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.3, margin: 0, color: meta.color }}>
+              {meta.icon} {props.type}
+            </h3>
+            <p style={{ fontSize: 12, lineHeight: 1.5, color: 'rgba(255,255,255,0.7)', margin: '6px 0 0' }}>
+              {props.description}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              flexShrink: 0,
+              width: 22,
+              height: 22,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+              border: 'none',
+              color: 'rgba(255,255,255,0.5)',
+              fontSize: 12,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              lineHeight: 1,
+            }}
+          >
+            x
+          </button>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          marginTop: 10,
+          paddingTop: 8,
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          flexWrap: 'wrap',
+        }}>
+          {dateStr && (
+            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)' }}>
+              {dateStr}
+            </span>
+          )}
+          {props.address && (
+            <>
+              <span style={{ color: 'rgba(255,255,255,0.2)' }}>|</span>
+              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)' }}>
+                {props.address}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Arrow pointer */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: -8,
+          left: arrowLeft,
+          transform: 'translateX(-50%) rotate(45deg)',
+          width: 14,
+          height: 14,
+          background: 'rgba(10, 12, 18, 0.95)',
+          borderRight: '1px solid rgba(239,68,68,0.35)',
+          borderBottom: '1px solid rgba(239,68,68,0.35)',
+        }}
+      />
+    </div>
+  );
+}
+
+// ─── Crime Overlay Panel ──────────────────────────────────────────────────
+function CrimeOverlay({
+  crimeData,
+  crimeVisible,
+  onToggleCrime,
+  source,
+}: {
+  crimeData: GeoJSON.FeatureCollection | null;
+  crimeVisible: boolean;
+  onToggleCrime: () => void;
+  source: string;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const count = crimeData?.features?.length || 0;
+
+  if (!crimeData || count === 0) return null;
+
+  // Group by type
+  const byType: Record<string, number> = {};
+  for (const f of crimeData.features) {
+    const t = (f.properties as CrimeFeatureProps).type || 'Other';
+    byType[t] = (byType[t] || 0) + 1;
+  }
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 48,
+        right: 16,
+        zIndex: 30,
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        maxWidth: 'min(320px, calc(100vw - 32px))',
+      }}
+    >
+      <button
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          background: 'rgba(10,12,18,0.9)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(239,68,68,0.3)',
+          borderRadius: expanded ? '12px 12px 0 0' : 12,
+          padding: '10px 16px',
+          color: 'white',
+          fontSize: 13,
+          fontWeight: 700,
+          cursor: 'pointer',
+          width: '100%',
+        }}
+      >
+        <span
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            background: crimeVisible ? '#EF4444' : '#6B7280',
+            boxShadow: crimeVisible ? '0 0 8px #EF444488' : 'none',
+            flexShrink: 0,
+          }}
+        />
+        <span style={{ flex: 1, textAlign: 'left' }}>Crime Reports</span>
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginRight: 4 }}>
+          {count} incidents
+        </span>
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
+          {expanded ? '\u25BC' : '\u25B2'}
+        </span>
+      </button>
+
+      {expanded && (
+        <div
+          style={{
+            background: 'rgba(10,12,18,0.92)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(239,68,68,0.2)',
+            borderTop: 'none',
+            borderRadius: '0 0 12px 12px',
+            maxHeight: 'min(300px, 40vh)',
+            overflowY: 'auto',
+          }}
+        >
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '8px 12px',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            flexWrap: 'wrap',
+          }}>
+            <button
+              onClick={onToggleCrime}
+              style={{
+                padding: '4px 10px',
+                borderRadius: 8,
+                border: '1px solid rgba(255,255,255,0.15)',
+                background: crimeVisible ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.05)',
+                color: crimeVisible ? '#EF4444' : 'rgba(255,255,255,0.5)',
+                fontSize: 11,
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              {crimeVisible ? 'Hide dots' : 'Show dots'}
+            </button>
+            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>
+              Source: {source === 'seed' ? 'Claremont PD reports' : source}
+            </span>
+          </div>
+
+          <div style={{ padding: '8px 12px' }}>
+            {Object.entries(byType)
+              .sort((a, b) => b[1] - a[1])
+              .map(([type, cnt]) => {
+                const meta = CRIME_TYPE_META[type] || CRIME_TYPE_META['Other'];
+                return (
+                  <div
+                    key={type}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      padding: '5px 0',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        background: meta.color,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span style={{ flex: 1, fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
+                      {meta.icon} {type}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>
+                      {cnt}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
+
+          <div style={{
+            padding: '6px 12px 10px',
+            borderTop: '1px solid rgba(255,255,255,0.06)',
+            fontSize: 10,
+            color: 'rgba(255,255,255,0.25)',
+            lineHeight: 1.4,
+          }}>
+            Last 30 days. Data from public crime reports.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Legend Component ───────────────────────────────────────────────────────
 function MapLegend({ visible }: { visible: boolean }) {
   const [expanded, setExpanded] = useState(false);
@@ -970,6 +1287,14 @@ function MapLegend({ visible }: { visible: boolean }) {
                 boxShadow: '0 0 6px #22C55E88',
               }} />
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11 }}>Student Deals</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '3px 0' }}>
+              <span style={{
+                width: 10, height: 10, borderRadius: '50%',
+                background: '#EF4444', flexShrink: 0,
+                boxShadow: '0 0 6px #EF444488',
+              }} />
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11 }}>Crime Reports</span>
             </div>
           </div>
         </div>
@@ -1204,6 +1529,9 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
   const [dealsVisible, setDealsVisible] = useState(true);
   const [dealPopup, setDealPopup] = useState<DealPopupInfo | null>(null);
+  const [crimeData, setCrimeData] = useState<{ geojson: GeoJSON.FeatureCollection; source: string } | null>(null);
+  const [crimeVisible, setCrimeVisible] = useState(true);
+  const [crimePopup, setCrimePopup] = useState<CrimePopupInfo | null>(null);
   const flyToDealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Match deals to business locations (3-tier: name → address → street)
@@ -1292,6 +1620,20 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
     return () => { document.head.removeChild(style); };
   }, []);
 
+  // Fetch crime data
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/crime-data')
+      .then(r => r.json())
+      .then(data => {
+        if (!cancelled && data?.geojson) {
+          setCrimeData({ geojson: data.geojson, source: data.source });
+        }
+      })
+      .catch(() => { /* silently fail — crime layer just won't show */ });
+    return () => { cancelled = true; };
+  }, []);
+
   const handleBuildingClick = useCallback((props: {
     id: number; name: string; type: string; address: string;
     height: number; color: string; yearBuilt: number | null;
@@ -1348,6 +1690,23 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
           map.setLayoutProperty('deal-markers', 'visibility', next ? 'visible' : 'none');
           map.setLayoutProperty('deal-labels', 'visibility', next ? 'visible' : 'none');
           map.setPaintProperty('deal-glow', 'circle-opacity', next ? 0.35 : 0);
+        } catch {
+          // layers may not exist yet
+        }
+      }
+      return next;
+    });
+  }, []);
+
+  const handleToggleCrime = useCallback(() => {
+    setCrimeVisible(prev => {
+      const next = !prev;
+      const map = mapRef.current;
+      if (map) {
+        try {
+          map.setLayoutProperty('crime-markers', 'visibility', next ? 'visible' : 'none');
+          map.setLayoutProperty('crime-labels', 'visibility', next ? 'visible' : 'none');
+          map.setPaintProperty('crime-glow', 'circle-opacity', next ? 0.3 : 0);
         } catch {
           // layers may not exist yet
         }
@@ -1539,6 +1898,86 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
           });
         }
 
+        // ── Crime overlay layers ──────────────────────────────────
+        if (crimeData?.geojson) {
+          map.addSource('crimes', {
+            type: 'geojson',
+            data: crimeData.geojson as GeoJSON.GeoJSON,
+          });
+
+          // Outer glow ring (red)
+          map.addLayer({
+            id: 'crime-glow',
+            type: 'circle',
+            source: 'crimes',
+            paint: {
+              'circle-radius': 16,
+              'circle-color': ['get', 'color'],
+              'circle-opacity': 0.3,
+              'circle-blur': 0.8,
+            },
+          });
+
+          // Inner dot
+          map.addLayer({
+            id: 'crime-markers',
+            type: 'circle',
+            source: 'crimes',
+            paint: {
+              'circle-radius': [
+                'interpolate', ['linear'], ['zoom'],
+                14, 3,
+                17, 6,
+              ],
+              'circle-color': ['get', 'color'],
+              'circle-stroke-color': 'rgba(255,255,255,0.6)',
+              'circle-stroke-width': 1,
+              'circle-opacity': 0.9,
+            },
+          });
+
+          // Type label
+          map.addLayer({
+            id: 'crime-labels',
+            type: 'symbol',
+            source: 'crimes',
+            minzoom: 16.5,
+            layout: {
+              'text-field': ['get', 'type'],
+              'text-font': ['Noto Sans Bold'],
+              'text-size': 9,
+              'text-offset': [0, -2],
+              'text-anchor': 'bottom',
+              'text-allow-overlap': false,
+            },
+            paint: {
+              'text-color': '#EF4444',
+              'text-halo-color': '#000000',
+              'text-halo-width': 1.5,
+            },
+          });
+
+          // Click on crime markers
+          map.on('click', 'crime-markers', (e) => {
+            if (!e.features?.length) return;
+            const props = e.features[0].properties as CrimeFeatureProps;
+            if (props) {
+              setCrimePopup({
+                props,
+                x: e.originalEvent.clientX,
+                y: e.originalEvent.clientY,
+              });
+            }
+          });
+
+          map.on('mouseenter', 'crime-markers', () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+          map.on('mouseleave', 'crime-markers', () => {
+            map.getCanvas().style.cursor = '';
+          });
+        }
+
         // ── Hover interaction (like OneMap 3D) ────────────────────
         map.on('mousemove', 'village-extrusions', (e) => {
           if (!e.features?.length) return;
@@ -1609,10 +2048,12 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       map.on('click', (e) => {
         const layers = ['village-extrusions'];
         if (matchedDeals.length > 0) layers.push('deal-markers');
+        if (crimeData?.geojson) layers.push('crime-markers');
         const features = map.queryRenderedFeatures(e.point, { layers });
         if (!features.length) {
           setPopupInfo(null);
           setDealPopup(null);
+          setCrimePopup(null);
         }
       });
 
@@ -1627,7 +2068,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     };
-  }, [handleBuildingClick, matchedDeals]);
+  }, [handleBuildingClick, matchedDeals, crimeData]);
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 100 }}>
@@ -1722,6 +2163,19 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         <DealPopupTile info={dealPopup} onClose={() => setDealPopup(null)} />
       )}
 
+      {/* Crime popup tile */}
+      {crimePopup && (
+        <CrimePopupTile info={crimePopup} onClose={() => setCrimePopup(null)} />
+      )}
+
+      {/* Crime overlay panel */}
+      <CrimeOverlay
+        crimeData={crimeData?.geojson || null}
+        crimeVisible={crimeVisible}
+        onToggleCrime={handleToggleCrime}
+        source={crimeData?.source || ''}
+      />
+
       {/* Deals overlay */}
       <DealsOverlay
         deals={matchedDeals}
@@ -1754,6 +2208,12 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
           <>
             {' '}&middot;{' '}
             <span style={{ color: '#22C55E' }}>{matchedDeals.length} DEALS</span>
+          </>
+        )}
+        {crimeData && crimeData.geojson.features.length > 0 && (
+          <>
+            {' '}&middot;{' '}
+            <span style={{ color: '#EF4444' }}>{crimeData.geojson.features.length} CRIME REPORTS</span>
           </>
         )}
       </div>
