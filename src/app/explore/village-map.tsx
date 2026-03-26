@@ -1855,7 +1855,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       map.on('click', enableScroll);
       map.on('drag', enableScroll);
 
-      map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+      // No zoom controls — users pinch/scroll to zoom
 
       // ── Layers on load ──────────────────────────────────────────
       map.on('load', () => {
