@@ -23,6 +23,9 @@ const CRIME_TYPES: Record<string, { color: string; label: string }> = {
   'Other':           { color: '#9CA3AF', label: 'Other' },
 };
 
+// Types to hide from the explore map
+const HIDDEN_TYPES = new Set(['Drugs', 'Fraud', 'Disturbance', 'DUI']);
+
 interface CrimeIncident {
   id: string;
   type: string;
@@ -87,7 +90,8 @@ async function fetchCrimeMapping(): Promise<CrimeIncident[]> {
     };
   }).filter((c: CrimeIncident) =>
     c.lat >= BOUNDS.south && c.lat <= BOUNDS.north &&
-    c.lng >= BOUNDS.west && c.lng <= BOUNDS.east
+    c.lng >= BOUNDS.west && c.lng <= BOUNDS.east &&
+    !HIDDEN_TYPES.has(c.type)
   );
 }
 
@@ -123,7 +127,8 @@ async function fetchSpotCrime(): Promise<CrimeIncident[]> {
     };
   }).filter((c: CrimeIncident) =>
     c.lat >= BOUNDS.south && c.lat <= BOUNDS.north &&
-    c.lng >= BOUNDS.west && c.lng <= BOUNDS.east
+    c.lng >= BOUNDS.west && c.lng <= BOUNDS.east &&
+    !HIDDEN_TYPES.has(c.type)
   );
 }
 
@@ -142,16 +147,11 @@ function getSeedData(): CrimeIncident[] {
     { id: 'seed-5', type: 'Burglary', description: 'Commercial burglary attempt', date: daysAgo(now, 3), lat: 34.0960, lng: -117.7158, address: '200 Yale Ave', color: '#F97316' },
     { id: 'seed-6', type: 'Theft', description: 'Bicycle theft', date: daysAgo(now, 8), lat: 34.0948, lng: -117.7155, address: '150 Yale Ave', color: '#EF4444' },
 
-    // Harvard Ave area
-    { id: 'seed-7', type: 'DUI', description: 'DUI arrest', date: daysAgo(now, 5), lat: 34.0952, lng: -117.7120, address: '100 Harvard Ave', color: '#8B5CF6' },
-    { id: 'seed-8', type: 'Disturbance', description: 'Noise disturbance complaint', date: daysAgo(now, 2), lat: 34.0963, lng: -117.7125, address: '200 Harvard Ave', color: '#F97316' },
-
     // 1st Street
     { id: 'seed-9', type: 'Vandalism', description: 'Graffiti reported', date: daysAgo(now, 7), lat: 34.0938, lng: -117.7170, address: '100 W 1st St', color: '#F59E0B' },
     { id: 'seed-10', type: 'Theft', description: 'Theft from unlocked vehicle', date: daysAgo(now, 3), lat: 34.0935, lng: -117.7150, address: '200 W 1st St', color: '#EF4444' },
 
     // 2nd Street
-    { id: 'seed-11', type: 'Fraud', description: 'Credit card fraud reported', date: daysAgo(now, 10), lat: 34.0945, lng: -117.7140, address: '150 W 2nd St', color: '#EC4899' },
     { id: 'seed-12', type: 'Theft', description: 'Purse snatching', date: daysAgo(now, 1), lat: 34.0950, lng: -117.7165, address: '50 W 2nd St', color: '#EF4444' },
 
     // Bonita Ave / Village periphery
@@ -161,9 +161,6 @@ function getSeedData(): CrimeIncident[] {
     // Near colleges / 7C area
     { id: 'seed-15', type: 'Theft', description: 'Laptop theft from library', date: daysAgo(now, 2), lat: 34.1005, lng: -117.7100, address: 'College Ave', color: '#EF4444' },
     { id: 'seed-16', type: 'Vandalism', description: 'Vehicle vandalism in parking lot', date: daysAgo(now, 9), lat: 34.1010, lng: -117.7130, address: 'N College Ave', color: '#F59E0B' },
-    { id: 'seed-17', type: 'Drugs', description: 'Drug paraphernalia found', date: daysAgo(now, 6), lat: 34.1025, lng: -117.7080, address: 'Mills Ave', color: '#6366F1' },
-    { id: 'seed-18', type: 'DUI', description: 'DUI checkpoint arrest', date: daysAgo(now, 11), lat: 34.0995, lng: -117.7190, address: 'Foothill Blvd', color: '#8B5CF6' },
-
     // Parking structures / lots
     { id: 'seed-19', type: 'Vehicle Theft', description: 'Vehicle broken into - parking structure', date: daysAgo(now, 1), lat: 34.0958, lng: -117.7175, address: 'Village Parking', color: '#DC2626' },
     { id: 'seed-20', type: 'Theft', description: 'Theft from vehicle in lot', date: daysAgo(now, 5), lat: 34.0942, lng: -117.7195, address: 'W 1st St Parking', color: '#EF4444' },
@@ -171,8 +168,6 @@ function getSeedData(): CrimeIncident[] {
     // Additional scattered incidents
     { id: 'seed-21', type: 'Assault', description: 'Simple assault reported', date: daysAgo(now, 14), lat: 34.0970, lng: -117.7145, address: '300 Yale Ave', color: '#FF0000' },
     { id: 'seed-22', type: 'Robbery', description: 'Strong-arm robbery', date: daysAgo(now, 20), lat: 34.0933, lng: -117.7180, address: 'S Indian Hill Blvd', color: '#B91C1C' },
-    { id: 'seed-23', type: 'Disturbance', description: 'Verbal altercation', date: daysAgo(now, 3), lat: 34.0975, lng: -117.7160, address: 'Village Walk', color: '#F97316' },
-    { id: 'seed-24', type: 'Fraud', description: 'Identity theft report', date: daysAgo(now, 8), lat: 34.0990, lng: -117.7170, address: 'Bonita Ave', color: '#EC4899' },
   ];
 
   return incidents;

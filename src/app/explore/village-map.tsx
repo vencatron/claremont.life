@@ -927,10 +927,6 @@ const CRIME_TYPE_META: Record<string, { color: string; icon: string }> = {
   'Assault':       { color: '#FF0000', icon: '⚠' },
   'Vandalism':     { color: '#F59E0B', icon: '🔨' },
   'Robbery':       { color: '#B91C1C', icon: '💰' },
-  'DUI':           { color: '#8B5CF6', icon: '🍺' },
-  'Drugs':         { color: '#6366F1', icon: '💊' },
-  'Fraud':         { color: '#EC4899', icon: '💳' },
-  'Disturbance':   { color: '#F97316', icon: '📢' },
   'Other':         { color: '#9CA3AF', icon: '📋' },
 };
 
