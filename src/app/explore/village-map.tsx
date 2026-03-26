@@ -1533,6 +1533,9 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
   const [crimeVisible, setCrimeVisible] = useState(true);
   const [crimePopup, setCrimePopup] = useState<CrimePopupInfo | null>(null);
   const flyToDealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [userLocation, setUserLocation] = useState<{ lng: number; lat: number } | null>(null);
+  const [locatingUser, setLocatingUser] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   // Match deals to business locations (3-tier: name → address → street)
   const matchedDeals = useMemo(() => {
@@ -1615,6 +1618,11 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         50%  { opacity: 0.3; transform: scale(2.2); }
         100% { opacity: 0;   transform: scale(3); }
       }
+      @keyframes youAreHerePulse {
+        0%   { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+        70%  { box-shadow: 0 0 0 12px rgba(59,130,246,0); }
+        100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+      }
     `;
     document.head.appendChild(style);
     return () => { document.head.removeChild(style); };
@@ -1687,9 +1695,9 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       const map = mapRef.current;
       if (map) {
         try {
+          map.setLayoutProperty('deal-glow', 'visibility', next ? 'visible' : 'none');
           map.setLayoutProperty('deal-markers', 'visibility', next ? 'visible' : 'none');
           map.setLayoutProperty('deal-labels', 'visibility', next ? 'visible' : 'none');
-          map.setPaintProperty('deal-glow', 'circle-opacity', next ? 0.35 : 0);
         } catch {
           // layers may not exist yet
         }
@@ -1713,6 +1721,78 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       }
       return next;
     });
+  }, []);
+
+  const handleLocateUser = useCallback(() => {
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation not supported');
+      return;
+    }
+    setLocatingUser(true);
+    setLocationError(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const loc = { lng: pos.coords.longitude, lat: pos.coords.latitude };
+        setUserLocation(loc);
+        setLocatingUser(false);
+        const map = mapRef.current;
+        if (map) {
+          // Update or add the user-location source
+          const src = map.getSource('user-location') as import('maplibre-gl').GeoJSONSource | undefined;
+          if (src) {
+            src.setData({
+              type: 'Feature',
+              geometry: { type: 'Point', coordinates: [loc.lng, loc.lat] },
+              properties: {},
+            });
+          } else {
+            map.addSource('user-location', {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [loc.lng, loc.lat] },
+                properties: {},
+              },
+            });
+            // Outer pulse ring
+            map.addLayer({
+              id: 'user-location-pulse',
+              type: 'circle',
+              source: 'user-location',
+              paint: {
+                'circle-radius': 30,
+                'circle-color': '#3B82F6',
+                'circle-opacity': 0.15,
+                'circle-blur': 0.6,
+              },
+            });
+            // Inner dot
+            map.addLayer({
+              id: 'user-location-dot',
+              type: 'circle',
+              source: 'user-location',
+              paint: {
+                'circle-radius': 7,
+                'circle-color': '#3B82F6',
+                'circle-stroke-color': '#ffffff',
+                'circle-stroke-width': 2.5,
+                'circle-opacity': 1,
+              },
+            });
+          }
+          map.flyTo({ center: [loc.lng, loc.lat], zoom: 16.5, pitch: 50, duration: 1500 });
+        }
+      },
+      (err) => {
+        setLocatingUser(false);
+        if (err.code === err.PERMISSION_DENIED) {
+          setLocationError('Location access denied');
+        } else {
+          setLocationError('Could not get location');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
   }, []);
 
   useEffect(() => {
@@ -1817,20 +1897,31 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
             data: dealsGeo,
           });
 
-          // Outer glow ring
+          // Green dollar sign markers (no glow)
           map.addLayer({
             id: 'deal-glow',
-            type: 'circle',
+            type: 'symbol',
             source: 'deals',
+            layout: {
+              'text-field': '$',
+              'text-font': ['Noto Sans Bold'],
+              'text-size': [
+                'interpolate', ['linear'], ['zoom'],
+                14, 14,
+                17, 22,
+              ],
+              'text-allow-overlap': true,
+              'text-ignore-placement': true,
+            },
             paint: {
-              'circle-radius': 18,
-              'circle-color': '#22C55E',
-              'circle-opacity': 0.35,
-              'circle-blur': 0.8,
+              'text-color': '#22C55E',
+              'text-halo-color': '#000000',
+              'text-halo-width': 2,
+              'text-opacity': 0.95,
             },
           });
 
-          // Inner solid dot
+          // Invisible circle for click target
           map.addLayer({
             id: 'deal-markers',
             type: 'circle',
@@ -1838,13 +1929,11 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
             paint: {
               'circle-radius': [
                 'interpolate', ['linear'], ['zoom'],
-                14, 4,
-                17, 8,
+                14, 8,
+                17, 14,
               ],
-              'circle-color': '#22C55E',
-              'circle-stroke-color': '#ffffff',
-              'circle-stroke-width': 1.5,
-              'circle-opacity': 0.95,
+              'circle-color': 'transparent',
+              'circle-opacity': 0,
             },
           });
 
@@ -1863,8 +1952,8 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
               ],
               'text-font': ['Noto Sans Bold'],
               'text-size': 10,
-              'text-offset': [0, -2],
-              'text-anchor': 'bottom',
+              'text-offset': [0, 1.8],
+              'text-anchor': 'top',
               'text-allow-overlap': true,
             },
             paint: {
@@ -1905,20 +1994,18 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
             data: crimeData.geojson as GeoJSON.GeoJSON,
           });
 
-          // Outer glow ring (red)
+          // No glow — just a placeholder layer ID so toggle code still works
           map.addLayer({
             id: 'crime-glow',
             type: 'circle',
             source: 'crimes',
             paint: {
-              'circle-radius': 16,
-              'circle-color': ['get', 'color'],
-              'circle-opacity': 0.3,
-              'circle-blur': 0.8,
+              'circle-radius': 0,
+              'circle-opacity': 0,
             },
           });
 
-          // Inner dot
+          // Small flat dot (no glow)
           map.addLayer({
             id: 'crime-markers',
             type: 'circle',
@@ -1926,13 +2013,13 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
             paint: {
               'circle-radius': [
                 'interpolate', ['linear'], ['zoom'],
-                14, 3,
-                17, 6,
+                14, 2,
+                17, 4,
               ],
               'circle-color': ['get', 'color'],
-              'circle-stroke-color': 'rgba(255,255,255,0.6)',
-              'circle-stroke-width': 1,
-              'circle-opacity': 0.9,
+              'circle-stroke-color': 'rgba(255,255,255,0.3)',
+              'circle-stroke-width': 0.5,
+              'circle-opacity': 0.75,
             },
           });
 
@@ -2183,6 +2270,62 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         onToggleDeals={handleToggleDeals}
         onFlyToDeal={handleFlyToDeal}
       />
+
+      {/* You Are Here button */}
+      <button
+        onClick={handleLocateUser}
+        disabled={locatingUser}
+        style={{
+          position: 'absolute',
+          bottom: 52,
+          right: 16,
+          zIndex: 30,
+          background: userLocation ? '#3B82F6' : 'rgba(10,12,18,0.85)',
+          backdropFilter: 'blur(12px)',
+          border: userLocation ? '2px solid #60A5FA' : '1px solid rgba(255,255,255,0.15)',
+          borderRadius: 12,
+          padding: '10px 16px',
+          color: 'white',
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: '0.02em',
+          cursor: locatingUser ? 'wait' : 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          animation: userLocation ? 'youAreHerePulse 2s infinite' : 'none',
+          transition: 'all 0.3s ease',
+        }}
+      >
+        <span style={{
+          display: 'inline-block',
+          width: 10,
+          height: 10,
+          borderRadius: '50%',
+          background: userLocation ? '#fff' : '#3B82F6',
+          border: userLocation ? 'none' : '2px solid #3B82F6',
+          animation: locatingUser ? 'dealPulse 1s infinite' : 'none',
+        }} />
+        {locatingUser ? 'Locating...' : userLocation ? 'YOU ARE HERE' : 'Find Me'}
+      </button>
+      {locationError && (
+        <div style={{
+          position: 'absolute',
+          bottom: 92,
+          right: 16,
+          zIndex: 30,
+          background: 'rgba(239,68,68,0.9)',
+          borderRadius: 8,
+          padding: '6px 12px',
+          color: 'white',
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: 11,
+          fontWeight: 600,
+        }}>
+          {locationError}
+        </div>
+      )}
 
       {/* Building count badge */}
       <div
