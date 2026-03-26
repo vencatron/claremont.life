@@ -1088,7 +1088,7 @@ function CrimeOverlay({
       style={{
         position: 'absolute',
         bottom: 48,
-        right: 16,
+        right: 150,
         zIndex: 30,
         fontFamily: 'system-ui, -apple-system, sans-serif',
         maxWidth: 'min(320px, calc(100vw - 32px))',
