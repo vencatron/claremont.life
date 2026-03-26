@@ -1536,6 +1536,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
   const [userLocation, setUserLocation] = useState<{ lng: number; lat: number } | null>(null);
   const [locatingUser, setLocatingUser] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const userMarkerRef = useRef<import('maplibre-gl').Marker | null>(null);
 
   // Match deals to business locations (3-tier: name → address → street)
   const matchedDeals = useMemo(() => {
@@ -1619,9 +1620,14 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         100% { opacity: 0;   transform: scale(3); }
       }
       @keyframes youAreHerePulse {
-        0%   { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
-        70%  { box-shadow: 0 0 0 12px rgba(59,130,246,0); }
+        0%   { box-shadow: 0 0 0 0 rgba(59,130,246,0.6); }
+        70%  { box-shadow: 0 0 0 18px rgba(59,130,246,0); }
         100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+      }
+      @keyframes youAreHereRing {
+        0%   { transform: translateX(-50%) scale(1); opacity: 0.5; }
+        50%  { transform: translateX(-50%) scale(2.5); opacity: 0; }
+        100% { transform: translateX(-50%) scale(1); opacity: 0; }
       }
     `;
     document.head.appendChild(style);
@@ -1723,7 +1729,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
     });
   }, []);
 
-  const handleLocateUser = useCallback(() => {
+  const handleLocateUser = useCallback(async () => {
     if (!navigator.geolocation) {
       setLocationError('Geolocation not supported');
       return;
@@ -1731,57 +1737,79 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
     setLocatingUser(true);
     setLocationError(null);
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      async (pos) => {
         const loc = { lng: pos.coords.longitude, lat: pos.coords.latitude };
         setUserLocation(loc);
         setLocatingUser(false);
         const map = mapRef.current;
-        if (map) {
-          // Update or add the user-location source
-          const src = map.getSource('user-location') as import('maplibre-gl').GeoJSONSource | undefined;
-          if (src) {
-            src.setData({
-              type: 'Feature',
-              geometry: { type: 'Point', coordinates: [loc.lng, loc.lat] },
-              properties: {},
-            });
-          } else {
-            map.addSource('user-location', {
-              type: 'geojson',
-              data: {
-                type: 'Feature',
-                geometry: { type: 'Point', coordinates: [loc.lng, loc.lat] },
-                properties: {},
-              },
-            });
-            // Outer pulse ring
-            map.addLayer({
-              id: 'user-location-pulse',
-              type: 'circle',
-              source: 'user-location',
-              paint: {
-                'circle-radius': 30,
-                'circle-color': '#3B82F6',
-                'circle-opacity': 0.15,
-                'circle-blur': 0.6,
-              },
-            });
-            // Inner dot
-            map.addLayer({
-              id: 'user-location-dot',
-              type: 'circle',
-              source: 'user-location',
-              paint: {
-                'circle-radius': 7,
-                'circle-color': '#3B82F6',
-                'circle-stroke-color': '#ffffff',
-                'circle-stroke-width': 2.5,
-                'circle-opacity': 1,
-              },
-            });
-          }
-          map.flyTo({ center: [loc.lng, loc.lat], zoom: 16.5, pitch: 50, duration: 1500 });
+        if (!map) return;
+
+        const maplibregl = await import('maplibre-gl');
+
+        // Remove existing marker if re-locating
+        if (userMarkerRef.current) {
+          userMarkerRef.current.remove();
         }
+
+        // Build giant pin HTML element
+        const el = document.createElement('div');
+        el.style.cssText = 'display:flex;flex-direction:column;align-items:center;pointer-events:none;';
+        el.innerHTML = `
+          <div style="
+            background:#3B82F6;
+            color:#fff;
+            font-family:system-ui,sans-serif;
+            font-weight:900;
+            font-size:13px;
+            letter-spacing:0.05em;
+            padding:8px 14px;
+            border-radius:10px;
+            border:2px solid #fff;
+            box-shadow:0 4px 20px rgba(59,130,246,0.6), 0 0 40px rgba(59,130,246,0.3);
+            white-space:nowrap;
+            text-align:center;
+            line-height:1.2;
+          ">YOU ARE HERE</div>
+          <div style="
+            width:4px;
+            height:28px;
+            background:linear-gradient(to bottom, #3B82F6, #2563EB);
+            border-left:1px solid rgba(255,255,255,0.3);
+            border-right:1px solid rgba(255,255,255,0.3);
+          "></div>
+          <div style="
+            width:18px;
+            height:18px;
+            border-radius:50%;
+            background:#3B82F6;
+            border:3px solid #fff;
+            box-shadow:0 0 0 4px rgba(59,130,246,0.3), 0 0 20px rgba(59,130,246,0.5);
+            animation:youAreHerePulse 2s infinite;
+          "></div>
+          <div style="
+            position:absolute;
+            bottom:-6px;
+            left:50%;
+            transform:translateX(-50%);
+            width:60px;
+            height:60px;
+            border-radius:50%;
+            background:radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+            animation:youAreHereRing 3s infinite;
+            pointer-events:none;
+          "></div>
+        `;
+
+        const marker = new maplibregl.Marker({
+          element: el,
+          anchor: 'bottom',
+          offset: [0, 0],
+        })
+          .setLngLat([loc.lng, loc.lat])
+          .addTo(map);
+
+        userMarkerRef.current = marker;
+        map.flyTo({ center: [loc.lng, loc.lat], zoom: 16.5, pitch: 50, duration: 1500 });
       },
       (err) => {
         setLocatingUser(false);
