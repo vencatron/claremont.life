@@ -81,12 +81,15 @@ export async function getHousingListings(filters?: {
 export async function subscribeNewsletter(
   email: string
 ): Promise<{ success: boolean; message: string }> {
-  const { error } = await supabase
-    .from('newsletter_subscribers')
-    .insert({ email: email.toLowerCase().trim() })
-  if (error) {
-    if (error.code === '23505') return { success: false, message: 'Already subscribed.' }
+  try {
+    const res = await fetch('/api/newsletter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    const data = (await res.json()) as { success: boolean; message: string }
+    return data
+  } catch {
     return { success: false, message: 'Something went wrong. Try again.' }
   }
-  return { success: true, message: "You're in. See you Tuesday." }
 }
