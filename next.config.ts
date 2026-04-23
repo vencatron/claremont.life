@@ -44,6 +44,10 @@ const securityHeaders = [
         "https://www.gstatic.com",
         "https://maps.googleapis.com",
         "https://maps.gstatic.com",
+        // Mapbox GL (desktop hero map): style JSON, vector tiles, terrain DEM, telemetry.
+        "https://api.mapbox.com",
+        "https://*.tiles.mapbox.com",
+        "https://events.mapbox.com",
       ].join(" "),
       "frame-ancestors 'none'",
       "base-uri 'self'",
