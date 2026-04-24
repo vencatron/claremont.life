@@ -15,15 +15,16 @@
  *   - eventbrite : Eventbrite (requires EVENTBRITE_API_KEY)
  */
 
-import { scrapePomona } from './sources/pomona.js'
-import { scrapeCMC } from './sources/cmc.js'
-import { scrapeHarveyMudd } from './sources/harvey-mudd.js'
-import { scrapeScripps } from './sources/scripps.js'
-import { scrapePitzer } from './sources/pitzer.js'
-import { scrapeCGU } from './sources/cgu.js'
-import { scrapeCityClaremont } from './sources/city-claremont.js'
-import { scrapeEventbrite } from './sources/eventbrite.js'
-import type { ScrapedEvent, ScraperResult } from './sources/types.js'
+import { scrapePomona } from './sources/pomona'
+import { scrapeCMC } from './sources/cmc'
+import { scrapeHarveyMudd } from './sources/harvey-mudd'
+import { scrapeScripps } from './sources/scripps'
+import { scrapePitzer } from './sources/pitzer'
+import { scrapeCGU } from './sources/cgu'
+import { scrapeCityClaremont } from './sources/city-claremont'
+import { scrapeEventbrite } from './sources/eventbrite'
+import { scrapeEngage } from './sources/engage'
+import type { ScrapedEvent, ScraperResult } from './sources/types'
 
 export type { ScrapedEvent, ScraperResult }
 
@@ -41,6 +42,7 @@ export async function run(): Promise<RunSummary> {
   console.log('🔍 Starting event scrapers...')
 
   const scrapers: Array<() => Promise<ScraperResult>> = [
+    scrapeEngage,
     scrapePomona,
     scrapeCMC,
     scrapeHarveyMudd,

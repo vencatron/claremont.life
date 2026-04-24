@@ -15,7 +15,7 @@
  */
 
 import * as cheerio from 'cheerio'
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'city_claremont'
 const EVENTS_URL = 'https://www.claremontca.gov/Events-directory'

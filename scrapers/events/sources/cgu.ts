@@ -5,7 +5,7 @@
  * REST API verified at: https://www.cgu.edu/wp-json/tribe/events/v1/events
  */
 
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'cgu_calendar'
 const API_BASE = 'https://www.cgu.edu/wp-json/tribe/events/v1/events'

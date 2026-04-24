@@ -16,10 +16,10 @@ export function EventsFeed({ events }: EventsFeedProps) {
 
   const filtered = selectedCollege === 'All'
     ? events
-    : events.filter((e) => SOURCE_TO_COLLEGE[e.source] === selectedCollege)
+    : events.filter((e) => ((e.college as College | undefined) || SOURCE_TO_COLLEGE[e.source]) === selectedCollege)
 
   const grouped = filtered.reduce<Record<string, ClaremontEvent[]>>((acc, event) => {
-    const day = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'short', day: 'numeric' }).format(new Date(event.start_date))
+    const day = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'short', day: 'numeric' }).format(new Date(event.starts_at))
     if (!acc[day]) acc[day] = []
     acc[day].push(event)
     return acc

@@ -14,7 +14,7 @@
  * Verified: 20 upcoming events returned as of March 2026.
  */
 
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'hmc_calendar'
 const RSS_URL = 'https://www.hmc.edu/calendar/?post_type=event&feed=rss2'

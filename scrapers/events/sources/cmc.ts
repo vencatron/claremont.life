@@ -8,7 +8,7 @@
  * Docs: https://help.localist.com/article/show/65027-api-documentation
  */
 
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'cmc_calendar'
 const BASE_URL = 'https://campusevents.cmc.edu/api/2/events'

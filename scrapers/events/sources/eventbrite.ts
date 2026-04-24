@@ -16,7 +16,7 @@
  * Docs: https://www.eventbrite.com/platform/api#/reference/event/list/
  */
 
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'eventbrite'
 const API_BASE = 'https://www.eventbriteapi.com/v3'

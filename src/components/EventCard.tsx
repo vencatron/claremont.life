@@ -10,7 +10,7 @@ interface EventCardProps {
 }
 
 export function EventCard({ event }: EventCardProps) {
-  const college = SOURCE_TO_COLLEGE[event.source] || 'Community'
+  const college = (event.college as College | undefined) || SOURCE_TO_COLLEGE[event.source] || 'Community'
   const colorClass = COLLEGE_COLORS[college as College] || COLLEGE_COLORS['All']
   const date = new Intl.DateTimeFormat('en-US', {
     weekday: 'short',
@@ -18,7 +18,7 @@ export function EventCard({ event }: EventCardProps) {
     day: 'numeric',
     hour: 'numeric',
     minute: '2-digit',
-  }).format(new Date(event.start_date))
+  }).format(new Date(event.starts_at))
 
   const content = (
     <Card className="p-4 shadow-sm rounded-xl hover:shadow-md transition-shadow">

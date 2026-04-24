@@ -11,7 +11,7 @@
  *   location, consortiumCategory, tags, imageURL, url, college
  */
 
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'pitzer_calendar'
 const XML_URL = 'https://www.pitzer.edu/events/xml-feed'

@@ -12,7 +12,7 @@
  * Verified: https://www.scrippscollege.edu/events/wp-json/tribe/events/v1/events
  */
 
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'scripps_calendar'
 const API_BASE = 'https://www.scrippscollege.edu/events/wp-json/tribe/events/v1/events'

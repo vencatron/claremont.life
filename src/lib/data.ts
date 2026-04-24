@@ -5,8 +5,9 @@ export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
   const { data, error } = await supabase
     .from('events')
     .select('*')
-    .gte('start_date', new Date().toISOString())
-    .order('start_date', { ascending: true })
+    .eq('is_active', true)
+    .gte('starts_at', new Date().toISOString())
+    .order('starts_at', { ascending: true })
     .limit(limit)
   if (error) { console.error('getUpcomingEvents:', error); return [] }
   return data ?? []

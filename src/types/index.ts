@@ -3,15 +3,16 @@ export interface ClaremontEvent {
   source: string
   source_id: string
   title: string
-  description?: string
-  url?: string
-  start_date: string
-  end_date?: string
-  location?: string
-  category?: string
-  image_url?: string
-  lat?: number
-  lng?: number
+  description?: string | null
+  url?: string | null
+  starts_at: string
+  ends_at?: string | null
+  college?: string | null       // 'Pomona' | 'CMC' | 'Harvey Mudd' | 'Scripps' | 'Pitzer' | 'CGU' | 'KGI' | null
+  event_type?: string | null
+  location?: string | null
+  address?: string | null
+  image_url?: string | null
+  is_active?: boolean
 }
 
 export interface Business {

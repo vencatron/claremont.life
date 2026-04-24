@@ -16,7 +16,7 @@
  * https://www.pomona.edu/events (inspect the $Trumba.addSpud() calls).
  */
 
-import type { ScrapedEvent, ScraperResult } from './types.js'
+import type { ScrapedEvent, ScraperResult } from './types'
 
 const SOURCE = 'pomona_calendar'
 const TRUMBA_WEB_NAME = 'pomona-college-events'

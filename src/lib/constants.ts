@@ -20,18 +20,15 @@ export const COLLEGE_COLORS: Record<College, string> = {
 }
 
 export const SOURCE_TO_COLLEGE: Record<string, College> = {
-  'pomona': 'Pomona',
-  'cmc': 'CMC',
-  'harvey-mudd': 'Harvey Mudd',
-  'scripps': 'Scripps',
-  'pitzer': 'Pitzer',
-  'cgu': 'CGU',
-  'city-of-claremont': 'Community',
-  'claremont-chamber': 'Community',
-  'folk-music-center': 'Folk Music',
-  'claremont-forum': 'Forum',
-  'claremont-little-league': 'Little League',
-  'eventbrite': 'Community',
+  'pomona_calendar':  'Pomona',
+  'cmc_calendar':     'CMC',
+  'hmc_calendar':     'Harvey Mudd',
+  'scripps_calendar': 'Scripps',
+  'pitzer_calendar':  'Pitzer',
+  'cgu_calendar':     'CGU',
+  'city_claremont':   'Community',
+  'eventbrite':       'Community',
+  'engage_claremont': 'Community',
 }
 
 export const NAV_ITEMS = [

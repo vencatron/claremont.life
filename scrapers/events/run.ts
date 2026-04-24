@@ -20,8 +20,8 @@
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import { run } from './index.js'
-import type { ScrapedEvent } from './sources/types.js'
+import { run } from './index'
+import type { ScrapedEvent } from './sources/types'
 
 // ---------------------------------------------------------------------------
 // Config
