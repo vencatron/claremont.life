@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js';
  */
 export function createAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_KEY;
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY ?? process.env.SUPABAS_SERVICE_KEY;
   if (!url || !serviceKey) {
     throw new Error(
       'Supabase admin client requires NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_KEY env vars',
