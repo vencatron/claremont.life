@@ -7,6 +7,7 @@ export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
   const { data, error } = await supabase
     .from('events')
     .select('*')
+    .eq('source', 'claremont_edu_events')
     .eq('is_active', true)
     .gte('starts_at', now)
     .order('starts_at', { ascending: true })
@@ -20,6 +21,7 @@ export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
     const legacy = await supabase
       .from('events')
       .select('*')
+      .eq('source', 'claremont_edu_events')
       .gte('start_date', now)
       .order('start_date', { ascending: true })
       .limit(limit)

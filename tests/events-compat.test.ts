@@ -39,13 +39,27 @@ test('normalizes legacy event rows to the app event shape', () => {
     url: 'https://example.com',
     starts_at: '2026-05-04T16:00:00+00:00',
     ends_at: '2026-05-04T19:00:00+00:00',
-    college: null,
-    event_type: 'Community',
+    college: 'Community',
+    event_type: null,
     location: 'Village',
     address: null,
     image_url: null,
     is_active: true,
   })
+})
+
+test('normalizes legacy college categories for filter buttons', () => {
+  const event = normalizeEventRow({
+    id: 'pomona-1',
+    source: 'claremont_edu_events',
+    source_id: '32819',
+    title: 'Pomona event',
+    start_date: '2026-05-04T16:00:00+00:00',
+    category: 'Pomona',
+  })
+
+  assert.equal(event.college, 'Pomona')
+  assert.equal(event.event_type, null)
 })
 
 test('maps scraped events to both modern and legacy database schemas', () => {

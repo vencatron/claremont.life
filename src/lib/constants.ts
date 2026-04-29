@@ -20,6 +20,7 @@ export const COLLEGE_COLORS: Record<College, string> = {
 }
 
 export const SOURCE_TO_COLLEGE: Record<string, College> = {
+  'claremont_edu_events': 'Community',
   'pomona_calendar':  'Pomona',
   'cmc_calendar':     'CMC',
   'hmc_calendar':     'Harvey Mudd',

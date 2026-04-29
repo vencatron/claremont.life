@@ -1,4 +1,5 @@
 import type { ClaremontEvent } from '../types'
+import { COLLEGES } from './constants'
 
 interface MissingColumnLike {
   code?: string | null
@@ -46,7 +47,16 @@ export function isMissingColumnError(error: MissingColumnLike | null | undefined
   return /column .* does not exist|could not find .* column/i.test(error.message ?? '')
 }
 
+const LEGACY_COLLEGE_CATEGORIES = new Set<string>(COLLEGES.filter((college) => college !== 'All'))
+
+function legacyCategoryCollege(category: string | null | undefined): string | null {
+  if (!category) return null
+  return LEGACY_COLLEGE_CATEGORIES.has(category) ? category : null
+}
+
 export function normalizeEventRow(row: EventRowLike): ClaremontEvent {
+  const legacyCollege = legacyCategoryCollege(row.category)
+
   return {
     id: row.id,
     source: row.source,
@@ -56,8 +66,8 @@ export function normalizeEventRow(row: EventRowLike): ClaremontEvent {
     url: row.url ?? null,
     starts_at: row.starts_at ?? row.start_date ?? '',
     ends_at: row.ends_at ?? row.end_date ?? null,
-    college: row.college ?? null,
-    event_type: row.event_type ?? row.category ?? null,
+    college: row.college ?? legacyCollege,
+    event_type: row.event_type ?? (legacyCollege ? null : row.category ?? null),
     location: row.location ?? null,
     address: row.address ?? null,
     image_url: row.image_url ?? null,

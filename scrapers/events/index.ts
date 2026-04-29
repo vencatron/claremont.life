@@ -4,26 +4,11 @@
  * Runs all event source scrapers in parallel, collecting results.
  * Each source failure is isolated — one failing source won't abort the run.
  *
- * Sources:
- *   - pomona     : Pomona College (Trumba calendar)
- *   - cmc        : Claremont McKenna College (Localist API)
- *   - harvey-mudd: Harvey Mudd College (WordPress RSS)
- *   - scripps    : Scripps College (The Events Calendar API)
- *   - pitzer     : Pitzer College (Drupal XML feed)
- *   - cgu        : Claremont Graduate University (The Events Calendar API)
- *   - city       : City of Claremont (HTML scraping)
- *   - eventbrite : Eventbrite (requires EVENTBRITE_API_KEY)
+ * Source:
+ *   - claremont.edu/events: The Claremont Colleges calendar
  */
 
-import { scrapePomona } from './sources/pomona'
-import { scrapeCMC } from './sources/cmc'
-import { scrapeHarveyMudd } from './sources/harvey-mudd'
-import { scrapeScripps } from './sources/scripps'
-import { scrapePitzer } from './sources/pitzer'
-import { scrapeCGU } from './sources/cgu'
-import { scrapeCityClaremont } from './sources/city-claremont'
-import { scrapeEventbrite } from './sources/eventbrite'
-import { scrapeEngage } from './sources/engage'
+import { scrapeClaremontEvents } from './sources/claremont-events'
 import type { ScrapedEvent, ScraperResult } from './sources/types'
 
 export type { ScrapedEvent, ScraperResult }
@@ -42,15 +27,7 @@ export async function run(): Promise<RunSummary> {
   console.log('🔍 Starting event scrapers...')
 
   const scrapers: Array<() => Promise<ScraperResult>> = [
-    scrapeEngage,
-    scrapePomona,
-    scrapeCMC,
-    scrapeHarveyMudd,
-    scrapeScripps,
-    scrapePitzer,
-    scrapeCGU,
-    scrapeCityClaremont,
-    scrapeEventbrite,
+    scrapeClaremontEvents,
   ]
 
   // Run all scrapers concurrently; catch individual failures
