@@ -1,16 +1,35 @@
 import { supabase } from './supabase'
+import { isMissingColumnError, normalizeEventRow } from './events-compat'
 import type { ClaremontEvent, Business, Deal, EatPlace, HousingListing, RedditPost } from '@/types'
 
 export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
+  const now = new Date().toISOString()
   const { data, error } = await supabase
     .from('events')
     .select('*')
     .eq('is_active', true)
-    .gte('starts_at', new Date().toISOString())
+    .gte('starts_at', now)
     .order('starts_at', { ascending: true })
     .limit(limit)
-  if (error) { console.error('getUpcomingEvents:', error); return [] }
-  return data ?? []
+
+  if (!error) return (data ?? []).map(normalizeEventRow)
+
+  // Production still has the legacy events schema (`start_date`/`end_date`,
+  // no `is_active`). Keep the site loading while the DB migration catches up.
+  if (isMissingColumnError(error)) {
+    const legacy = await supabase
+      .from('events')
+      .select('*')
+      .gte('start_date', now)
+      .order('start_date', { ascending: true })
+      .limit(limit)
+
+    if (legacy.error) { console.error('getUpcomingEvents legacy:', legacy.error); return [] }
+    return (legacy.data ?? []).map(normalizeEventRow)
+  }
+
+  console.error('getUpcomingEvents:', error)
+  return []
 }
 
 export async function getBusinesses(): Promise<Business[]> {

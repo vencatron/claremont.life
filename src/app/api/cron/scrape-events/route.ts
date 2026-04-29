@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { run } from '../../../../../scrapers/events/index'
 import type { ScrapedEvent } from '../../../../../scrapers/events/sources/types'
 import { createAdminClient } from '@/lib/supabase-admin'
+import { isMissingColumnError, toLegacyEventRow, toModernEventRow } from '@/lib/events-compat'
 
 // Vercel Cron: triggered per schedule in vercel.json. When CRON_SECRET is
 // configured in the project environment, Vercel includes it as a bearer token
@@ -31,26 +32,20 @@ async function upsertEvents(
     stats.skipped += batch.length - valid.length
     if (!valid.length) continue
 
-    const rows = valid.map((ev) => ({
-      title: ev.title,
-      description: ev.description ?? null,
-      college: ev.college ?? null,
-      event_type: ev.event_type ?? null,
-      location: ev.location ?? null,
-      address: ev.address ?? null,
-      starts_at: ev.starts_at,
-      ends_at: ev.ends_at ?? null,
-      url: ev.url ?? null,
-      image_url: ev.image_url ?? null,
-      source: ev.source,
-      source_id: ev.source_id,
-      is_active: true,
-    }))
+    const modernRows = valid.map(toModernEventRow)
 
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from('events')
-      .upsert(rows, { onConflict: 'source,source_id', ignoreDuplicates: false })
+      .upsert(modernRows, { onConflict: 'source,source_id', ignoreDuplicates: false })
       .select('id, created_at, updated_at')
+
+    if (error && isMissingColumnError(error)) {
+      const legacyRows = valid.map(toLegacyEventRow)
+      ;({ data, error } = await supabase
+        .from('events')
+        .upsert(legacyRows, { onConflict: 'source,source_id', ignoreDuplicates: false })
+        .select('id, created_at, updated_at'))
+    }
 
     if (error) {
       stats.errors += batch.length

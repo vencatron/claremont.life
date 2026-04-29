@@ -18,17 +18,17 @@
  *   DRY_RUN=1             - Print events without inserting into DB
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { run } from './index'
 import type { ScrapedEvent } from './sources/types'
+import { isMissingColumnError, toLegacyEventRow, toModernEventRow } from '../../src/lib/events-compat'
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
-const SUPABASE_URL = process.env.SUPABASE_URL
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY
+const SUPABASE_URL = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY
 const DRY_RUN = process.env.DRY_RUN === '1' || process.env.DRY_RUN === 'true'
 const BATCH_SIZE = 100  // Upsert in chunks to avoid payload limits
 
@@ -43,9 +43,8 @@ interface UpsertStats {
   errors: number
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function upsertEvents(
-  supabase: SupabaseClient<any>,
+  supabase: SupabaseClient,
   events: ScrapedEvent[]
 ): Promise<UpsertStats> {
   const stats: UpsertStats = { inserted: 0, updated: 0, skipped: 0, errors: 0 }
@@ -60,29 +59,26 @@ async function upsertEvents(
 
     if (!valid.length) continue
 
-    const rows = valid.map((ev) => ({
-      title: ev.title,
-      description: ev.description ?? null,
-      college: ev.college ?? null,
-      event_type: ev.event_type ?? null,
-      location: ev.location ?? null,
-      address: ev.address ?? null,
-      starts_at: ev.starts_at,
-      ends_at: ev.ends_at ?? null,
-      url: ev.url ?? null,
-      image_url: ev.image_url ?? null,
-      source: ev.source,
-      source_id: ev.source_id,
-      is_active: true,
-    }))
+    const modernRows = valid.map(toModernEventRow)
 
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from('events')
-      .upsert(rows, {
+      .upsert(modernRows, {
         onConflict: 'source,source_id',
         ignoreDuplicates: false,
       })
       .select('id, created_at, updated_at')
+
+    if (error && isMissingColumnError(error)) {
+      const legacyRows = valid.map(toLegacyEventRow)
+      ;({ data, error } = await supabase
+        .from('events')
+        .upsert(legacyRows, {
+          onConflict: 'source,source_id',
+          ignoreDuplicates: false,
+        })
+        .select('id, created_at, updated_at'))
+    }
 
     if (error) {
       console.error(`  ❌ Batch upsert error: ${error.message}`)
@@ -92,7 +88,6 @@ async function upsertEvents(
 
     // Supabase doesn't distinguish insert vs update in basic upsert.
     // Heuristic: if created_at === updated_at within a second, it's new.
-    const now = Date.now()
     for (const row of data ?? []) {
       const created = new Date(row.created_at).getTime()
       const updated = new Date(row.updated_at).getTime()
@@ -151,7 +146,7 @@ async function main() {
 
   // Connect to Supabase
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
-    console.error('\n❌ Missing env vars: SUPABASE_URL and/or SUPABASE_SERVICE_KEY')
+    console.error('\n❌ Missing env vars: NEXT_PUBLIC_SUPABASE_URL/SUPABASE_URL and/or SUPABASE_SERVICE_KEY')
     console.error('   Set them in your .env file. See scrapers/README.md for setup.')
     process.exit(1)
   }
