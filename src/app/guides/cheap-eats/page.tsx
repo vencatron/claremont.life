@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { ShareGuideButton } from '@/components/ShareGuideButton'
 
 const guideUrl = 'https://claremont.life/guides/cheap-eats'
@@ -120,7 +119,7 @@ export default function CheapEatsGuidePage() {
         </div>
       </section>
 
-      <section className="mx-auto mt-8 grid max-w-6xl gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+      <section className="mx-auto mt-8 max-w-6xl">
         <article className="rounded-3xl border border-gray-200 bg-gray-950 p-5 text-white shadow-sm md:p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-200">Fast share copy</p>
           <h2 className="mt-2 text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>
@@ -129,11 +128,6 @@ export default function CheapEatsGuidePage() {
           <p className="mt-4 text-sm leading-6 text-gray-200">
             “Before we order delivery, check this cheap-eats guide: claremont.life/guides/cheap-eats. It links to food, deals, free-food events, and the new-student guide.”
           </p>
-        </article>
-
-        <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm md:p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Student-value CTA</p>
-          <NewsletterSignup heading="Get the weekly broke-but-fed Claremont student update." />
         </article>
       </section>
     </div>

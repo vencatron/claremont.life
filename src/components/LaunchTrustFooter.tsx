@@ -14,7 +14,7 @@ const TRUST_ITEMS = [
   },
   {
     label: 'Privacy',
-    copy: 'Newsletter means useful Claremont updates only: no spam, no resale, unsubscribe anytime.',
+    copy: 'No accounts required for the guide. Campus preference stays on your device.',
   },
 ]
 

@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Calendar, UtensilsCrossed, Tag, Users, Building2, Compass } from 'lucide-react'
+import { Calendar, UtensilsCrossed, Tag, Users, Building2, Compass, House } from 'lucide-react'
 
 const NAV_ITEMS = [
+  { label: 'Home', href: '/', icon: House },
   { label: 'Events', href: '/events', icon: Calendar },
   { label: 'Eat', href: '/eat', icon: UtensilsCrossed },
   { label: 'Map', href: '/explore', icon: Compass },
@@ -21,7 +22,7 @@ export function BottomNav() {
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-white/70 bg-background/82 backdrop-blur-2xl md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      <div className="mx-auto grid h-16 max-w-lg grid-cols-6 px-1.5">
+      <div className="mx-auto grid h-16 max-w-lg grid-cols-7 px-1">
         {NAV_ITEMS.map((item) => {
           const isActive = item.href === '/' ? pathname === '/' : (pathname === item.href || pathname.startsWith(item.href + '/'))
           const Icon = item.icon
@@ -29,7 +30,7 @@ export function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl px-1.5 py-1.5 text-[0.68rem] font-semibold transition-all ${
+              className={`flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5 text-[0.65rem] font-semibold transition-all ${
                 isActive ? 'text-foreground' : 'text-muted-foreground'
               }`}
             >

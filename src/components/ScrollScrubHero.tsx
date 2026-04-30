@@ -12,7 +12,7 @@ const PILLARS = [
 
 export function ScrollScrubHero() {
   return (
-    <section className="relative px-4 pb-12 pt-6 md:px-6 md:pb-24 md:pt-14" aria-label="The Claremont Colleges">
+    <section className="relative px-4 pb-12 pt-6 md:px-6 md:pb-24 md:pt-14" aria-label="Claremont Life">
       <div className="mx-auto max-w-6xl">
         <div className="relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-white/70 bg-[oklch(0.99_0.006_92_/_0.72)] shadow-[0_30px_100px_rgba(20,30,50,0.10)] backdrop-blur-2xl md:min-h-[32rem] md:rounded-[2.5rem]">
           <div className="absolute inset-0 opacity-80" aria-hidden="true">
@@ -28,7 +28,7 @@ export function ScrollScrubHero() {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-background/72 px-3 py-2 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground shadow-sm backdrop-blur-xl">
                 <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-                The Claremont Colleges
+                Claremont Life
               </div>
               <div className="hidden items-center gap-1 text-xs font-semibold text-muted-foreground md:flex">
                 {COLLEGES.map((college, index) => (
@@ -47,9 +47,9 @@ export function ScrollScrubHero() {
                   <span className="h-3 w-3 rounded-full border border-current/45" />
                   <span className="h-px w-24 bg-current/25" />
                 </div>
-                <p className="cl-eyebrow">The Claremont Colleges</p>
+                <p className="cl-eyebrow">Claremont Life</p>
                 <h2 className="mt-3 max-w-3xl text-4xl font-semibold leading-[0.9] tracking-[-0.075em] text-foreground min-[380px]:text-5xl md:mt-4 md:text-7xl lg:text-8xl">
-                  THE CLAREMONT COLLEGES
+                  CLAREMONT LIFE
                 </h2>
               </div>
 

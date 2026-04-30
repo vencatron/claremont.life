@@ -3,7 +3,6 @@ import { ArrowRight, CalendarDays, Home, MapPinned, Tag, UtensilsCrossed } from 
 import { getUpcomingEvents } from '@/lib/data'
 import { CampusPreference } from '@/components/CampusPreference'
 import { HomeTodaySection } from '@/components/HomeTodaySection'
-import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { ScrollScrubHero } from '@/components/ScrollScrubHero'
 import { StudentQuickActions } from '@/components/StudentQuickActions'
 import { StudentVoice } from '@/components/StudentVoice'
@@ -129,10 +128,6 @@ export default async function HomePage() {
           <p className="text-lg font-semibold tracking-[-0.03em]">New to Claremont?</p>
           <p className="mt-1 text-sm opacity-85">Start here →</p>
         </Link>
-      </section>
-
-      <section className="cl-container pb-10 md:pb-14">
-        <NewsletterSignup heading="Weekly. Free. Worth it." />
       </section>
     </main>
   )

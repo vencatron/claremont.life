@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
+  { label: 'Home', href: '/' },
   { label: 'Events', href: '/events' },
   { label: 'Eat & Drink', href: '/eat' },
   { label: 'Map', href: '/explore' },
@@ -29,7 +30,7 @@ export function DesktopNav() {
         </Link>
         <div className="flex items-center gap-1 rounded-full border border-border/70 bg-white/55 p-1 shadow-sm backdrop-blur-xl">
           {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+            const isActive = item.href === '/' ? pathname === '/' : pathname === item.href || pathname.startsWith(item.href + '/')
             return (
               <Link
                 key={item.href}

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { NewGuide } from './new-guide'
 
 export const metadata: Metadata = {
@@ -11,9 +10,6 @@ export default function NewPage() {
   return (
     <div>
       <NewGuide />
-      <div className="px-4 pb-8 md:px-6">
-        <NewsletterSignup heading="Keep the New Here guide current." />
-      </div>
     </div>
   )
 }

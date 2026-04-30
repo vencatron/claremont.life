@@ -9,7 +9,7 @@ interface NewsletterSignupProps {
   heading?: string
 }
 
-export function NewsletterSignup({ heading = 'Weekly. Free. Worth it.' }: NewsletterSignupProps) {
+export function NewsletterSignup({ heading = 'Get useful Claremont updates.' }: NewsletterSignupProps) {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
@@ -37,7 +37,7 @@ export function NewsletterSignup({ heading = 'Weekly. Free. Worth it.' }: Newsle
         <div>
           <h2 className="text-2xl font-semibold tracking-[-0.045em] md:text-3xl">{heading}</h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            A weekly Claremont student digest. No spam, no resale, unsubscribe anytime.
+            Useful Claremont updates only. No spam, no resale, unsubscribe anytime.
           </p>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
