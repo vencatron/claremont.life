@@ -10,6 +10,21 @@ interface CommunityFeedProps {
   posts: RedditPost[]
 }
 
+type PulseFilter = {
+  label: string
+  subs?: string[]
+  keywords?: string[]
+}
+
+const CAMPUS_SUBREDDITS = [
+  'claremontcolleges',
+  'ClaremontMcKenna',
+  'pomonacollege',
+  'harveymudd',
+  'scrippscollege',
+  'pitzercollege',
+]
+
 const SUBREDDIT_META: Record<string, { label: string; color: string }> = {
   claremontcolleges: { label: '7Cs', color: 'bg-blue-100 text-blue-700' },
   ClaremontMcKenna: { label: 'CMC', color: 'bg-red-100 text-red-700' },
@@ -22,11 +37,38 @@ const SUBREDDIT_META: Record<string, { label: string; color: string }> = {
   MovingToLosAngeles: { label: 'Moving to LA', color: 'bg-pink-100 text-pink-700' },
 }
 
-const FILTERS: { label: string; subs: string[] | null }[] = [
-  { label: 'All', subs: null },
-  { label: 'Colleges', subs: ['claremontcolleges', 'ClaremontMcKenna', 'pomonacollege', 'harveymudd', 'scrippscollege', 'pitzercollege'] },
-  { label: 'City', subs: ['Claremont'] },
-  { label: 'Regional', subs: ['InlandEmpire', 'MovingToLosAngeles'] },
+const FILTERS: PulseFilter[] = [
+  { label: 'All' },
+  {
+    label: 'Campus',
+    subs: CAMPUS_SUBREDDITS,
+    keywords: ['campus', 'college', '5c', '5cs', 'pomona', 'cmc', 'mudd', 'scripps', 'pitzer'],
+  },
+  {
+    label: 'City',
+    subs: ['Claremont', 'InlandEmpire'],
+    keywords: ['claremont', 'village', 'city council', 'foothill', 'indian hill', 'baseline'],
+  },
+  {
+    label: 'Housing',
+    keywords: ['housing', 'apartment', 'apartments', 'lease', 'rent', 'roommate', 'dorm', 'landlord', 'move-in'],
+  },
+  {
+    label: 'Food',
+    keywords: ['food', 'restaurant', 'dining', 'meal', 'cafe', 'coffee', 'lunch', 'dinner', 'boba'],
+  },
+  {
+    label: 'Safety',
+    keywords: ['safety', 'police', 'alert', 'fire', 'smoke', 'theft', 'crime', 'emergency', 'air quality'],
+  },
+  {
+    label: 'Transit',
+    keywords: ['transit', 'train', 'metrolink', 'bus', 'foothill transit', 'parking', 'traffic', 'closure', 'delay'],
+  },
+  {
+    label: 'Events',
+    keywords: ['event', 'events', 'show', 'concert', 'lecture', 'party', 'meetup', 'festival', 'workshop'],
+  },
 ]
 
 const SORT_OPTIONS = [
@@ -56,6 +98,21 @@ function truncateBody(text: string | null, maxLen: number = 200): string | null 
   return clean.slice(0, maxLen).trim() + '…'
 }
 
+function postSearchText(post: RedditPost): string {
+  return [post.title, post.body, post.flair, post.subreddit]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+}
+
+function matchesPulseFilter(post: RedditPost, filterConfig: PulseFilter): boolean {
+  if (filterConfig.label === 'All') return true
+  if (filterConfig.subs?.includes(post.subreddit)) return true
+
+  const text = postSearchText(post)
+  return filterConfig.keywords?.some((keyword) => text.includes(keyword.toLowerCase())) ?? false
+}
+
 export function CommunityFeed({ posts }: CommunityFeedProps) {
   const [filter, setFilter] = useState('All')
   const [sort, setSort] = useState('New')
@@ -68,11 +125,12 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
 
     return posts
       .filter(p => {
-        if (filterConfig.subs && !filterConfig.subs.includes(p.subreddit)) return false
+        if (!matchesPulseFilter(p, filterConfig)) return false
         if (search) {
           const q = search.toLowerCase()
           return p.title.toLowerCase().includes(q) ||
             (p.body?.toLowerCase().includes(q) ?? false) ||
+            (p.flair?.toLowerCase().includes(q) ?? false) ||
             p.subreddit.toLowerCase().includes(q)
         }
         return true
@@ -84,11 +142,22 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
 
   return (
     <div>
+      <div className="px-4 md:px-6 pt-1 pb-3">
+        <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">Pulse lanes</p>
+          <p className="mt-1 text-sm text-gray-600">
+            Reddit community threads are the live source today. Source labels mark them as community-sourced,
+            third-party signals while Campus Pulse grows toward Student Life headlines, local notices,
+            weather and air quality alerts, and transit updates.
+          </p>
+        </div>
+      </div>
+
       {/* Search */}
       <div className="px-4 md:px-6 pt-3">
         <input
           type="text"
-          placeholder="Search posts..."
+          placeholder="Search Pulse..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setShowCount(30) }}
           className="w-full md:max-w-md rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
@@ -114,7 +183,7 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
 
       {/* Sort + count */}
       <div className="flex items-center justify-between px-4 md:px-6 pb-2">
-        <p className="text-sm text-gray-500">{filtered.length} posts</p>
+        <p className="text-sm text-gray-500">{filtered.length} pulse items</p>
         <div className="flex gap-1">
           {SORT_OPTIONS.map((s) => (
             <button
@@ -141,11 +210,14 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
           return (
             <Card key={post.post_id} className="p-4 shadow-sm rounded-xl">
               {/* Header: sub badge + time */}
-              <div className="flex items-center justify-between gap-2 mb-1.5">
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
                 <Badge className={`text-[10px] font-semibold px-2 py-0.5 ${meta.color} border-0`}>
                   r/{post.subreddit}
                 </Badge>
-                <span className="flex items-center gap-1 text-xs text-gray-400">
+                <Badge variant="outline" className="text-[10px] border-gray-200 text-gray-500">
+                  Source: Reddit community thread
+                </Badge>
+                <span className="ml-auto flex items-center gap-1 text-xs text-gray-400">
                   <Clock className="h-3 w-3" />
                   {timeAgo(post.created_utc)}
                 </span>
@@ -170,6 +242,10 @@ export function CommunityFeed({ posts }: CommunityFeedProps) {
               {post.flair && (
                 <Badge variant="outline" className="mt-1 text-[10px]">{post.flair}</Badge>
               )}
+
+              <p className="mt-1.5 text-[11px] leading-relaxed text-gray-400">
+                Community-sourced, third-party post — not independently verified by claremont.life.
+              </p>
 
               {/* Body preview */}
               {preview && (

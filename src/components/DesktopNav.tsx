@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { label: 'Eat & Drink', href: '/eat' },
   { label: 'Explore', href: '/explore' },
   { label: 'Live', href: '/housing' },
-  { label: 'Community', href: '/know' },
+  { label: 'Pulse', href: '/know' },
   { label: 'Deals', href: '/deals' },
 ]
 

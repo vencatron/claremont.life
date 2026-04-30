@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { label: 'Eat', href: '/eat', icon: UtensilsCrossed },
   { label: 'Explore', href: '/explore', icon: Compass },
   { label: 'Live', href: '/housing', icon: Building2 },
-  { label: 'Community', href: '/know', icon: Users },
+  { label: 'Pulse', href: '/know', icon: Users },
   { label: 'Deals', href: '/deals', icon: Tag },
 ]
 
