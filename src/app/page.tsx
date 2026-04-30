@@ -116,6 +116,19 @@ export default async function HomePage() {
             </div>
           </section>
 
+          {/* Event submission CTA */}
+          <section className="mx-4 md:mx-6 mb-6 bg-black/70 backdrop-blur-md md:bg-transparent md:backdrop-blur-none rounded-xl overflow-hidden">
+            <div className="mx-auto max-w-6xl">
+              <Link
+                href="/events/submit"
+                className="block rounded-xl border border-white/15 bg-white/10 p-5 text-center text-white transition-colors hover:bg-white/15 md:border-border md:bg-card md:p-6 md:text-card-foreground md:hover:bg-accent"
+              >
+                <p className="font-semibold text-lg">Know about free food or a campus event?</p>
+                <p className="text-sm opacity-90 mt-1">Send it for review →</p>
+              </Link>
+            </div>
+          </section>
+
           {/* New to Claremont CTA */}
           <section className="mx-4 md:mx-6 mb-6 bg-black/70 backdrop-blur-md md:bg-transparent md:backdrop-blur-none rounded-xl overflow-hidden">
             <div className="mx-auto max-w-6xl">

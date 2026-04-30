@@ -66,12 +66,13 @@ test('EventsFeed source keeps student discovery controls ahead of campus/source 
   assert.equal(filtersIndex < collegeFilterIndex, true)
 })
 
-test('EventsFeed empty state uses clear/check-back language without linking to submit routes', () => {
+test('EventsFeed empty state uses clear/check-back language and links to event submissions', () => {
   const source = readFileSync('src/components/EventsFeed.tsx', 'utf8')
 
   assert.match(source, /Clear filters/)
   assert.match(source, /check back soon/i)
-  assert.equal(/href=\{?['\"][^'\"]*submit/i.test(source), false)
+  assert.match(source, /href=\{?['\"]\/events\/submit['\"]\}?/)
+  assert.match(source, /Submit an event|Send us an event/i)
 })
 
 test('EventCard source renders metadata badges and gives location prominence before time', () => {

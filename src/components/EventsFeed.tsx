@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Search, X } from 'lucide-react'
 import { CollegeFilter } from '@/components/CollegeFilter'
 import { EventCard } from '@/components/EventCard'
@@ -124,14 +125,19 @@ export function EventsFeed({ events }: EventsFeedProps) {
             </p>
             <p className="mt-2 text-sm text-gray-500">
               {hasDiscoveryState
-                ? 'Try clearing a filter, searching a broader word, or checking back as calendars update. Student submissions are coming soon.'
-                : 'Calendars change fast around the 5Cs. Check back soon for new events.'}
+                ? 'Try clearing a filter, searching a broader word, or checking back as calendars update. Know about something missing? Send it for review.'
+                : 'Calendars change fast around the 5Cs. Check back soon for new events, or send us an event for review.'}
             </p>
-            {hasDiscoveryState && (
-              <Button type="button" variant="outline" size="sm" className="mt-4 rounded-full" onClick={clearDiscoveryState}>
-                Clear filters
+            <div className="mt-4 flex flex-col items-center justify-center gap-2 sm:flex-row">
+              <Button asChild size="sm" className="rounded-full">
+                <Link href="/events/submit">Submit an event</Link>
               </Button>
-            )}
+              {hasDiscoveryState && (
+                <Button type="button" variant="outline" size="sm" className="rounded-full" onClick={clearDiscoveryState}>
+                  Clear filters
+                </Button>
+              )}
+            </div>
           </div>
         ) : (
           Object.entries(grouped).map(([day, dayEvents]) => (
