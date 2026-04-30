@@ -33,7 +33,10 @@ export function NewsletterSignup({ heading = 'Weekly. Free. Worth it.' }: Newsle
 
   return (
     <div className="py-8 px-4">
-      <h2 className="text-xl font-semibold mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>{heading}</h2>
+      <h2 className="text-xl font-semibold mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>{heading}</h2>
+      <p className="mb-3 text-sm text-muted-foreground">
+        A weekly Claremont student digest. No spam, no resale, unsubscribe anytime.
+      </p>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <Input type="email" placeholder="your@email.edu" value={email} onChange={(e) => setEmail(e.target.value)} required className="flex-1" />
         <Button type="submit" disabled={status === 'loading'} className="bg-primary hover:bg-primary/90 text-white shrink-0">

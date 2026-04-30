@@ -28,6 +28,17 @@ function safeEventUrl(url: string | null | undefined): string | null {
   }
 }
 
+function formatSource(source: string | null | undefined): string {
+  if (!source) return 'Unknown source'
+  return source
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
+}
+
+function sourceDetail(source: string | null | undefined): string {
+  return source ? ` (${source})` : ''
+}
+
 export function EventCard({ event }: EventCardProps) {
   const metadata = inferStudentEventMetadata(event)
   const colorClass = COLLEGE_COLORS[metadata.campus] || COLLEGE_COLORS['All']
@@ -43,6 +54,8 @@ export function EventCard({ event }: EventCardProps) {
     }).format(eventDate)
     : 'Time TBD'
   const safeUrl = safeEventUrl(event.url)
+  const sourceLabel = formatSource(event.source)
+  const sourceId = sourceDetail(event.source)
 
   const content = (
     <Card className="p-4 shadow-sm rounded-xl hover:shadow-md transition-shadow h-full">
@@ -77,6 +90,9 @@ export function EventCard({ event }: EventCardProps) {
               {event.description}
             </p>
           )}
+          <p className="mt-3 border-t border-gray-100 pt-2 text-xs text-gray-500">
+            Source: {sourceLabel}{sourceId}. Public calendar or submitted listing; not independently verified by claremont.life.
+          </p>
         </div>
       </div>
     </Card>

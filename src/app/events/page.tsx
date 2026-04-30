@@ -19,6 +19,14 @@ export default async function EventsPage() {
           </Button>
         </div>
       </div>
+      <div className="px-4 pb-3 md:px-6">
+        <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-950">
+          <p className="font-semibold">Freshness: public 7C calendars refresh hourly.</p>
+          <p className="mt-1 text-blue-900/80">
+            We hide stale events automatically. Missing or wrong source data? Submit an event or report a correction so the guide stays useful.
+          </p>
+        </div>
+      </div>
       <EventsFeed events={events} />
     </div>
   )

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Playfair_Display, DM_Sans, Bebas_Neue } from 'next/font/google'
 import { BottomNav } from '@/components/BottomNav'
 import { DesktopNav } from '@/components/DesktopNav'
+import { LaunchTrustFooter } from '@/components/LaunchTrustFooter'
 import { LayoutWrapper } from '@/components/LayoutWrapper'
 import './globals.css'
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-black md:bg-background text-foreground font-[family-name:var(--font-dm-sans)] antialiased">
         <DesktopNav />
         <LayoutWrapper>{children}</LayoutWrapper>
+        <LaunchTrustFooter />
         <BottomNav />
       </body>
     </html>
