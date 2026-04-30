@@ -8,7 +8,7 @@ export default async function DealsPage() {
   const deals = await getDeals()
   return (
     <div>
-      <PageHeader title="Student Deals" subtitle="Verified discounts with your college ID" />
+      <PageHeader title="Student Deals" subtitle="Discounts that work with student ID, finals needs, birthdays, and 5C life" />
       <DealsGuide deals={deals} />
     </div>
   )
