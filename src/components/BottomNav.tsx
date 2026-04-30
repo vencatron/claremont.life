@@ -7,7 +7,7 @@ import { Calendar, UtensilsCrossed, Tag, Users, Building2, Compass } from 'lucid
 const NAV_ITEMS = [
   { label: 'Events', href: '/events', icon: Calendar },
   { label: 'Eat', href: '/eat', icon: UtensilsCrossed },
-  { label: 'Explore', href: '/explore', icon: Compass },
+  { label: 'Map', href: '/explore', icon: Compass },
   { label: 'Live', href: '/housing', icon: Building2 },
   { label: 'Pulse', href: '/know', icon: Users },
   { label: 'Deals', href: '/deals', icon: Tag },
