@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Calendar, Home, Tag, UtensilsCrossed } from 'lucide-react'
 import { getUpcomingEvents } from '@/lib/data'
+import { CampusPreference } from '@/components/CampusPreference'
 import { HomeTodaySection } from '@/components/HomeTodaySection'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { ScrollScrubHero } from '@/components/ScrollScrubHero'
@@ -65,6 +66,7 @@ export default async function HomePage() {
                 </p>
               </div>
               <StudentQuickActions />
+              <CampusPreference />
             </div>
 
             <HomeTodaySection events={events} />

@@ -3,12 +3,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Search, X } from 'lucide-react'
+import { CampusPreference, useCampusPreference } from '@/components/CampusPreference'
 import { CollegeFilter } from '@/components/CollegeFilter'
 import { EventCard } from '@/components/EventCard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { ClaremontEvent } from '@/types'
 import type { College } from '@/lib/constants'
+import {
+  sortEventsByCampusPreference,
+} from '@/lib/preferences'
 import {
   CLAREMONT_TIME_ZONE,
   DISCOVERY_FILTERS,
@@ -25,6 +29,7 @@ export function EventsFeed({ events }: EventsFeedProps) {
   const [selectedCollege, setSelectedCollege] = useState<College>('All')
   const [search, setSearch] = useState('')
   const [activeFilters, setActiveFilters] = useState<StudentEventFilterId[]>([])
+  const campusPreference = useCampusPreference()
 
   const hasDiscoveryState = search.trim().length > 0 || activeFilters.length > 0 || selectedCollege !== 'All'
   const filtered = filterStudentEvents(events, {
@@ -32,8 +37,16 @@ export function EventsFeed({ events }: EventsFeedProps) {
     filters: activeFilters,
     college: selectedCollege,
   })
+  const chronologicalEvents = [...filtered].sort((a, b) => {
+    const aTime = new Date(a.starts_at).getTime()
+    const bTime = new Date(b.starts_at).getTime()
 
-  const grouped = filtered.reduce<Record<string, ClaremontEvent[]>>((acc, event) => {
+    if (Number.isNaN(aTime)) return Number.isNaN(bTime) ? 0 : 1
+    if (Number.isNaN(bTime)) return -1
+    return aTime - bTime
+  })
+
+  const grouped = chronologicalEvents.reduce<Record<string, ClaremontEvent[]>>((acc, event) => {
     const startsAt = new Date(event.starts_at)
     if (!isValidEventDate(startsAt)) return acc
 
@@ -66,6 +79,12 @@ export function EventsFeed({ events }: EventsFeedProps) {
     <div>
       <div className="sticky top-0 bg-background z-10 border-b border-gray-100">
         <div className="px-4 md:px-6 pt-3 space-y-3">
+          <CampusPreference className="border-gray-200 bg-white text-gray-900 md:bg-white" />
+          {campusPreference && selectedCollege === 'All' && (
+            <p className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+              Prioritizing {campusPreference} first. Pick a campus/source chip to filter explicitly.
+            </p>
+          )}
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input
@@ -140,14 +159,20 @@ export function EventsFeed({ events }: EventsFeedProps) {
             </div>
           </div>
         ) : (
-          Object.entries(grouped).map(([day, dayEvents]) => (
-            <div key={day}>
-              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">{day}</h2>
-              <div className="space-y-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:space-y-0">
-                {dayEvents.map((event) => <EventCard key={event.id} event={event} />)}
+          Object.entries(grouped).map(([day, dayEvents]) => {
+            const displayEvents = selectedCollege === 'All'
+              ? sortEventsByCampusPreference(dayEvents, campusPreference)
+              : dayEvents
+
+            return (
+              <div key={day}>
+                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">{day}</h2>
+                <div className="space-y-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:space-y-0">
+                  {displayEvents.map((event) => <EventCard key={event.id} event={event} />)}
+                </div>
               </div>
-            </div>
-          ))
+            )
+          })
         )}
       </div>
     </div>

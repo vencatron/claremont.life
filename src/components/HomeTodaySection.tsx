@@ -1,7 +1,11 @@
+'use client'
+
 import Link from 'next/link'
 import { ArrowRight, BadgePercent, CalendarDays, Compass, UtensilsCrossed } from 'lucide-react'
 import { EventCard } from '@/components/EventCard'
+import { useCampusPreference } from '@/components/CampusPreference'
 import { splitHomepageEvents } from '@/lib/homepage-daily'
+import { getEventCampus } from '@/lib/student-events'
 import type { ClaremontEvent } from '@/types'
 
 interface HomeTodaySectionProps {
@@ -36,7 +40,17 @@ const FALLBACK_CARDS = [
 ]
 
 export function HomeTodaySection({ events }: HomeTodaySectionProps) {
-  const { tonight, thisWeek } = splitHomepageEvents(events, { tonightLimit: 2, thisWeekLimit: 3 })
+  const campusPreference = useCampusPreference()
+
+  const preview = splitHomepageEvents(events, {
+    tonightLimit: 2,
+    thisWeekLimit: 3,
+    prioritizeEvent: campusPreference
+      ? (event) => getEventCampus(event) === campusPreference
+      : undefined,
+  })
+  const tonight = preview.tonight
+  const thisWeek = preview.thisWeek
   const hasEvents = tonight.length > 0 || thisWeek.length > 0
 
   return (

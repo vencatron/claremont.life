@@ -64,6 +64,29 @@ test('homepage event preview splits upcoming events into tonight and this week b
   assert.deepEqual(preview.thisWeek.map((item) => item.id), ['tomorrow', 'six-days'])
 })
 
+test('homepage event preview prioritizes matching events before slicing but returns the selected bucket chronologically', () => {
+  const preview = splitHomepageEvents(
+    [
+      event('other-earliest', '2026-04-29T18:30:00.000Z'),
+      event('other-middle', '2026-04-29T19:00:00.000Z'),
+      event('other-later', '2026-04-29T20:00:00.000Z'),
+      event('preferred-earlier', '2026-04-29T21:00:00.000Z'),
+      event('preferred-later', '2026-04-29T22:00:00.000Z'),
+    ],
+    {
+      now: new Date('2026-04-29T18:00:00.000Z'),
+      tonightLimit: 3,
+      prioritizeEvent: (item) => item.id.startsWith('preferred'),
+    },
+  )
+
+  assert.deepEqual(preview.tonight.map((item) => item.id), [
+    'other-earliest',
+    'preferred-earlier',
+    'preferred-later',
+  ])
+})
+
 test('homepage event preview ignores malformed event dates', () => {
   const preview = splitHomepageEvents(
     [

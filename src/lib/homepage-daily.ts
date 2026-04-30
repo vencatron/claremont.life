@@ -86,6 +86,7 @@ export interface HomepageEventSplitOptions {
   now?: Date | string
   tonightLimit?: number
   thisWeekLimit?: number
+  prioritizeEvent?: (event: ClaremontEvent) => boolean
 }
 
 export interface HomepageEventSplit {
@@ -100,25 +101,34 @@ export function splitHomepageEvents(
   const now = coerceDate(options.now ?? new Date())
   const tonightLimit = options.tonightLimit ?? 3
   const thisWeekLimit = options.thisWeekLimit ?? 3
+  const prioritizeEvent = options.prioritizeEvent
   const tonightEndsAt = endOfClaremontDay(now)
   const thisWeekEndsAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
 
   const upcoming = events
     .flatMap((event) => {
       const startsAt = coerceOptionalDate(event.starts_at)
-      return startsAt ? [{ event, startsAt }] : []
+      return startsAt ? [{ event, startsAt, isPrioritized: Boolean(prioritizeEvent?.(event)) }] : []
     })
     .filter(({ startsAt }) => startsAt >= now)
-    .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
+    .sort((a, b) => {
+      if (a.isPrioritized !== b.isPrioritized) {
+        return a.isPrioritized ? -1 : 1
+      }
+
+      return a.startsAt.getTime() - b.startsAt.getTime()
+    })
 
   return {
     tonight: upcoming
       .filter(({ startsAt }) => startsAt <= tonightEndsAt)
       .slice(0, tonightLimit)
+      .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
       .map(({ event }) => event),
     thisWeek: upcoming
       .filter(({ startsAt }) => startsAt > tonightEndsAt && startsAt <= thisWeekEndsAt)
       .slice(0, thisWeekLimit)
+      .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
       .map(({ event }) => event),
   }
 }
