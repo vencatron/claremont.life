@@ -6,6 +6,7 @@ import { HomeTodaySection } from '@/components/HomeTodaySection'
 import { NewsletterSignup } from '@/components/NewsletterSignup'
 import { ScrollScrubHero } from '@/components/ScrollScrubHero'
 import { StudentQuickActions } from '@/components/StudentQuickActions'
+import { StudentVoice } from '@/components/StudentVoice'
 
 const CATEGORY_LINKS = [
   {
@@ -117,6 +118,8 @@ export default async function HomePage() {
               </div>
             </div>
           </section>
+
+          <StudentVoice />
 
           {/* Event submission CTA */}
           <section className="mx-4 md:mx-6 mb-6 bg-black/70 backdrop-blur-md md:bg-transparent md:backdrop-blur-none rounded-xl overflow-hidden">
