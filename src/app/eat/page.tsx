@@ -8,7 +8,7 @@ export default async function EatPage() {
   const places = await getEatPlaces()
   return (
     <div>
-      <PageHeader title="Eat & Drink" subtitle="Every spot walkable to the Claremont Colleges" />
+      <PageHeader title="Eat & Drink" subtitle="Cheap, open, walkable, and actually useful food picks for Claremont students" />
       <EatGuide places={places} />
     </div>
   )
