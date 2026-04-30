@@ -19,26 +19,25 @@ export function DesktopNav() {
   if (pathname === '/explore') return null
 
   return (
-    <nav className="hidden md:block sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
-      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
+    <nav className="sticky top-0 z-50 hidden border-b border-white/60 bg-background/78 backdrop-blur-2xl md:block">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <Link
           href="/"
-          className="text-xl font-bold tracking-tight"
-          style={{ fontFamily: 'var(--font-playfair)' }}
+          className="text-[1.05rem] font-semibold tracking-[-0.04em] text-foreground transition-colors hover:text-primary"
         >
           claremont.life
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 rounded-full border border-border/70 bg-white/55 p-1 shadow-sm backdrop-blur-xl">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`rounded-full px-3.5 py-1.5 text-[0.82rem] font-semibold tracking-[-0.01em] transition-all ${
                   isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    ? 'bg-foreground text-background shadow-sm'
+                    : 'text-muted-foreground hover:bg-background hover:text-foreground'
                 }`}
               >
                 {item.label}

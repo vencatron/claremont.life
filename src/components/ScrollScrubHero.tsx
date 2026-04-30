@@ -1,251 +1,82 @@
-'use client'
-
-import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { HeroMap } from './HeroMap'
-
-// How many viewport heights of scroll = full video playback
-const RUNWAY_VH = 5
+import { ArrowUpRight, Circle, MapPin } from 'lucide-react'
 
 const COLLEGES = ['Pomona', 'CMC', 'Harvey Mudd', 'Scripps', 'Pitzer', 'CGU', 'KGI']
 
-// Floating "The Claremont Colleges" text — appears before pillars
-const CONSORTIUM = { showAt: 0.02, peakAt: 0.12, hideAt: 0.26 }
-
-// Pillar definitions — text overlays synced to scroll progress
 const PILLARS = [
-  { label: 'EVENTS',  href: '/events',  showAt: 0.28, peakAt: 0.34, hideAt: 0.42 },
-  { label: 'EATS',    href: '/eat',     showAt: 0.42, peakAt: 0.48, hideAt: 0.56 },
-  { label: 'HOUSING', href: '/housing', showAt: 0.56, peakAt: 0.62, hideAt: 0.70 },
-  { label: 'DEALS',   href: '/deals',   showAt: 0.70, peakAt: 0.76, hideAt: 0.84 },
+  { label: 'EVENTS', href: '/events' },
+  { label: 'EATS', href: '/eat' },
+  { label: 'HOUSING', href: '/housing' },
+  { label: 'DEALS', href: '/deals' },
 ]
 
 export function ScrollScrubHero() {
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const rafRef = useRef<number | null>(null)
-  const stateRef = useRef({ target: 0, current: 0, ticking: false, ready: false, unlocked: false })
-  const [frac, setFrac] = useState(0)
-  const [isDesktop, setIsDesktop] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)')
-    setIsDesktop(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-
-  const unlockVideo = useCallback(() => {
-    const video = videoRef.current
-    const st = stateRef.current
-    if (!video || st.unlocked) return
-    st.unlocked = true
-    const p = video.play()
-    if (p && typeof p.then === 'function') {
-      p.then(() => {
-        video.pause()
-        video.currentTime = st.target
-      }).catch(() => {})
-    } else {
-      video.pause()
-    }
-  }, [])
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    const st = stateRef.current
-
-    // On desktop, the hero uses a live map — skip video setup
-    if (isDesktop) return
-
-    // Mobile: scroll-scrub behavior
-    function init() {
-      st.ready = true
-      video!.pause()
-      update()
-    }
-
-    if (video.readyState >= 1) init()
-    else video.addEventListener('loadedmetadata', init, { once: true })
-
-    function update() {
-      if (!st.ready || !video) return
-      const f = Math.min(1, window.scrollY / (RUNWAY_VH * window.innerHeight))
-      st.target = f * video.duration
-      setFrac(f)
-
-      if (!st.unlocked) unlockVideo()
-
-      if (!st.ticking) {
-        st.ticking = true
-        rafRef.current = requestAnimationFrame(tick)
-      }
-    }
-
-    function tick() {
-      if (!video) { st.ticking = false; return }
-      st.current += (st.target - st.current) * 0.15
-      if (Math.abs(st.current - st.target) < 0.005) st.current = st.target
-      if (Math.abs(video.currentTime - st.current) > 0.016) {
-        video.currentTime = st.current
-      }
-      if (Math.abs(st.current - st.target) > 0.005) {
-        rafRef.current = requestAnimationFrame(tick)
-      } else {
-        st.ticking = false
-      }
-    }
-
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('touchstart', unlockVideo, { once: true, passive: true })
-
-    update()
-
-    return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('touchstart', unlockVideo)
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    }
-  }, [unlockVideo, isDesktop])
-
-  // ── Desktop: contained hero section ──
-  if (isDesktop) {
-    return (
-      <div className="relative h-[50vh] overflow-hidden rounded-2xl mx-6 mt-6 bg-black">
-        {/* Live map background — vector-based, sharp at any resolution */}
-        <HeroMap />
-        {/* Subtle dark gradient at bottom for polish */}
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 to-transparent z-[1]" />
-      </div>
-    )
-  }
-
-  // ── Mobile: full scroll-scrub experience ──
   return (
-    <>
-    {/* Video layer — behind everything */}
-    <div className="fixed inset-0 -z-10 flex justify-center">
-      <div className="relative w-full max-w-lg h-full overflow-hidden">
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/claremont-pillars-float-scrub.mp4"
-          muted
-          playsInline
-          preload="auto"
-          poster=""
-        />
-      </div>
-    </div>
+    <section className="relative px-4 pb-12 pt-6 md:px-6 md:pb-24 md:pt-14" aria-label="The Claremont Colleges">
+      <div className="mx-auto max-w-6xl">
+        <div className="relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-white/70 bg-[oklch(0.99_0.006_92_/_0.72)] shadow-[0_30px_100px_rgba(20,30,50,0.10)] backdrop-blur-2xl md:min-h-[32rem] md:rounded-[2.5rem]">
+          <div className="absolute inset-0 opacity-80" aria-hidden="true">
+            <div className="absolute -left-24 -top-28 h-72 w-72 rounded-full bg-primary/18 blur-3xl md:h-96 md:w-96" />
+            <div className="absolute left-1/2 top-8 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-300/18 blur-3xl md:h-80 md:w-80" />
+            <div className="absolute -right-16 top-20 h-72 w-72 rounded-full bg-violet-300/18 blur-3xl md:h-96 md:w-96" />
+            <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
+            <div className="absolute left-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:left-12" />
+            <div className="absolute right-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:right-12" />
+          </div>
 
-    {/* Text overlay layer — above the scroll runway so taps register */}
-    <div className="fixed inset-0 z-20 flex justify-center pointer-events-none">
-      <div className="relative w-full max-w-lg h-full overflow-hidden">
-
-        {/* Floating consortium title — appears before pillars */}
-        {(() => {
-          const cp = getPillarProgress(frac, CONSORTIUM.showAt, CONSORTIUM.peakAt, CONSORTIUM.hideAt)
-          if (cp <= 0) return null
-          const scale = cp <= 1 ? 0.5 + cp * 0.5 : 1.0 + (cp - 1) * 1.0
-          const opacity = cp <= 0.4 ? cp / 0.4 : cp <= 1 ? 1 : Math.max(0, 1 - (cp - 1) * 1.2)
-          return (
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center z-10"
-              style={{ transform: `scale(${scale})`, opacity }}
-            >
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-48 h-px bg-white/60" />
-                <span
-                  className="text-white text-3xl font-extrabold tracking-[0.15em] text-center leading-tight"
-                  style={{ fontFamily: 'var(--font-playfair), "Futura", "Bebas Neue", sans-serif' }}
-                >
-                  THE CLAREMONT<br />COLLEGES
-                </span>
-                <div className="w-48 h-px bg-white/60" />
+          <div className="relative z-10 flex min-h-[22rem] flex-col justify-between p-5 md:min-h-[32rem] md:p-8 lg:p-10">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-background/72 px-3 py-2 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground shadow-sm backdrop-blur-xl">
+                <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+                The Claremont Colleges
+              </div>
+              <div className="hidden items-center gap-1 text-xs font-semibold text-muted-foreground md:flex">
+                {COLLEGES.map((college, index) => (
+                  <span key={college} className="flex items-center gap-1.5">
+                    <span>{college}</span>
+                    {index < COLLEGES.length - 1 && <Circle className="h-1 w-1 fill-current" aria-hidden="true" />}
+                  </span>
+                ))}
               </div>
             </div>
-          )
-        })()}
 
-        {/* Bottom banner — all 7 colleges */}
-        <div
-          className="absolute bottom-16 left-0 right-0 z-10"
-          style={{ opacity: frac < 0.9 ? 1 : Math.max(0, (1 - frac) / 0.1) }}
-        >
-          <div className="mx-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 px-4 py-3">
-            <p
-              className="text-center text-white/50 text-[9px] tracking-[0.25em] uppercase mb-2"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              The Claremont Colleges
-            </p>
-            <div className="flex justify-center items-center gap-2 flex-wrap">
-              {COLLEGES.map((c, i) => (
-                <span key={c} className="flex items-center gap-2">
-                  <span className="text-white/70 text-[10px] tracking-wider font-medium whitespace-nowrap">
-                    {c}
-                  </span>
-                  {i < COLLEGES.length - 1 && (
-                    <span className="text-white/30 text-[8px]">·</span>
-                  )}
+            <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_20rem] md:items-end">
+              <div>
+                <div className="mb-5 flex items-center gap-3 text-muted-foreground" aria-hidden="true">
+                  <span className="h-px w-14 bg-current/45" />
+                  <span className="h-3 w-3 rounded-full border border-current/45" />
+                  <span className="h-px w-24 bg-current/25" />
+                </div>
+                <p className="cl-eyebrow">The Claremont Colleges</p>
+                <h2 className="mt-3 max-w-3xl text-4xl font-semibold leading-[0.9] tracking-[-0.075em] text-foreground min-[380px]:text-5xl md:mt-4 md:text-7xl lg:text-8xl">
+                  THE CLAREMONT COLLEGES
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-1">
+                {PILLARS.map((pillar) => (
+                  <Link
+                    key={pillar.href}
+                    href={pillar.href}
+                    className="group flex min-h-14 items-center justify-between rounded-2xl border border-white/70 bg-background/70 px-4 py-3 text-sm font-bold tracking-[0.12em] text-foreground shadow-sm backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:bg-white active:scale-[0.98]"
+                  >
+                    <span>{pillar.label}</span>
+                    <ArrowUpRight className="h-4 w-4 opacity-45 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 md:hidden">
+              {COLLEGES.map((college) => (
+                <span key={college} className="rounded-full border border-border/80 bg-background/70 px-2.5 py-1 text-[0.68rem] font-semibold text-muted-foreground backdrop-blur-xl">
+                  {college}
                 </span>
               ))}
             </div>
           </div>
         </div>
-
-        {PILLARS.map((p) => {
-          const progress = getPillarProgress(frac, p.showAt, p.peakAt, p.hideAt)
-          if (progress <= 0) return null
-
-          const scale = progress <= 1
-            ? 0.3 + progress * 0.7
-            : 1.0 + (progress - 1) * 1.0
-
-          const opacity = progress <= 0.4
-            ? progress / 0.4
-            : progress <= 1
-            ? 1
-            : Math.max(0, 1 - (progress - 1) * 1.2)
-
-          return (
-            <Link
-              key={p.label}
-              href={p.href}
-              className="absolute inset-0 flex flex-col items-center justify-center z-10"
-              style={{
-                pointerEvents: opacity > 0.3 ? 'auto' as const : 'none' as const,
-              }}
-            >
-              <div
-                className="flex flex-col items-center gap-3"
-                style={{
-                  transform: `scale(${scale})`,
-                  opacity,
-                }}
-              >
-                <div className="w-48 h-px bg-white/60" />
-                <span
-                  className="text-white text-6xl font-extrabold tracking-[0.2em]"
-                  style={{ fontFamily: 'var(--font-playfair), "Futura", "Bebas Neue", sans-serif' }}
-                >
-                  {p.label}
-                </span>
-                <div className="w-48 h-px bg-white/60" />
-              </div>
-            </Link>
-          )
-        })}
       </div>
-    </div>
-    </>
+    </section>
   )
-}
-
-/** Returns 0 when hidden, 0→1 during appear (showAt→peakAt), 1→2 during fade (peakAt→hideAt) */
-function getPillarProgress(frac: number, showAt: number, peakAt: number, hideAt: number): number {
-  if (frac < showAt || frac > hideAt) return 0
-  if (frac <= peakAt) return (frac - showAt) / (peakAt - showAt)
-  return 1 + (frac - peakAt) / (hideAt - peakAt)
 }

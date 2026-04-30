@@ -25,25 +25,29 @@ export function NewsletterSignup({ heading = 'Weekly. Free. Worth it.' }: Newsle
 
   if (status === 'success') {
     return (
-      <div className="text-center py-8 px-4">
+      <div className="cl-card px-4 py-8 text-center">
         <p className="text-lg font-semibold text-primary">{message}</p>
       </div>
     )
   }
 
   return (
-    <div className="py-8 px-4">
-      <h2 className="text-xl font-semibold mb-2" style={{ fontFamily: 'var(--font-playfair)' }}>{heading}</h2>
-      <p className="mb-3 text-sm text-muted-foreground">
-        A weekly Claremont student digest. No spam, no resale, unsubscribe anytime.
-      </p>
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <Input type="email" placeholder="your@email.edu" value={email} onChange={(e) => setEmail(e.target.value)} required className="flex-1" />
-        <Button type="submit" disabled={status === 'loading'} className="bg-primary hover:bg-primary/90 text-white shrink-0">
-          {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-        </Button>
-      </form>
-      {status === 'error' && <p className="text-sm text-red-600 mt-2">{message}</p>}
+    <div className="cl-card px-4 py-6 md:px-6 md:py-7">
+      <div className="grid gap-4 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-end">
+        <div>
+          <h2 className="text-2xl font-semibold tracking-[-0.045em] md:text-3xl">{heading}</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            A weekly Claremont student digest. No spam, no resale, unsubscribe anytime.
+          </p>
+        </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
+          <Input type="email" placeholder="your@email.edu" value={email} onChange={(e) => setEmail(e.target.value)} required className="min-h-12 flex-1 rounded-full bg-background/80 px-4" />
+          <Button type="submit" disabled={status === 'loading'} className="min-h-12 shrink-0 rounded-full bg-foreground px-5 text-background hover:bg-foreground/90">
+            {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+          </Button>
+        </form>
+      </div>
+      {status === 'error' && <p className="mt-3 text-sm text-red-600">{message}</p>}
     </div>
   )
 }

@@ -91,15 +91,13 @@ export function CampusPreference({ className = '' }: CampusPreferenceProps) {
   return (
     <section
       aria-label="Campus preference"
-      className={`rounded-2xl border border-border bg-card/95 p-4 text-card-foreground shadow-sm backdrop-blur ${className}`}
+      className={`rounded-[1.35rem] border border-border/80 bg-background/72 p-4 text-card-foreground shadow-sm backdrop-blur-xl ${className}`}
     >
       <div className="flex flex-col gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Personalize
-          </p>
-          <h2 className="mt-1 text-base font-semibold">Choose your campus</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="cl-eyebrow">Personalize</p>
+          <h2 className="mt-1 text-base font-semibold tracking-[-0.02em]">Choose your campus</h2>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">
             {campus
               ? `Prioritizing ${campus} first — the whole 5C world stays available.`
               : 'Tell us your home campus so events and picks from your school show up first. No account required.'}
@@ -115,10 +113,10 @@ export function CampusPreference({ className = '' }: CampusPreferenceProps) {
                 type="button"
                 onClick={() => chooseCampus(studentCampus)}
                 aria-pressed={selected}
-                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                className={`min-h-9 rounded-full px-3 py-1.5 text-xs font-bold transition-all ${
                   selected
-                    ? 'bg-primary text-primary-foreground'
-                    : 'border border-border bg-background text-foreground hover:bg-accent'
+                    ? 'bg-foreground text-background shadow-sm'
+                    : 'border border-border bg-card text-foreground hover:border-primary/30 hover:text-primary'
                 }`}
               >
                 {studentCampus}

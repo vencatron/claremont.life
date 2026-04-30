@@ -57,20 +57,17 @@ export function HomeTodaySection({ events }: HomeTodaySectionProps) {
     <section aria-labelledby="home-today-title" className="space-y-4">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/55 md:text-muted-foreground">
-            Daily preview
-          </p>
+          <p className="cl-eyebrow">Daily preview</p>
           <h2
             id="home-today-title"
-            className="mt-1 text-2xl font-semibold tracking-tight text-white md:text-foreground"
-            style={{ fontFamily: 'var(--font-playfair)' }}
+            className="mt-2 text-3xl font-semibold tracking-[-0.055em] text-foreground md:text-4xl"
           >
             Tonight / This Week
           </h2>
         </div>
         <Link
           href="/events"
-          className="hidden items-center gap-1 text-sm font-medium text-white/75 transition-colors hover:text-white md:flex md:text-primary md:hover:text-primary/80"
+          className="hidden items-center gap-1 rounded-full border border-border bg-background px-3 py-2 text-sm font-semibold text-foreground transition-all hover:border-primary/30 hover:text-primary md:flex"
         >
           All events <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
@@ -98,15 +95,15 @@ export function HomeTodaySection({ events }: HomeTodaySectionProps) {
               <Link
                 key={card.href}
                 href={card.href}
-                className="rounded-2xl border border-white/15 bg-white/10 p-4 text-white shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-white/15 md:border-border md:bg-card md:text-card-foreground md:hover:bg-accent"
+                className="group rounded-[1.25rem] border border-border/80 bg-background/72 p-4 shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
               >
-                <div className="mb-4 inline-flex rounded-full bg-white/15 p-2 text-white md:bg-primary/10 md:text-primary">
+                <div className="mb-4 inline-flex rounded-full bg-foreground p-2 text-background">
                   <Icon className="h-4 w-4" aria-hidden="true" />
                 </div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/55 md:text-muted-foreground">
+                <p className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                   {card.eyebrow}
                 </p>
-                <p className="mt-1 font-semibold leading-snug">{card.title}</p>
+                <p className="mt-1 font-semibold leading-snug tracking-[-0.02em]">{card.title}</p>
               </Link>
             )
           })}
@@ -126,8 +123,8 @@ function EventPreviewBucket({
   events: ClaremontEvent[]
 }) {
   return (
-    <div className="rounded-2xl border border-white/15 bg-white/10 p-3 shadow-sm backdrop-blur md:border-border md:bg-card/80">
-      <h3 className="mb-3 px-1 text-sm font-semibold uppercase tracking-[0.18em] text-white/60 md:text-muted-foreground">
+    <div className="rounded-[1.35rem] border border-border/80 bg-background/68 p-3 shadow-sm backdrop-blur-xl">
+      <h3 className="mb-3 px-1 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
         {title}
       </h3>
       {events.length > 0 ? (
@@ -137,7 +134,7 @@ function EventPreviewBucket({
           ))}
         </div>
       ) : (
-        <p className="rounded-xl border border-dashed border-white/15 bg-black/10 p-4 text-sm text-white/65 md:border-border md:bg-muted/40 md:text-muted-foreground">
+        <p className="rounded-xl border border-dashed border-border bg-muted/40 p-4 text-sm text-muted-foreground">
           {emptyText}
         </p>
       )}

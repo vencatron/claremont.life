@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${bebasNeue.variable}`}>
-      <body className="bg-black md:bg-background text-foreground font-[family-name:var(--font-dm-sans)] antialiased">
+      <body className="min-h-screen bg-background text-foreground font-sans antialiased">
         <DesktopNav />
         <LayoutWrapper>{children}</LayoutWrapper>
         <LaunchTrustFooter />

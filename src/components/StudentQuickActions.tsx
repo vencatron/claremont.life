@@ -23,26 +23,23 @@ const ACTION_ICONS: Record<HomeQuickActionId, LucideIcon> = {
 }
 
 const ACTION_STYLES: Record<HomeQuickActionId, string> = {
-  today: 'border-sky-300/35 bg-sky-400/15 text-sky-50 md:border-sky-200 md:bg-sky-50 md:text-sky-800',
-  tonight: 'border-indigo-300/35 bg-indigo-400/15 text-indigo-50 md:border-indigo-200 md:bg-indigo-50 md:text-indigo-800',
-  weekend: 'border-violet-300/35 bg-violet-400/15 text-violet-50 md:border-violet-200 md:bg-violet-50 md:text-violet-800',
-  'free-food': 'border-orange-300/35 bg-orange-400/15 text-orange-50 md:border-orange-200 md:bg-orange-50 md:text-orange-800',
-  'open-late': 'border-amber-300/35 bg-amber-400/15 text-amber-50 md:border-amber-200 md:bg-amber-50 md:text-amber-800',
-  'student-deals': 'border-emerald-300/35 bg-emerald-400/15 text-emerald-50 md:border-emerald-200 md:bg-emerald-50 md:text-emerald-800',
-  'new-here': 'border-rose-300/35 bg-rose-400/15 text-rose-50 md:border-rose-200 md:bg-rose-50 md:text-rose-800',
+  today: 'border-sky-200/80 bg-sky-50/75 text-sky-900',
+  tonight: 'border-indigo-200/80 bg-indigo-50/75 text-indigo-900',
+  weekend: 'border-violet-200/80 bg-violet-50/75 text-violet-900',
+  'free-food': 'border-orange-200/80 bg-orange-50/75 text-orange-950',
+  'open-late': 'border-amber-200/80 bg-amber-50/75 text-amber-950',
+  'student-deals': 'border-emerald-200/80 bg-emerald-50/75 text-emerald-950',
+  'new-here': 'border-rose-200/80 bg-rose-50/75 text-rose-950',
 }
 
 export function StudentQuickActions() {
   return (
     <section aria-labelledby="student-quick-actions-title" className="space-y-3">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/55 md:text-muted-foreground">
-          Start here
-        </p>
+        <p className="cl-eyebrow">Start here</p>
         <h2
           id="student-quick-actions-title"
-          className="mt-1 text-2xl font-semibold tracking-tight text-white md:text-foreground"
-          style={{ fontFamily: 'var(--font-playfair)' }}
+          className="mt-2 text-2xl font-semibold tracking-[-0.045em] text-foreground md:text-3xl"
         >
           What do you need right now?
         </h2>
@@ -56,15 +53,15 @@ export function StudentQuickActions() {
             <Link
               key={action.id}
               href={action.href}
-              className={`group rounded-2xl border p-3 shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] ${ACTION_STYLES[action.id]}`}
+              className={`group min-h-24 rounded-[1.25rem] border p-3 shadow-sm backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md active:scale-[0.98] ${ACTION_STYLES[action.id]}`}
             >
               <div className="flex items-start gap-2 md:flex-col md:gap-3">
-                <span className="rounded-full bg-white/15 p-2 md:bg-white/70">
+                <span className="rounded-full bg-white/70 p-2 shadow-sm">
                   <Icon className="h-4 w-4" aria-hidden="true" />
                 </span>
                 <span>
-                  <span className="block text-sm font-semibold leading-tight">{action.label}</span>
-                  <span className="mt-1 hidden text-xs leading-snug opacity-75 md:block">
+                  <span className="block text-sm font-semibold leading-tight tracking-[-0.02em]">{action.label}</span>
+                  <span className="mt-1 hidden text-xs leading-snug opacity-72 md:block">
                     {action.description}
                   </span>
                 </span>

@@ -20,8 +20,8 @@ export function BottomNav() {
   if (pathname === '/explore') return null
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
+    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-white/70 bg-background/82 backdrop-blur-2xl md:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <div className="mx-auto grid h-16 max-w-lg grid-cols-6 px-1.5">
         {NAV_ITEMS.map((item) => {
           const isActive = item.href === '/' ? pathname === '/' : (pathname === item.href || pathname.startsWith(item.href + '/'))
           const Icon = item.icon
@@ -29,13 +29,14 @@ export function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center gap-0.5 px-3 py-2 text-xs transition-colors ${
-                isActive ? 'text-primary' : 'text-gray-400'
+              className={`flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl px-1.5 py-1.5 text-[0.68rem] font-semibold transition-all ${
+                isActive ? 'text-foreground' : 'text-muted-foreground'
               }`}
             >
-              <Icon className="h-5 w-5" />
-              <span className={isActive ? 'font-semibold' : ''}>{item.label}</span>
-              {isActive && <div className="w-4 h-0.5 bg-primary rounded-full" />}
+              <span className={`rounded-full p-1.5 transition-all ${isActive ? 'bg-foreground text-background shadow-sm' : 'bg-transparent'}`}>
+                <Icon className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <span>{item.label}</span>
             </Link>
           )
         })}
