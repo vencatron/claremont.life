@@ -4,6 +4,11 @@ export const COLLEGES = [
 ] as const
 export type College = typeof COLLEGES[number]
 
+export const COLLEGE_FILTERS = [
+  'All', 'Pomona', 'CMC', 'Harvey Mudd',
+  'Scripps', 'Pitzer', 'CGU', 'KGI',
+] as const satisfies readonly College[]
+
 export const COLLEGE_COLORS: Record<College, string> = {
   'All':           'bg-gray-100 text-gray-800',
   'Pomona':        'bg-blue-100 text-blue-800',
@@ -21,12 +26,34 @@ export const COLLEGE_COLORS: Record<College, string> = {
 
 export const SOURCE_TO_COLLEGE: Record<string, College> = {
   'claremont_edu_events': 'Community',
+  'claremont_colleges_calendar': 'All',
+  'claremont_colleges_all': 'All',
+  'claremont_colleges_pomona': 'Pomona',
+  'claremont_colleges_cmc': 'CMC',
+  'claremont_colleges_harvey_mudd': 'Harvey Mudd',
+  'claremont_colleges_scripps': 'Scripps',
+  'claremont_colleges_pitzer': 'Pitzer',
+  'claremont_colleges_cgu': 'CGU',
+  'claremont_colleges_kgi': 'KGI',
+  'pomona': 'Pomona',
   'pomona_calendar':  'Pomona',
+  'cmc': 'CMC',
+  'cmc-alumni': 'CMC',
   'cmc_calendar':     'CMC',
+  'harvey-mudd': 'Harvey Mudd',
   'hmc_calendar':     'Harvey Mudd',
+  'scripps': 'Scripps',
   'scripps_calendar': 'Scripps',
+  'pitzer': 'Pitzer',
   'pitzer_calendar':  'Pitzer',
+  'cgu': 'CGU',
   'cgu_calendar':     'CGU',
+  'kgi': 'KGI',
+  'city-of-claremont': 'Community',
+  'claremont-chamber': 'Community',
+  'claremont-forum': 'Forum',
+  'claremont-little-league': 'Little League',
+  'folk-music-center': 'Folk Music',
   'city_claremont':   'Community',
   'eventbrite':       'Community',
   'engage_claremont': 'Community',

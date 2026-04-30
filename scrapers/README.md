@@ -15,12 +15,7 @@ scrapers/
 │   ├── run.ts             # CLI entry point
 │   └── sources/
 │       ├── types.ts
-│       ├── pomona.ts      # Pomona College (Trumba)
-│       ├── cmc.ts         # CMC (Localist API) ✅
-│       ├── harvey-mudd.ts # Harvey Mudd (WordPress RSS) ✅
-│       ├── scripps.ts     # Scripps (The Events Calendar API) ✅
-│       ├── pitzer.ts      # Pitzer (Drupal XML feed) ✅
-│       ├── cgu.ts         # CGU (The Events Calendar API) ✅
+│       ├── claremont-colleges.ts # The Claremont Colleges campus calendar ✅
 │       ├── city-claremont.ts # City of Claremont (HTML scraping)
 │       └── eventbrite.ts  # Eventbrite (requires API key)
 └── migrations/
@@ -50,8 +45,11 @@ cp .env.example .env
 Required:
 ```env
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_KEY=your-service-role-key
+SUPABASS_TOKEN=your-service-role-key
 ```
+
+`SUPABASE_SERVICE_KEY` and `SUPABASE_SERVICE_ROLE_KEY` are also supported for
+backward compatibility.
 
 Optional:
 ```env
@@ -90,25 +88,20 @@ Sample output:
   claremont.life Events Scraper
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🔍 Starting event scrapers...
-✅ [cmc_calendar] 24 events
-✅ [hmc_calendar] 12 events
-✅ [scripps_calendar] 18 events
-✅ [pitzer_calendar] 21 events
-✅ [cgu_calendar] 9 events
-⚠️  [pomona_calendar] Trumba API returned no parseable events...
+✅ [claremont_colleges_calendar] 24 events
+✅ [city_claremont] 0 events
 ⚠️  [eventbrite] EVENTBRITE_API_KEY not set...
 
 📊 Scraper Results:
 ────────────────────────────────────────
-  ✅ cmc_calendar: 24 events
-  ✅ hmc_calendar: 12 events
-  ✅ scripps_calendar: 18 events
-  ...
-  Total: 84 events from 8 sources
+  ✅ claremont_colleges_calendar: 24 events
+  ✅ city_claremont: 0 events
+  ⚠️  eventbrite: EVENTBRITE_API_KEY not set...
+  Total: 24 events from 3 sources
 
 💾 Upserting events into Supabase...
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Done! Scraped 84 events from 8 sources — 67 new, 17 updated
+✅ Done! Scraped 24 events from 3 sources — 20 new, 4 updated
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -116,35 +109,22 @@ Sample output:
 
 | Source | Platform | URL | Status |
 |--------|----------|-----|--------|
-| CMC | Localist API | https://campusevents.cmc.edu/api/2/events | ✅ Working |
-| Scripps | The Events Calendar (WP) | https://www.scrippscollege.edu/events/wp-json/tribe/events/v1/events | ✅ Working |
-| Pitzer | Drupal XML feed | https://www.pitzer.edu/events/xml-feed | ✅ Working |
-| Harvey Mudd | WordPress RSS | https://www.hmc.edu/calendar/feed/ | ✅ Working |
-| CGU | The Events Calendar (WP) | https://www.cgu.edu/wp-json/tribe/events/v1/events | ✅ Working |
-| Pomona | Trumba (JS calendar) | https://www.pomona.edu/events | ⚠️ Needs work* |
+| The Claremont Colleges | The Events Calendar (WP) | https://claremont.edu/wp-json/tribe/events/v1/events | ✅ Working |
 | City of Claremont | HTML scraping | https://www.claremontca.gov/Events-directory | ⚠️ Needs verification |
 | Eventbrite | REST API v3 | https://www.eventbriteapi.com/v3/ | 🔑 Requires API key |
 
-*Pomona uses Trumba which renders events via JavaScript. See notes below.
-
 ## Notes on Specific Sources
 
-### Pomona (Trumba)
+### The Claremont Colleges
 
-Pomona's event calendar is powered by Trumba and loads entirely client-side via JavaScript.
-The `pomona.ts` scraper attempts to use the Trumba spud API, but this may not return events.
+The campus calendar at https://claremont.edu/events/ is the canonical campus
+event source for claremont.life. It is backed by The Events Calendar REST API at
+`https://claremont.edu/wp-json/tribe/events/v1/events`.
 
-**Alternatives:**
-1. **ICS feed**: Try `https://www.trumba.com/calendar/pomona-college-events.ics`
-   — parse with an ics parser like `node-ical`
-2. **Headless browser**: Use Playwright to render the page and extract events
-3. **Trumba account**: If you have a Trumba account, you may be able to use their
-   authenticated API
-
-**Quick test:**
-```bash
-curl -sL "https://www.trumba.com/calendar/pomona-college-events.ics" | head -50
-```
+The scraper stores TCC events with `claremont_colleges_*` source names so the
+app can still filter by college. Once those rows exist, the app read path hides
+older per-campus rows from sources such as `pomona`, `cmc`, and `scripps` to
+avoid duplicate campus events.
 
 ### City of Claremont
 
@@ -221,7 +201,7 @@ jobs:
       - run: cd scrapers && npm run scrape:events
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SUPABASS_TOKEN: ${{ secrets.SUPABASS_TOKEN }}
           EVENTBRITE_API_KEY: ${{ secrets.EVENTBRITE_API_KEY }}
 ```
 
@@ -253,6 +233,7 @@ Then create `src/app/api/cron/scrape-events/route.ts` that calls the scraper log
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `SUPABASE_URL` | ✅ | Your Supabase project URL |
-| `SUPABASE_SERVICE_KEY` | ✅ | Service role key (bypasses RLS) |
+| `SUPABASS_TOKEN` | ✅ | Service role key/token (bypasses RLS) |
+| `SUPABASE_SERVICE_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Optional | Backward-compatible aliases for the Supabase write token |
 | `EVENTBRITE_API_KEY` | Optional | Eventbrite private token |
 | `DRY_RUN` | Optional | Set to `1` to skip DB writes |

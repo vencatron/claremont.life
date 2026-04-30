@@ -1,6 +1,6 @@
 'use client'
 
-import { COLLEGES } from '@/lib/constants'
+import { COLLEGE_FILTERS } from '@/lib/constants'
 import type { College } from '@/lib/constants'
 
 interface CollegeFilterProps {
@@ -11,7 +11,7 @@ interface CollegeFilterProps {
 export function CollegeFilter({ selected, onChange }: CollegeFilterProps) {
   return (
     <div className="flex gap-2 overflow-x-auto py-3 px-4 md:px-6 md:flex-wrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      {COLLEGES.map((college) => (
+      {COLLEGE_FILTERS.map((college) => (
         <button
           key={college}
           onClick={() => onChange(college)}
