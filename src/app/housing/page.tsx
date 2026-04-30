@@ -1,5 +1,6 @@
 import { getHousingListings } from '@/lib/data'
 import { HousingMap } from './housing-map'
+import { HousingSurvivalGuide } from './housing-survival-guide'
 import { zones, isPointInPolygon } from './zones'
 
 export const revalidate = 3600
@@ -44,5 +45,10 @@ export default async function HousingPage() {
     return true
   })
 
-  return <HousingMap listings={filtered} />
+  return (
+    <>
+      <HousingSurvivalGuide />
+      <HousingMap listings={filtered} />
+    </>
+  )
 }
