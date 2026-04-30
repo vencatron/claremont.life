@@ -121,6 +121,20 @@ export default async function HomePage() {
 
           <StudentVoice />
 
+          {/* Shareable guide discovery */}
+          <section className="mx-4 md:mx-6 mb-6 bg-black/70 backdrop-blur-md md:bg-transparent md:backdrop-blur-none rounded-xl overflow-hidden">
+            <div className="mx-auto max-w-6xl">
+              <Link
+                href="/guides/cheap-eats"
+                className="block rounded-xl border border-orange-300/30 bg-orange-500/15 p-5 text-white transition-colors hover:bg-orange-500/20 md:border-orange-200 md:bg-orange-50 md:p-6 md:text-orange-950 md:hover:bg-orange-100"
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] opacity-80">Shareable student guide</p>
+                <p className="mt-2 text-lg font-semibold">Cheap eats for 5C students</p>
+                <p className="mt-1 text-sm opacity-90">A screenshot-friendly budget meal guide for the group chat →</p>
+              </Link>
+            </div>
+          </section>
+
           {/* Event submission CTA */}
           <section className="mx-4 md:mx-6 mb-6 bg-black/70 backdrop-blur-md md:bg-transparent md:backdrop-blur-none rounded-xl overflow-hidden">
             <div className="mx-auto max-w-6xl">
