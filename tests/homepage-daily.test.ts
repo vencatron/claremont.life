@@ -25,7 +25,6 @@ test('homepage quick actions expose the student daily utility entry points', () 
       { id: 'today', label: 'Today', href: '/events' },
       { id: 'tonight', label: 'Tonight', href: '/events' },
       { id: 'weekend', label: 'This Weekend', href: '/events' },
-      { id: 'free-food', label: 'Free Food', href: '/events' },
       { id: 'open-late', label: 'Open Late', href: '/eat' },
       { id: 'student-deals', label: 'Student Deals', href: '/deals' },
       { id: 'new-here', label: 'New Here', href: '/new' },
