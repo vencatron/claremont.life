@@ -17,7 +17,6 @@ export type HomeQuickActionId =
   | 'today'
   | 'tonight'
   | 'weekend'
-  | 'free-food'
   | 'open-late'
   | 'student-deals'
   | 'new-here'
@@ -51,13 +50,6 @@ export const HOME_QUICK_ACTIONS: readonly HomeQuickAction[] = [
     href: '/events',
     description: 'Friday through Sunday picks',
     utility: 'events',
-  },
-  {
-    id: 'free-food',
-    label: 'Free Food',
-    href: '/events',
-    description: 'Food-forward events and giveaways',
-    utility: 'food',
   },
   {
     id: 'open-late',

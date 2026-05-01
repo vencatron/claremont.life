@@ -6,7 +6,7 @@ import { EventSubmitForm } from './event-submit-form'
 
 export const metadata = {
   title: 'Submit an event | claremont.life',
-  description: 'Send a 5C event, free food tip, or social listing for review on claremont.life.',
+  description: 'Send a 5C event or social listing for review on claremont.life.',
 }
 
 export default function SubmitEventPage() {
@@ -20,7 +20,7 @@ export default function SubmitEventPage() {
       </div>
       <PageHeader
         title="Submit an event"
-        subtitle="Tell claremont.life about free food, social events, club meetings, talks, and 5C happenings."
+        subtitle="Tell claremont.life about social events, club meetings, talks, and 5C happenings."
       />
 
       <main className="mx-auto grid max-w-5xl gap-6 px-4 md:grid-cols-[0.8fr_1.2fr] md:px-6">
@@ -39,7 +39,7 @@ export default function SubmitEventPage() {
             <ul className="mt-2 list-disc space-y-1 pl-5">
               <li>Clear date/time and location.</li>
               <li>Who can attend — all 5Cs, one campus, students only, etc.</li>
-              <li>Whether there is free food, cost, or an RSVP link.</li>
+              <li>Cost or RSVP details if applicable.</li>
               <li>A real email so the listing can be verified if something looks unclear.</li>
             </ul>
           </div>

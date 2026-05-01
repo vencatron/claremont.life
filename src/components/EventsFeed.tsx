@@ -90,7 +90,7 @@ export function EventsFeed({ events }: EventsFeedProps) {
             <Input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search free food, talks, music, Ath..."
+              placeholder="Search talks, music, Ath..."
               className="h-11 rounded-full pl-9 pr-10 bg-white"
               aria-label="Search events"
             />

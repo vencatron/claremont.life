@@ -115,7 +115,7 @@ export default async function HomePage() {
           href="/events/submit"
           className="group block rounded-[1.6rem] border border-border bg-foreground p-5 text-center text-background shadow-[0_20px_70px_rgba(10,15,25,0.14)] transition-all hover:-translate-y-0.5 hover:bg-foreground/92 md:p-6"
         >
-          <p className="text-lg font-semibold tracking-[-0.03em]">Know about free food or a campus event?</p>
+          <p className="text-lg font-semibold tracking-[-0.03em]">Know about a campus event?</p>
           <p className="mt-1 text-sm opacity-75">Send it for review →</p>
         </Link>
       </section>

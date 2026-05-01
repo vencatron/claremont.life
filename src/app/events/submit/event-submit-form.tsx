@@ -151,11 +151,11 @@ export function EventSubmitForm() {
             maxLength={500}
           />
         </Field>
-        <Field label="Food/free/cost">
+        <Field label="Cost / extras">
           <Input
             value={form.foodFreeCost}
             onChange={(event) => updateField('foodFreeCost', event.target.value)}
-            placeholder="Free food, $5 tickets, snacks provided..."
+            placeholder="$5 tickets, snacks provided..."
             maxLength={160}
           />
         </Field>

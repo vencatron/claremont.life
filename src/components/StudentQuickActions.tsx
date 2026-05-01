@@ -5,7 +5,6 @@ import {
   CalendarRange,
   Clock,
   Moon,
-  Pizza,
   Sparkles,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -16,7 +15,6 @@ const ACTION_ICONS: Record<HomeQuickActionId, LucideIcon> = {
   today: CalendarDays,
   tonight: Moon,
   weekend: CalendarRange,
-  'free-food': Pizza,
   'open-late': Clock,
   'student-deals': BadgePercent,
   'new-here': Sparkles,
@@ -26,7 +24,6 @@ const ACTION_STYLES: Record<HomeQuickActionId, string> = {
   today: 'border-sky-200/80 bg-sky-50/75 text-sky-900',
   tonight: 'border-indigo-200/80 bg-indigo-50/75 text-indigo-900',
   weekend: 'border-violet-200/80 bg-violet-50/75 text-violet-900',
-  'free-food': 'border-orange-200/80 bg-orange-50/75 text-orange-950',
   'open-late': 'border-amber-200/80 bg-amber-50/75 text-amber-950',
   'student-deals': 'border-emerald-200/80 bg-emerald-50/75 text-emerald-950',
   'new-here': 'border-rose-200/80 bg-rose-50/75 text-rose-950',
