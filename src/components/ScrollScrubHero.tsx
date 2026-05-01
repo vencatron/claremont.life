@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowUpRight, Circle, MapPin } from 'lucide-react'
+import { WavyBackground } from '@/components/ui/wavy-background'
 
 const COLLEGES = ['Pomona', 'CMC', 'Harvey Mudd', 'Scripps', 'Pitzer', 'CGU', 'KGI']
 
@@ -10,21 +11,31 @@ const PILLARS = [
   { label: 'DEALS', href: '/deals' },
 ]
 
+const HERO_WAVE_COLORS = ['#2563eb', '#0891b2', '#7c3aed', '#0f766e', '#f59e0b']
+
 export function ScrollScrubHero() {
   return (
     <section className="relative px-4 pb-12 pt-6 md:px-6 md:pb-24 md:pt-14" aria-label="Claremont Life">
       <div className="mx-auto max-w-6xl">
-        <div className="relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-white/70 bg-[oklch(0.99_0.006_92_/_0.72)] shadow-[0_30px_100px_rgba(20,30,50,0.10)] backdrop-blur-2xl md:min-h-[32rem] md:rounded-[2.5rem]">
-          <div className="absolute inset-0 opacity-80" aria-hidden="true">
-            <div className="absolute -left-24 -top-28 h-72 w-72 rounded-full bg-primary/18 blur-3xl md:h-96 md:w-96" />
-            <div className="absolute left-1/2 top-8 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-300/18 blur-3xl md:h-80 md:w-80" />
-            <div className="absolute -right-16 top-20 h-72 w-72 rounded-full bg-violet-300/18 blur-3xl md:h-96 md:w-96" />
-            <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
+        <WavyBackground
+          containerClassName="relative min-h-[22rem] rounded-[2rem] border border-white/70 bg-[rgb(252,249,241)] shadow-[0_30px_100px_rgba(20,30,50,0.10)] backdrop-blur-2xl md:min-h-[32rem] md:rounded-[2.5rem]"
+          className="flex min-h-[22rem] flex-col justify-between p-5 md:min-h-[32rem] md:p-8 lg:p-10"
+          canvasClassName="opacity-85 [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]"
+          colors={HERO_WAVE_COLORS}
+          backgroundFill="rgba(252, 249, 241, 0.76)"
+          blur={12}
+          speed="fast"
+          waveOpacity={0.24}
+          waveWidth={30}
+          amplitude={54}
+        >
+          <div className="pointer-events-none absolute inset-0 opacity-90" aria-hidden="true">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.14),transparent_30%),radial-gradient(circle_at_74%_22%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0.28)_42%,rgba(255,255,255,0.76))]" />
+            <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-foreground/18 to-transparent" />
             <div className="absolute left-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:left-12" />
             <div className="absolute right-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:right-12" />
           </div>
 
-          <div className="relative z-10 flex min-h-[22rem] flex-col justify-between p-5 md:min-h-[32rem] md:p-8 lg:p-10">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-background/72 px-3 py-2 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground shadow-sm backdrop-blur-xl">
                 <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
@@ -74,8 +85,7 @@ export function ScrollScrubHero() {
                 </span>
               ))}
             </div>
-          </div>
-        </div>
+        </WavyBackground>
       </div>
     </section>
   )
