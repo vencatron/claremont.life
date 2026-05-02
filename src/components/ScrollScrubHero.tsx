@@ -18,19 +18,20 @@ export function ScrollScrubHero() {
     <section className="relative px-4 pb-12 pt-6 md:px-6 md:pb-24 md:pt-14" aria-label="Claremont Life">
       <div className="mx-auto max-w-6xl">
         <WavyBackground
-          containerClassName="relative min-h-[22rem] rounded-[2rem] border border-white/70 bg-[rgb(252,249,241)] shadow-[0_30px_100px_rgba(20,30,50,0.10)] backdrop-blur-2xl md:min-h-[32rem] md:rounded-[2.5rem]"
+          containerClassName="relative min-h-[22rem] rounded-[2rem] border border-white/70 bg-[url('/hero-claremont-palms.webp')] bg-cover bg-center shadow-[0_30px_100px_rgba(20,30,50,0.14)] backdrop-blur-2xl md:min-h-[32rem] md:rounded-[2.5rem]"
           className="flex min-h-[22rem] flex-col justify-between p-5 md:min-h-[32rem] md:p-8 lg:p-10"
-          canvasClassName="opacity-85 [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]"
+          canvasClassName="opacity-95 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_76%,transparent_100%)]"
           colors={HERO_WAVE_COLORS}
-          backgroundFill="rgba(252, 249, 241, 0.76)"
-          blur={12}
+          backgroundFill="rgba(252, 249, 241, 0.10)"
+          blur={10}
           speed="fast"
-          waveOpacity={0.24}
-          waveWidth={30}
-          amplitude={54}
+          waveOpacity={0.34}
+          waveWidth={28}
+          amplitude={52}
         >
-          <div className="pointer-events-none absolute inset-0 opacity-90" aria-hidden="true">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.14),transparent_30%),radial-gradient(circle_at_74%_22%,rgba(124,58,237,0.12),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0.28)_42%,rgba(255,255,255,0.76))]" />
+          <div className="pointer-events-none absolute inset-0 opacity-95" aria-hidden="true">
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.70),rgba(255,255,255,0.18)_38%,rgba(255,255,255,0.74)),radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.14),transparent_30%),radial-gradient(circle_at_74%_22%,rgba(124,58,237,0.13),transparent_32%)]" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(252,249,241,0.88)] via-[rgba(252,249,241,0.42)] to-transparent" />
             <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-foreground/18 to-transparent" />
             <div className="absolute left-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:left-12" />
             <div className="absolute right-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:right-12" />
