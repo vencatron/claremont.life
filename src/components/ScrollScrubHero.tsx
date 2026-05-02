@@ -20,18 +20,18 @@ export function ScrollScrubHero() {
         <WavyBackground
           containerClassName="relative min-h-[22rem] rounded-[2rem] border border-white/70 bg-[url('/hero-claremont-palms.webp')] bg-cover bg-center shadow-[0_30px_100px_rgba(20,30,50,0.14)] backdrop-blur-2xl md:min-h-[32rem] md:rounded-[2.5rem]"
           className="flex min-h-[22rem] flex-col justify-between p-5 md:min-h-[32rem] md:p-8 lg:p-10"
-          canvasClassName="opacity-95 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_76%,transparent_100%)]"
+          canvasClassName="opacity-90 mix-blend-multiply [mask-image:linear-gradient(to_bottom,black_0%,black_88%,transparent_100%)]"
           colors={HERO_WAVE_COLORS}
-          backgroundFill="rgba(252, 249, 241, 0.10)"
+          backgroundFill="rgba(252, 249, 241, 0.04)"
           blur={10}
           speed="fast"
-          waveOpacity={0.34}
+          waveOpacity={0.32}
           waveWidth={28}
           amplitude={52}
         >
-          <div className="pointer-events-none absolute inset-0 opacity-95" aria-hidden="true">
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.70),rgba(255,255,255,0.18)_38%,rgba(255,255,255,0.74)),radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.14),transparent_30%),radial-gradient(circle_at_74%_22%,rgba(124,58,237,0.13),transparent_32%)]" />
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(252,249,241,0.88)] via-[rgba(252,249,241,0.42)] to-transparent" />
+          <div className="pointer-events-none absolute inset-0 opacity-100" aria-hidden="true">
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,255,255,0.08)_42%,rgba(255,255,255,0.24)),radial-gradient(circle_at_18%_18%,rgba(37,99,235,0.12),transparent_30%),radial-gradient(circle_at_74%_22%,rgba(124,58,237,0.10),transparent_32%)]" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(252,249,241,0.30)] via-[rgba(252,249,241,0.12)] to-transparent" />
             <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-foreground/18 to-transparent" />
             <div className="absolute left-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:left-12" />
             <div className="absolute right-8 top-8 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:right-12" />
@@ -42,7 +42,7 @@ export function ScrollScrubHero() {
                 <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
                 Claremont Life
               </div>
-              <div className="hidden items-center gap-1 text-xs font-semibold text-muted-foreground md:flex">
+              <div className="hidden items-center gap-1 rounded-full border border-white/45 bg-background/38 px-3 py-2 text-xs font-semibold text-foreground/68 shadow-sm backdrop-blur-md [text-shadow:0_1px_10px_rgba(255,255,255,0.72)] md:flex">
                 {COLLEGES.map((college, index) => (
                   <span key={college} className="flex items-center gap-1.5">
                     <span>{college}</span>
@@ -59,8 +59,8 @@ export function ScrollScrubHero() {
                   <span className="h-3 w-3 rounded-full border border-current/45" />
                   <span className="h-px w-24 bg-current/25" />
                 </div>
-                <p className="cl-eyebrow">Claremont Life</p>
-                <h2 className="mt-3 max-w-3xl text-4xl font-semibold leading-[0.9] tracking-[-0.075em] text-foreground min-[380px]:text-5xl md:mt-4 md:text-7xl lg:text-8xl">
+                <p className="cl-eyebrow text-foreground/82 [text-shadow:0_1px_14px_rgba(255,255,255,0.78)]">Claremont Life</p>
+                <h2 className="mt-3 max-w-3xl text-4xl font-semibold leading-[0.9] tracking-[-0.075em] text-foreground/92 [text-shadow:0_2px_28px_rgba(255,255,255,0.92)] min-[380px]:text-5xl md:mt-4 md:text-7xl lg:text-8xl">
                   CLAREMONT LIFE
                 </h2>
               </div>
