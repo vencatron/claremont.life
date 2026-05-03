@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Calendar, UtensilsCrossed, Tag, Users, Building2, Compass, House } from 'lucide-react'
+import { Calendar, UtensilsCrossed, Tag, Landmark, Building2, Compass, House } from 'lucide-react'
 
 const NAV_ITEMS = [
   { label: 'Home', href: '/', icon: House },
@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { label: 'Eat', href: '/eat', icon: UtensilsCrossed },
   { label: 'Map', href: '/explore', icon: Compass },
   { label: 'Live', href: '/housing', icon: Building2 },
-  { label: 'Pulse', href: '/know', icon: Users },
+  { label: 'Locals', href: '/locals', icon: Landmark },
   { label: 'Deals', href: '/deals', icon: Tag },
 ]
 

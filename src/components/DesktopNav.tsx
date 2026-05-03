@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { label: 'Map', href: '/explore' },
   { label: 'Live', href: '/housing' },
   { label: 'Pulse', href: '/know' },
+  { label: 'Locals', href: '/locals' },
   { label: 'Deals', href: '/deals' },
 ]
 

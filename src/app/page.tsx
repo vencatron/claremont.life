@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, CalendarDays, Home, MapPinned, Tag, UtensilsCrossed } from 'lucide-react'
+import { ArrowRight, Building2, CalendarDays, Home, MapPinned, Newspaper, Tag, Train, UtensilsCrossed } from 'lucide-react'
 import { getUpcomingEvents } from '@/lib/data'
 import { CampusPreference } from '@/components/CampusPreference'
 import { HomeTodaySection } from '@/components/HomeTodaySection'
@@ -35,6 +35,24 @@ const CATEGORY_LINKS = [
     icon: Home,
     color: 'from-violet-500/14 to-fuchsia-500/6 text-violet-950',
     motif: 'bg-violet-500',
+  },
+]
+
+const LOCALS_PREVIEW = [
+  {
+    label: 'City services',
+    detail: 'Trash, permits, parks, trees, council meetings',
+    icon: Building2,
+  },
+  {
+    label: 'Local pulse',
+    detail: 'Courier, civic updates, community events',
+    icon: Newspaper,
+  },
+  {
+    label: 'Transit basics',
+    detail: 'Metrolink, Foothill Transit, biking shortcuts',
+    icon: Train,
   },
 ]
 
@@ -94,6 +112,48 @@ export default async function HomePage() {
               </Link>
             )
           })}
+        </div>
+      </section>
+
+      <section className="cl-container pb-8 md:pb-10">
+        <div className="cl-card overflow-hidden p-5 md:p-6 lg:p-7">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-center">
+            <div>
+              <p className="cl-eyebrow">Locals</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.045em] text-foreground md:text-4xl">
+                Local info for Claremont residents
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground md:text-base">
+                Not just student survival: city services, schools, library, local news, transit, Village resources, and neighborhood basics.
+              </p>
+              <Link
+                href="/locals"
+                className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold tracking-[-0.01em] text-background shadow-sm transition-all hover:-translate-y-0.5 hover:bg-foreground/92 active:scale-[0.98]"
+              >
+                Open locals guide
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {LOCALS_PREVIEW.map((item) => {
+                const Icon = item.icon
+                return (
+                  <Link
+                    key={item.label}
+                    href="/locals"
+                    className="group rounded-[1.35rem] border border-white/70 bg-white/62 p-4 shadow-sm backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:bg-white/80 hover:shadow-md"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <Icon className="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    <p className="mt-4 text-base font-semibold tracking-[-0.035em] text-foreground">{item.label}</p>
+                    <p className="mt-1 text-sm leading-5 text-muted-foreground">{item.detail}</p>
+                    <ArrowRight className="mt-3 h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
         </div>
       </section>
 

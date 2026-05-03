@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { PageHeader } from '@/components/PageHeader'
 import { Card } from '@/components/ui/card'
-import { Bus, Heart, Newspaper, ChevronRight } from 'lucide-react'
+import { Bus, Heart, Newspaper, ChevronRight, Landmark } from 'lucide-react'
 
 const MORE_LINKS = [
   { href: '/move', title: 'Getting Around', description: 'Buses, trains, biking, and day trips — the car-free guide', icon: Bus },
   { href: '/thrive', title: 'Living Well', description: 'Healthcare, grocery, fitness, and services with student rates', icon: Heart },
   { href: '/know', title: 'Know Claremont', description: 'City news, local history, and the Claremont most students never find', icon: Newspaper },
+  { href: '/locals', title: 'Locals', description: 'City services, schools, library, transit, local news, and resident basics', icon: Landmark },
 ]
 
 export default function MorePage() {
