@@ -4,11 +4,22 @@
  * Runs all event source scrapers in parallel, collecting results.
  * Each source failure is isolated — one failing source won't abort the run.
  *
- * Source:
- *   - claremont.edu/events: The Claremont Colleges calendar
+ * Sources:
+ *   - claremont.edu/events: consortium-wide Claremont Colleges calendar
+ *   - CampusLabs Engage: student-org events across all Claremont campuses
+ *   - Per-college calendars: Pomona, CMC, Harvey Mudd, Scripps, Pitzer, CGU
+ *   - City of Claremont community events
  */
 
 import { scrapeClaremontEvents } from './sources/claremont-events'
+import { scrapeEngage } from './sources/engage'
+import { scrapePomona } from './sources/pomona'
+import { scrapeCMC } from './sources/cmc'
+import { scrapeHarveyMudd } from './sources/harvey-mudd'
+import { scrapeScripps } from './sources/scripps'
+import { scrapePitzer } from './sources/pitzer'
+import { scrapeCGU } from './sources/cgu'
+import { scrapeCityClaremont } from './sources/city-claremont'
 import type { ScrapedEvent, ScraperResult } from './sources/types'
 
 export type { ScrapedEvent, ScraperResult }
@@ -28,6 +39,14 @@ export async function run(): Promise<RunSummary> {
 
   const scrapers: Array<() => Promise<ScraperResult>> = [
     scrapeClaremontEvents,
+    scrapeEngage,
+    scrapePomona,
+    scrapeCMC,
+    scrapeHarveyMudd,
+    scrapeScripps,
+    scrapePitzer,
+    scrapeCGU,
+    scrapeCityClaremont,
   ]
 
   // Run all scrapers concurrently; catch individual failures

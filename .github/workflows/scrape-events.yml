@@ -1,0 +1,47 @@
+name: Scrape events
+
+# Backup scheduler for the events pipeline. A Vercel cron also hits
+# /api/cron/scrape-events daily; this GitHub Actions job is an independent
+# fallback that runs the scrapers and upserts into Supabase, with logs you
+# can inspect in the Actions tab. Trigger manually from the Actions tab via
+# "Run workflow" (workflow_dispatch) whenever you want a fresh pull.
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   SUPABASE_URL          - Supabase project URL
+#   SUPABASE_SERVICE_KEY  - Supabase service-role key (bypasses RLS)
+# Optional:
+#   EVENTBRITE_API_KEY    - enables the Eventbrite source
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # daily at 08:00 UTC (~1am PT)
+  workflow_dispatch: {}
+
+concurrency:
+  group: scrape-events
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: scrapers/package-lock.json
+
+      - name: Install scraper dependencies
+        working-directory: scrapers
+        run: npm ci
+
+      - name: Run event scrapers
+        working-directory: scrapers
+        run: npm run scrape:events
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          EVENTBRITE_API_KEY: ${{ secrets.EVENTBRITE_API_KEY }}
