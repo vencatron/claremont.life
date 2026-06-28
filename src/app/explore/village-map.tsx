@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import villageData from './data/village-data.json';
 import businessData from './data/business-enrichment.json';
 import buildingMeta from './data/building-metadata.json';
-import type { Deal } from '@/types';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface PopupInfo {
@@ -29,17 +28,6 @@ interface HoverInfo {
   y: number;
 }
 
-interface MatchedDeal extends Deal {
-  lngLat: [number, number];
-  businessName: string;
-}
-
-interface DealPopupInfo {
-  deal: MatchedDeal;
-  x: number;
-  y: number;
-}
-
 // ─── Coordinate conversion ─────────────────────────────────────────────────
 const CENTER_LAT = 34.0965;
 const CENTER_LNG = -117.7185;
@@ -56,141 +44,6 @@ function nameToSlug(name: string): string {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
-}
-
-// ─── Name normalization for fuzzy matching ──────────────────────────────────
-function normalize(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/['']/g, '')
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-// Normalize address for comparison: lowercase, strip directional prefixes, etc.
-function normalizeAddr(addr: string): string {
-  return addr
-    .toLowerCase()
-    .replace(/\./g, '')
-    .replace(/\s+(n|s|e|w|north|south|east|west)\s+/g, ' ')
-    .replace(/^(n|s|e|w|north|south|east|west)\s+/g, '')
-    .replace(/(street|st|avenue|ave|boulevard|blvd|drive|dr|road|rd)/g, '')
-    .replace(/suite\s*\S+/g, '')
-    .replace(/#\s*\S+/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-// Extract the street number(s) from an address string
-function extractNumbers(addr: string): string[] {
-  const m = addr.match(/\d+/g);
-  return m || [];
-}
-
-function matchDealToBusiness(deal: Deal, businesses: typeof businessData.businesses): typeof businessData.businesses[0] | null {
-  const dealNorm = normalize(deal.name);
-
-  // 1. Exact normalized name match
-  for (const biz of businesses) {
-    if (normalize(biz.name) === dealNorm) return biz;
-  }
-
-  // 2. Substring name match (deal contains biz name or vice versa)
-  for (const biz of businesses) {
-    const bizNorm = normalize(biz.name);
-    if (dealNorm.includes(bizNorm) || bizNorm.includes(dealNorm)) return biz;
-  }
-
-  // 3. Singularization match (e.g., "Collections" vs "Collection")
-  const dealSingular = dealNorm.replace(/s\b/g, '');
-  for (const biz of businesses) {
-    const bizSingular = normalize(biz.name).replace(/s\b/g, '');
-    if (dealSingular.includes(bizSingular) || bizSingular.includes(dealSingular)) return biz;
-  }
-
-  // 4. Word overlap match — require majority of significant words to match
-  //    (avoids false positives like "Claremont Village Eatery" → "Claremont Village Salon")
-  const dealWords = dealNorm.split(' ').filter(w => w.length > 2);
-  if (dealWords.length > 0) {
-    let bestBiz: typeof businesses[0] | null = null;
-    let bestScore = 0;
-    for (const biz of businesses) {
-      const bizWords = normalize(biz.name).split(' ').filter(w => w.length > 2);
-      const overlap = dealWords.filter(w => bizWords.includes(w));
-      // Require at least 2 matching words AND > 50% of both name's words
-      const dealRatio = overlap.length / dealWords.length;
-      const bizRatio = bizWords.length > 0 ? overlap.length / bizWords.length : 0;
-      if (overlap.length >= 2 && dealRatio > 0.7 && bizRatio > 0.7) {
-        const score = overlap.length + dealRatio + bizRatio;
-        if (score > bestScore) {
-          bestScore = score;
-          bestBiz = biz;
-        }
-      }
-    }
-    if (bestBiz) return bestBiz;
-  }
-
-  return null;
-}
-
-// ─── Address-based coordinate fallback ──────────────────────────────────────
-// For deals with no business name match, find the closest building by address
-function findCoordsByAddress(dealAddress: string | null): [number, number] | null {
-  if (!dealAddress) return null;
-
-  const dealNums = extractNumbers(dealAddress);
-  const dealAddrNorm = normalizeAddr(dealAddress);
-  if (!dealNums.length) return null;
-
-  // Find building whose address contains the same street number(s)
-  for (const bldg of villageData.buildings) {
-    if (!bldg.address || bldg.address.length < 3) continue;
-    const bldgAddrNorm = normalizeAddr(bldg.address);
-    const bldgNums = extractNumbers(bldg.address);
-
-    // Check if any deal street number appears in the building address numbers
-    const numMatch = dealNums.some(n => bldgNums.includes(n));
-    if (!numMatch) continue;
-
-    // Check street name overlap (at least one key word in common)
-    const dealStreetWords = dealAddrNorm.split(' ').filter(w => w.length > 2 && !/^\d+$/.test(w));
-    const bldgStreetWords = bldgAddrNorm.split(' ').filter(w => w.length > 2 && !/^\d+$/.test(w));
-    const streetMatch = dealStreetWords.some(w => bldgStreetWords.includes(w));
-
-    if (streetMatch && bldg.footprint && bldg.footprint.length >= 3) {
-      // Return centroid of the building footprint
-      const cx = bldg.footprint.reduce((s, p) => s + p[0], 0) / bldg.footprint.length;
-      const cz = bldg.footprint.reduce((s, p) => s + p[1], 0) / bldg.footprint.length;
-      return localToLngLat(cx, cz);
-    }
-  }
-
-  return null;
-}
-
-// ─── Known approximate placements for deals on known streets ────────────────
-// Fallback for deals that match neither business names nor building addresses
-const STREET_COORDS: Record<string, [number, number]> = {
-  'indian hill': localToLngLat(-99, -51),
-  'yale':        localToLngLat(30, -120),
-  'harvard':     localToLngLat(170, -130),
-  '1st':         localToLngLat(3, -183),
-  'first':       localToLngLat(3, -183),
-  '2nd':         localToLngLat(109, -108),
-  'second':      localToLngLat(109, -108),
-  'bonita':      localToLngLat(-10, 30),
-  'village':     localToLngLat(30, -130),
-};
-
-function estimateCoordsFromStreet(address: string | null): [number, number] | null {
-  if (!address) return null;
-  const addrLower = address.toLowerCase();
-  for (const [street, coords] of Object.entries(STREET_COORDS)) {
-    if (addrLower.includes(street)) return coords;
-  }
-  return null;
 }
 
 // ─── Building metadata lookup ───────────────────────────────────────────────
@@ -258,14 +111,6 @@ const LEGEND_ITEMS = [
   { color: '#A78BFA', label: 'Residential' },
 ];
 
-// ─── Deal category colors ───────────────────────────────────────────────────
-const DEAL_CATEGORY_META: Record<string, { color: string; icon: string }> = {
-  'Shopping':          { color: '#EAB308', icon: '\uD83D\uDECD\uFE0F' },
-  'Food & Drink':      { color: '#F97316', icon: '\uD83C\uDF7D\uFE0F' },
-  'Beauty & Wellness': { color: '#10B981', icon: '\u2728' },
-  'Arts & Culture':    { color: '#A855F7', icon: '\uD83C\uDFA8' },
-};
-
 // ─── GeoJSON builders ──────────────────────────────────────────────────────
 function buildBuildingGeoJSON() {
   const features = villageData.buildings
@@ -319,26 +164,6 @@ function buildBusinessGeoJSON() {
       },
     };
   });
-  return { type: 'FeatureCollection' as const, features };
-}
-
-function buildDealsGeoJSON(matchedDeals: MatchedDeal[]) {
-  const features = matchedDeals.map((deal, i) => ({
-    type: 'Feature' as const,
-    id: i,
-    properties: {
-      name: deal.name,
-      businessName: deal.businessName,
-      category: deal.category,
-      discount: deal.discount_pct || 0,
-      description: deal.deal_description,
-      requiresId: deal.requires_student_id,
-    },
-    geometry: {
-      type: 'Point' as const,
-      coordinates: deal.lngLat,
-    },
-  }));
   return { type: 'FeatureCollection' as const, features };
 }
 
@@ -407,11 +232,9 @@ function HoverTooltip({ info }: { info: HoverInfo | null }) {
 // ─── Building Detail Panel ──────────────────────────────────────────────────
 function BuildingPanel({
   info,
-  deal,
   onClose,
 }: {
   info: PopupInfo;
-  deal: MatchedDeal | null;
   onClose: () => void;
 }) {
   const ti = typeInfo(info.type);
@@ -541,47 +364,6 @@ function BuildingPanel({
           )}
         </div>
 
-        {/* Deal badge — shown when this building has a student deal */}
-        {deal && (
-          <div
-            style={{
-              marginTop: 16,
-              padding: '12px 16px',
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))',
-              border: '1px solid rgba(34,197,94,0.3)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#22C55E' }}>
-                Student Deal
-              </span>
-              {deal.discount_pct && (
-                <span
-                  style={{
-                    padding: '2px 8px',
-                    borderRadius: 10,
-                    background: '#22C55E',
-                    color: '#000',
-                    fontSize: 12,
-                    fontWeight: 800,
-                  }}
-                >
-                  {deal.discount_pct}% OFF
-                </span>
-              )}
-            </div>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 6, lineHeight: 1.5 }}>
-              {deal.deal_description}
-            </p>
-            {deal.requires_student_id && (
-              <span style={{ display: 'inline-block', marginTop: 6, fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>
-                Requires student ID
-              </span>
-            )}
-          </div>
-        )}
-
         {/* Description */}
         {info.description && (
           <p style={{
@@ -679,231 +461,6 @@ function DetailItem({ label, value, fullWidth }: { label: string; value: string;
   );
 }
 
-// ─── Deal Popup Tile ────────────────────────────────────────────────────────
-function DealPopupTile({
-  info,
-  onClose,
-}: {
-  info: DealPopupInfo;
-  onClose: () => void;
-}) {
-  const { deal, x, y } = info;
-  const catMeta = DEAL_CATEGORY_META[deal.category] || { color: '#9CA3AF', icon: '\uD83C\uDFF7\uFE0F' };
-
-  // Position tile above the dot, clamped to viewport
-  const tileW = 300;
-  const tileH = 220; // approximate
-  const pad = 16;
-  const vpW = typeof window !== 'undefined' ? window.innerWidth : 800;
-  const left = Math.max(pad, Math.min(x - tileW / 2, vpW - tileW - pad));
-  const top = Math.max(pad, y - tileH - 24);
-  // Arrow tracks the marker's x position relative to tile
-  const arrowLeft = Math.max(20, Math.min(x - left, tileW - 20));
-
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        left,
-        top,
-        width: tileW,
-        zIndex: 60,
-        background: 'rgba(10, 12, 18, 0.95)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderRadius: 14,
-        border: '1px solid rgba(34,197,94,0.35)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(34,197,94,0.15)',
-        color: 'white',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        animation: 'dealTileIn 0.2s ease',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Green accent bar */}
-      <div style={{ height: 3, background: 'linear-gradient(90deg, #22C55E, #10B981)' }} />
-
-      <div style={{ padding: '14px 16px 16px' }}>
-        {/* Header row */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <h3 style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.3, margin: 0, letterSpacing: '-0.01em' }}>
-              {deal.businessName}
-            </h3>
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                marginTop: 6,
-                fontSize: 10,
-                padding: '2px 8px',
-                borderRadius: 6,
-                background: catMeta.color + '22',
-                color: catMeta.color,
-                fontWeight: 600,
-              }}
-            >
-              {catMeta.icon} {deal.category}
-            </span>
-          </div>
-          {/* Discount badge */}
-          {deal.discount_pct ? (
-            <div
-              style={{
-                flexShrink: 0,
-                padding: '6px 10px',
-                borderRadius: 10,
-                background: 'linear-gradient(135deg, #22C55E, #16A34A)',
-                color: '#000',
-                fontSize: 15,
-                fontWeight: 900,
-                lineHeight: 1,
-                textAlign: 'center',
-              }}
-            >
-              {deal.discount_pct}%
-              <div style={{ fontSize: 8, fontWeight: 700, marginTop: 1 }}>OFF</div>
-            </div>
-          ) : (
-            <div
-              style={{
-                flexShrink: 0,
-                padding: '6px 10px',
-                borderRadius: 10,
-                background: 'linear-gradient(135deg, #22C55E, #16A34A)',
-                color: '#000',
-                fontSize: 11,
-                fontWeight: 800,
-                lineHeight: 1,
-              }}
-            >
-              DEAL
-            </div>
-          )}
-          {/* Close */}
-          <button
-            onClick={onClose}
-            style={{
-              flexShrink: 0,
-              width: 22,
-              height: 22,
-              borderRadius: '50%',
-              background: 'rgba(255,255,255,0.08)',
-              border: 'none',
-              color: 'rgba(255,255,255,0.5)',
-              fontSize: 12,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              lineHeight: 1,
-              marginTop: -2,
-            }}
-          >
-            x
-          </button>
-        </div>
-
-        {/* Description */}
-        <p style={{
-          fontSize: 12,
-          lineHeight: 1.5,
-          color: 'rgba(255,255,255,0.7)',
-          margin: '10px 0 0',
-        }}>
-          {deal.deal_description}
-        </p>
-
-        {/* Footer: requirements + links */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: 12,
-          paddingTop: 10,
-          borderTop: '1px solid rgba(255,255,255,0.08)',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            {deal.requires_student_id && (
-              <span style={{
-                fontSize: 10,
-                padding: '2px 8px',
-                borderRadius: 6,
-                background: 'rgba(234,179,8,0.15)',
-                color: '#EAB308',
-                fontWeight: 600,
-              }}>
-                ID Required
-              </span>
-            )}
-            {deal.expiration && (
-              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
-                Exp: {deal.expiration}
-              </span>
-            )}
-          </div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {deal.website && (
-              <a
-                href={deal.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={e => e.stopPropagation()}
-                style={{
-                  fontSize: 10,
-                  padding: '3px 8px',
-                  borderRadius: 6,
-                  background: 'rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.7)',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                }}
-              >
-                Website
-              </a>
-            )}
-            {deal.instagram && (
-              <a
-                href={deal.instagram.startsWith('http') ? deal.instagram : `https://instagram.com/${deal.instagram.replace('@', '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={e => e.stopPropagation()}
-                style={{
-                  fontSize: 10,
-                  padding: '3px 8px',
-                  borderRadius: 6,
-                  background: 'rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.7)',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                }}
-              >
-                Instagram
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Arrow pointer */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: -8,
-          left: arrowLeft,
-          transform: 'translateX(-50%) rotate(45deg)',
-          width: 14,
-          height: 14,
-          background: 'rgba(10, 12, 18, 0.95)',
-          borderRight: '1px solid rgba(34,197,94,0.35)',
-          borderBottom: '1px solid rgba(34,197,94,0.35)',
-        }}
-      />
-    </div>
-  );
-}
-
 // ─── Legend Component ───────────────────────────────────────────────────────
 function MapLegend({ visible }: { visible: boolean }) {
   const [expanded, setExpanded] = useState(false);
@@ -961,230 +518,6 @@ function MapLegend({ visible }: { visible: boolean }) {
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11 }}>{item.label}</span>
             </div>
           ))}
-          {/* Deals indicator in legend */}
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: 6, paddingTop: 6 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '3px 0' }}>
-              <span style={{
-                width: 10, height: 10, borderRadius: '50%',
-                background: '#22C55E', flexShrink: 0,
-                boxShadow: '0 0 6px #22C55E88',
-              }} />
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11 }}>Student Deals</span>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─── Deals Overlay Component ────────────────────────────────────────────────
-function DealsOverlay({
-  deals,
-  dealsVisible,
-  onToggleDeals,
-  onFlyToDeal,
-}: {
-  deals: MatchedDeal[];
-  dealsVisible: boolean;
-  onToggleDeals: () => void;
-  onFlyToDeal: (deal: MatchedDeal) => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const [filter, setFilter] = useState('All');
-
-  const categories = useMemo(() => {
-    const cats = new Set(deals.map(d => d.category));
-    return ['All', ...Array.from(cats).sort()];
-  }, [deals]);
-
-  const filtered = useMemo(() => {
-    if (filter === 'All') return deals;
-    return deals.filter(d => d.category === filter);
-  }, [deals, filter]);
-
-  if (deals.length === 0) return null;
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        bottom: 48,
-        left: 16,
-        zIndex: 30,
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        maxWidth: 'min(360px, calc(100vw - 32px))',
-      }}
-    >
-      {/* Toggle button */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          background: 'rgba(10,12,18,0.9)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(34,197,94,0.3)',
-          borderRadius: expanded ? '12px 12px 0 0' : 12,
-          padding: '10px 16px',
-          color: 'white',
-          fontSize: 13,
-          fontWeight: 700,
-          cursor: 'pointer',
-          width: '100%',
-        }}
-      >
-        <span
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            background: dealsVisible ? '#22C55E' : '#6B7280',
-            boxShadow: dealsVisible ? '0 0 8px #22C55E88' : 'none',
-            flexShrink: 0,
-          }}
-        />
-        <span style={{ flex: 1, textAlign: 'left' }}>
-          Student Deals
-        </span>
-        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginRight: 4 }}>
-          {deals.length} on map
-        </span>
-        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
-          {expanded ? '\u25BC' : '\u25B2'}
-        </span>
-      </button>
-
-      {/* Expanded panel */}
-      {expanded && (
-        <div
-          style={{
-            background: 'rgba(10,12,18,0.92)',
-            backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(34,197,94,0.2)',
-            borderTop: 'none',
-            borderRadius: '0 0 12px 12px',
-            maxHeight: 'min(400px, 50vh)',
-            overflowY: 'auto',
-          }}
-        >
-          {/* Controls row */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '8px 12px',
-            borderBottom: '1px solid rgba(255,255,255,0.06)',
-            flexWrap: 'wrap',
-          }}>
-            {/* Visibility toggle */}
-            <button
-              onClick={onToggleDeals}
-              style={{
-                padding: '4px 10px',
-                borderRadius: 8,
-                border: '1px solid rgba(255,255,255,0.15)',
-                background: dealsVisible ? 'rgba(34,197,94,0.2)' : 'rgba(255,255,255,0.05)',
-                color: dealsVisible ? '#22C55E' : 'rgba(255,255,255,0.5)',
-                fontSize: 11,
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              {dealsVisible ? 'Hide markers' : 'Show markers'}
-            </button>
-            {/* Category pills */}
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                style={{
-                  padding: '3px 8px',
-                  borderRadius: 6,
-                  border: 'none',
-                  background: filter === cat ? 'rgba(34,197,94,0.25)' : 'rgba(255,255,255,0.06)',
-                  color: filter === cat ? '#22C55E' : 'rgba(255,255,255,0.5)',
-                  fontSize: 10,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Deal cards */}
-          <div style={{ padding: '6px 8px' }}>
-            {filtered.map((deal) => {
-              const catMeta = DEAL_CATEGORY_META[deal.category] || { color: '#9CA3AF', icon: '\uD83C\uDFF7\uFE0F' };
-              return (
-                <button
-                  key={deal.id}
-                  onClick={() => onFlyToDeal(deal)}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    textAlign: 'left',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    borderRadius: 10,
-                    padding: '10px 12px',
-                    marginBottom: 6,
-                    cursor: 'pointer',
-                    transition: 'background 0.15s',
-                    color: 'white',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(34,197,94,0.08)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.3, flex: 1, minWidth: 0 }}>
-                      {deal.name}
-                    </span>
-                    {deal.discount_pct && (
-                      <span
-                        style={{
-                          flexShrink: 0,
-                          padding: '2px 7px',
-                          borderRadius: 8,
-                          background: '#22C55E',
-                          color: '#000',
-                          fontSize: 11,
-                          fontWeight: 800,
-                        }}
-                      >
-                        {deal.discount_pct}%
-                      </span>
-                    )}
-                  </div>
-                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', marginTop: 3, lineHeight: 1.4 }}>
-                    {deal.deal_description}
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5 }}>
-                    <span
-                      style={{
-                        fontSize: 10,
-                        padding: '1px 6px',
-                        borderRadius: 4,
-                        background: catMeta.color + '22',
-                        color: catMeta.color,
-                        fontWeight: 600,
-                      }}
-                    >
-                      {catMeta.icon} {deal.category}
-                    </span>
-                    {deal.requires_student_id && (
-                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
-                        ID required
-                      </span>
-                    )}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
         </div>
       )}
     </div>
@@ -1192,7 +525,7 @@ function DealsOverlay({
 }
 
 // ─── Main component ────────────────────────────────────────────────────────
-export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
+export default function VillageMap() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import('maplibre-gl').Map | null>(null);
   const interactedRef = useRef(false);
@@ -1202,67 +535,10 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
   const [isMobile, setIsMobile] = useState(false);
   const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
-  const [dealsVisible, setDealsVisible] = useState(true);
-  const [dealPopup, setDealPopup] = useState<DealPopupInfo | null>(null);
-  const flyToDealTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [userLocation, setUserLocation] = useState<{ lng: number; lat: number } | null>(null);
   const [locatingUser, setLocatingUser] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const userMarkerRef = useRef<import('maplibre-gl').Marker | null>(null);
-
-  // Match deals to business locations (3-tier: name → address → street)
-  const matchedDeals = useMemo(() => {
-    const matched: MatchedDeal[] = [];
-    for (const deal of deals) {
-      // Tier 1: Match by business name
-      const biz = matchDealToBusiness(deal, businessData.businesses);
-      if (biz) {
-        matched.push({
-          ...deal,
-          lngLat: localToLngLat(biz.x, biz.z),
-          businessName: biz.name,
-        });
-        continue;
-      }
-
-      // Tier 2: Match by address to building footprint
-      const addrCoords = findCoordsByAddress(deal.address);
-      if (addrCoords) {
-        matched.push({
-          ...deal,
-          lngLat: addrCoords,
-          businessName: deal.name,
-        });
-        continue;
-      }
-
-      // Tier 3: Approximate placement by street name
-      const streetCoords = estimateCoordsFromStreet(deal.address);
-      if (streetCoords) {
-        matched.push({
-          ...deal,
-          lngLat: streetCoords,
-          businessName: deal.name,
-        });
-      }
-    }
-    return matched;
-  }, [deals]);
-
-  // Build a lookup: normalized business name → matched deal
-  const dealsByBizName = useMemo(() => {
-    const map = new Map<string, MatchedDeal>();
-    for (const d of matchedDeals) {
-      map.set(normalize(d.businessName), d);
-    }
-    return map;
-  }, [matchedDeals]);
-
-  // Find deal for current popup
-  const activeDeal = useMemo(() => {
-    if (!popupInfo) return null;
-    return dealsByBizName.get(normalize(popupInfo.name)) || null;
-  }, [popupInfo, dealsByBizName]);
 
   useEffect(() => {
     setIsMobile('ontouchstart' in window);
@@ -1282,11 +558,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         from { transform: translateX(100%); opacity: 0; }
         to   { transform: translateX(0);    opacity: 1; }
       }
-      @keyframes dealTileIn {
-        from { transform: translateY(8px); opacity: 0; }
-        to   { transform: translateY(0);   opacity: 1; }
-      }
-      @keyframes dealPulse {
+      @keyframes locatingPulse {
         0%   { opacity: 0.7; transform: scale(1); }
         50%  { opacity: 0.3; transform: scale(2.2); }
         100% { opacity: 0;   transform: scale(3); }
@@ -1312,7 +584,6 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
     description: string; use: string;
   }) => {
     if (!props.name || props.name === 'Building') return;
-    setDealPopup(null); // close deal popup when opening building panel
 
     const slug = nameToSlug(props.name);
     const hasPhoto = businessData.businesses.some(
@@ -1329,44 +600,6 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       color: props.color,
       height: props.height,
       hasPhoto,
-    });
-  }, []);
-
-  const handleFlyToDeal = useCallback((deal: MatchedDeal) => {
-    const map = mapRef.current;
-    if (!map) return;
-    if (flyToDealTimerRef.current) clearTimeout(flyToDealTimerRef.current);
-    map.flyTo({
-      center: deal.lngLat,
-      zoom: 17.5,
-      pitch: 55,
-      duration: 1200,
-    });
-    // Show deal popup at center of viewport after fly animation
-    flyToDealTimerRef.current = setTimeout(() => {
-      const container = map.getContainer();
-      setDealPopup({
-        deal,
-        x: container.clientWidth / 2,
-        y: container.clientHeight / 2,
-      });
-    }, 1300);
-  }, []);
-
-  const handleToggleDeals = useCallback(() => {
-    setDealsVisible(prev => {
-      const next = !prev;
-      const map = mapRef.current;
-      if (map) {
-        try {
-          map.setLayoutProperty('deal-glow', 'visibility', next ? 'visible' : 'none');
-          map.setLayoutProperty('deal-markers', 'visibility', next ? 'visible' : 'none');
-          map.setLayoutProperty('deal-labels', 'visibility', next ? 'visible' : 'none');
-        } catch {
-          // layers may not exist yet
-        }
-      }
-      return next;
     });
   }, []);
 
@@ -1557,105 +790,6 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
           },
         });
 
-        // ── Deals overlay layers ──────────────────────────────────
-        if (matchedDeals.length > 0) {
-          const dealsGeo = buildDealsGeoJSON(matchedDeals) as GeoJSON.GeoJSON;
-
-          map.addSource('deals', {
-            type: 'geojson',
-            data: dealsGeo,
-          });
-
-          // Green dollar sign markers (no glow)
-          map.addLayer({
-            id: 'deal-glow',
-            type: 'symbol',
-            source: 'deals',
-            layout: {
-              'text-field': '$',
-              'text-font': ['Noto Sans Bold'],
-              'text-size': [
-                'interpolate', ['linear'], ['zoom'],
-                14, 14,
-                17, 22,
-              ],
-              'text-allow-overlap': true,
-              'text-ignore-placement': true,
-            },
-            paint: {
-              'text-color': '#22C55E',
-              'text-halo-color': '#000000',
-              'text-halo-width': 2,
-              'text-opacity': 0.95,
-            },
-          });
-
-          // Invisible circle for click target
-          map.addLayer({
-            id: 'deal-markers',
-            type: 'circle',
-            source: 'deals',
-            paint: {
-              'circle-radius': [
-                'interpolate', ['linear'], ['zoom'],
-                14, 8,
-                17, 14,
-              ],
-              'circle-color': 'transparent',
-              'circle-opacity': 0,
-            },
-          });
-
-          // Discount label
-          map.addLayer({
-            id: 'deal-labels',
-            type: 'symbol',
-            source: 'deals',
-            minzoom: 15.8,
-            layout: {
-              'text-field': [
-                'case',
-                ['>', ['get', 'discount'], 0],
-                ['concat', ['to-string', ['get', 'discount']], '% OFF'],
-                'DEAL',
-              ],
-              'text-font': ['Noto Sans Bold'],
-              'text-size': 10,
-              'text-offset': [0, 1.8],
-              'text-anchor': 'top',
-              'text-allow-overlap': true,
-            },
-            paint: {
-              'text-color': '#22C55E',
-              'text-halo-color': '#000000',
-              'text-halo-width': 1.5,
-            },
-          });
-
-          // Click on deal markers → show deal popup tile
-          map.on('click', 'deal-markers', (e) => {
-            if (!e.features?.length) return;
-            const props = e.features[0].properties;
-            if (!props) return;
-            const bizName = props.businessName || props.name;
-            const matched = matchedDeals.find(d => d.businessName === bizName || d.name === bizName);
-            if (matched) {
-              setDealPopup({
-                deal: matched,
-                x: e.originalEvent.clientX,
-                y: e.originalEvent.clientY,
-              });
-            }
-          });
-
-          map.on('mouseenter', 'deal-markers', () => {
-            map.getCanvas().style.cursor = 'pointer';
-          });
-          map.on('mouseleave', 'deal-markers', () => {
-            map.getCanvas().style.cursor = '';
-          });
-        }
-
         // ── Hover interaction (like OneMap 3D) ────────────────────
         map.on('mousemove', 'village-extrusions', (e) => {
           if (!e.features?.length) return;
@@ -1725,11 +859,9 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       // Close popup when clicking map background
       map.on('click', (e) => {
         const layers = ['village-extrusions'];
-        if (matchedDeals.length > 0) layers.push('deal-markers');
         const features = map.queryRenderedFeatures(e.point, { layers });
         if (!features.length) {
           setPopupInfo(null);
-          setDealPopup(null);
         }
       });
 
@@ -1744,7 +876,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     };
-  }, [handleBuildingClick, matchedDeals]);
+  }, [handleBuildingClick]);
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 100 }}>
@@ -1831,21 +963,8 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
 
       {/* Building detail panel (slide-in from right, like OneMap) */}
       {popupInfo && (
-        <BuildingPanel info={popupInfo} deal={activeDeal} onClose={() => setPopupInfo(null)} />
+        <BuildingPanel info={popupInfo} onClose={() => setPopupInfo(null)} />
       )}
-
-      {/* Deal popup tile */}
-      {dealPopup && (
-        <DealPopupTile info={dealPopup} onClose={() => setDealPopup(null)} />
-      )}
-
-      {/* Deals overlay */}
-      <DealsOverlay
-        deals={matchedDeals}
-        dealsVisible={dealsVisible}
-        onToggleDeals={handleToggleDeals}
-        onFlyToDeal={handleFlyToDeal}
-      />
 
       {/* You Are Here button */}
       <button
@@ -1881,7 +1000,7 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
           borderRadius: '50%',
           background: userLocation ? '#fff' : '#3B82F6',
           border: userLocation ? 'none' : '2px solid #3B82F6',
-          animation: locatingUser ? 'dealPulse 1s infinite' : 'none',
+          animation: locatingUser ? 'locatingPulse 1s infinite' : 'none',
         }} />
         {locatingUser ? 'Locating...' : userLocation ? 'YOU ARE HERE' : 'Find Me'}
       </button>
@@ -1923,12 +1042,6 @@ export default function VillageMap({ deals = [] }: { deals?: Deal[] }) {
         }}
       >
         {villageData.buildings.length} BUILDINGS &middot; {businessData.businesses.length} BUSINESSES
-        {matchedDeals.length > 0 && (
-          <>
-            {' '}&middot;{' '}
-            <span style={{ color: '#22C55E' }}>{matchedDeals.length} DEALS</span>
-          </>
-        )}
       </div>
 
     </div>
