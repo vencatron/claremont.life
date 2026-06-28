@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 import { isMissingColumnError, normalizeEventRow } from './events-compat'
-import type { ClaremontEvent, Business, Deal, EatPlace, HousingListing, RedditPost } from '@/types'
+import type { ClaremontEvent, Business, Deal, EatPlace, HousingListing } from '@/types'
 
 export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
   const now = new Date().toISOString()
@@ -51,16 +51,6 @@ export async function getEatPlaces(): Promise<EatPlace[]> {
     .eq('business_status', 'OPERATIONAL')
     .order('rating', { ascending: false, nullsFirst: false })
   if (error) { console.error('getEatPlaces:', error); return [] }
-  return data ?? []
-}
-
-export async function getRedditPosts(limit = 200): Promise<RedditPost[]> {
-  const { data, error } = await supabase
-    .from('reddit_posts')
-    .select('*')
-    .order('created_utc', { ascending: false })
-    .limit(limit)
-  if (error) { console.error('getRedditPosts:', error); return [] }
   return data ?? []
 }
 

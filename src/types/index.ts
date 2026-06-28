@@ -97,20 +97,3 @@ export interface HousingListing {
   available_date: string | null
   last_scraped: string
 }
-
-export interface RedditPost {
-  post_id: string
-  subreddit: string
-  title: string
-  body: string | null
-  url: string
-  permalink: string
-  author: string
-  score: number
-  num_comments: number
-  flair: string | null
-  created_utc: string
-  is_self: boolean
-  thumbnail: string | null
-  link_url: string | null
-}
