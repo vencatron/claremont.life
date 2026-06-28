@@ -2,12 +2,11 @@ import { supabase } from './supabase'
 import { isMissingColumnError, normalizeEventRow } from './events-compat'
 import type { ClaremontEvent, Business, Deal, EatPlace, HousingListing, RedditPost } from '@/types'
 
-export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
+export async function getUpcomingEvents(limit = 100): Promise<ClaremontEvent[]> {
   const now = new Date().toISOString()
   const { data, error } = await supabase
     .from('events')
     .select('*')
-    .eq('source', 'claremont_edu_events')
     .eq('is_active', true)
     .gte('starts_at', now)
     .order('starts_at', { ascending: true })
@@ -21,7 +20,6 @@ export async function getUpcomingEvents(limit = 50): Promise<ClaremontEvent[]> {
     const legacy = await supabase
       .from('events')
       .select('*')
-      .eq('source', 'claremont_edu_events')
       .gte('start_date', now)
       .order('start_date', { ascending: true })
       .limit(limit)
