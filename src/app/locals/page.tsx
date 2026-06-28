@@ -29,7 +29,6 @@ const LOCAL_RESOURCE_GROUPS = [
     icon: Newspaper,
     links: [
       { label: 'Claremont Courier', href: 'https://claremont-courier.com/' },
-      { label: 'Know Claremont', href: '/know' },
       { label: 'Submit a community event', href: '/events/submit' },
     ],
   },
