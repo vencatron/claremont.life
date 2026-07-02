@@ -5,9 +5,32 @@ import {
   isAllowedOrigin,
   isValidPanoIdsBody,
 } from '@/lib/streetview-guard';
+import { getClientIp, rateLimit } from '@/lib/rate-limit';
 
 const API_KEY = getServerMapsKey();
 const BASE = 'https://tile.googleapis.com/v1/streetview';
+
+// Every proxied request spends paid Google quota, and the Origin/Referer check
+// is spoofable by non-browser clients — so rate limit per IP as a second layer.
+// Loading one pano costs ~9 GETs (1 metadata + 8 tiles); 900/5min allows ~100
+// panos per window, far above real walking pace but well below bulk scraping.
+function throttle(req: NextRequest, bucket: string, limit: number, windowMs: number) {
+  const ip = getClientIp(req);
+  if (!ip && process.env.NODE_ENV !== 'development') {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  }
+  const result = rateLimit(bucket, ip ?? 'dev-local', limit, windowMs);
+  if (!result.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(Math.ceil((result.resetAt - Date.now()) / 1000)) },
+      },
+    );
+  }
+  return null;
+}
 
 // Query params we forward to Google. Anything else (especially `key`) is dropped.
 const ALLOWED_QUERY_PARAMS = new Set(['session', 'panoId']);
@@ -32,6 +55,9 @@ export async function GET(
 ) {
   if (!API_KEY) return reject(500, 'Server misconfigured');
   if (!isAllowedOrigin(req)) return reject(403, 'Forbidden');
+
+  const throttled = throttle(req, 'streetview-get', 900, 5 * 60 * 1000);
+  if (throttled) return throttled;
 
   const { path } = await params;
   const classified = classifyStreetviewPath(path, 'GET');
@@ -67,6 +93,10 @@ export async function POST(
 ) {
   if (!API_KEY) return reject(500, 'Server misconfigured');
   if (!isAllowedOrigin(req)) return reject(403, 'Forbidden');
+
+  // panoIds lookups are one-per-click, not one-per-tile — keep this tighter.
+  const throttled = throttle(req, 'streetview-post', 60, 10 * 60 * 1000);
+  if (throttled) return throttled;
 
   const { path } = await params;
   const classified = classifyStreetviewPath(path, 'POST');
