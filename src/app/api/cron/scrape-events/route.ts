@@ -4,9 +4,9 @@ import type { ScrapedEvent } from '../../../../../scrapers/events/sources/types'
 import { createAdminClient } from '@/lib/supabase-admin'
 import { isMissingColumnError, toLegacyEventRow, toModernEventRow } from '@/lib/events-compat'
 
-// Vercel Cron: triggered per schedule in vercel.json. When CRON_SECRET is
-// configured in the project environment, Vercel includes it as a bearer token
-// on the Authorization header — reject anything else.
+// Vercel Cron: triggered per schedule in vercel.json. Vercel sends CRON_SECRET
+// as a bearer token on the Authorization header — reject anything else. If the
+// secret is missing outside local dev, reject everything (fail closed).
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -65,7 +65,13 @@ async function upsertEvents(
 
 export async function GET(req: Request) {
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret) {
+  if (!cronSecret) {
+    // Fail closed: without a configured secret there is no way to tell Vercel's
+    // cron scheduler apart from an arbitrary caller. Allow only local dev.
+    if (process.env.NODE_ENV !== 'development') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+  } else {
     const header = req.headers.get('authorization')
     if (header !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
