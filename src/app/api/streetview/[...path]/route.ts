@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   classifyStreetviewPath,
+  getServerMapsKey,
   isAllowedOrigin,
   isValidPanoIdsBody,
 } from '@/lib/streetview-guard';
 
-const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+const API_KEY = getServerMapsKey();
 const BASE = 'https://tile.googleapis.com/v1/streetview';
 
 // Query params we forward to Google. Anything else (especially `key`) is dropped.

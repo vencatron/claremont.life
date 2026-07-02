@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isAllowedOrigin, isValidSessionBody } from '@/lib/streetview-guard';
+import { getServerMapsKey, isAllowedOrigin, isValidSessionBody } from '@/lib/streetview-guard';
 
-const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+const API_KEY = getServerMapsKey();
 
 function reject(status: number, message: string) {
   return NextResponse.json({ error: message }, { status });

@@ -13,9 +13,9 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ─── Config ──────────────────────────────────────────────────
-const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+const API_KEY = process.env.GOOGLE_MAPS_SERVER_KEY ?? process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 if (!API_KEY) {
-  console.error('✗ NEXT_PUBLIC_GOOGLE_MAPS_KEY is not set. Aborting — refusing to run without a key from the environment.');
+  console.error('✗ Neither GOOGLE_MAPS_SERVER_KEY nor NEXT_PUBLIC_GOOGLE_MAPS_KEY is set. Aborting — refusing to run without a key from the environment.');
   process.exit(1);
 }
 const OUTPUT_DIR = path.resolve(__dirname, '../../../../public/explore/textures/buildings');

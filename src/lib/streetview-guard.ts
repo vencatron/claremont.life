@@ -12,6 +12,18 @@
  * anyone on the internet.
  */
 
+/**
+ * API key the server-side proxies inject upstream. Prefers GOOGLE_MAPS_SERVER_KEY
+ * — a server-only key that never reaches the browser bundle and can be locked to
+ * the Tiles API by IP in Google Cloud. Falls back to the public browser key so
+ * deployments keep working until the dedicated server key is provisioned.
+ */
+export function getServerMapsKey(): string | undefined {
+  return (
+    process.env.GOOGLE_MAPS_SERVER_KEY ?? process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
+  );
+}
+
 const DEFAULT_ORIGINS = [
   'https://claremont.life',
   'https://www.claremont.life',
