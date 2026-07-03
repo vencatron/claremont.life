@@ -77,8 +77,9 @@ export async function GET(req: Request) {
   try {
     supabase = createAdminClient()
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err)
-    return NextResponse.json({ error: message }, { status: 500 })
+    // Log the detail server-side; don't echo internal config hints to callers.
+    console.error('scrape-events admin client unavailable:', err)
+    return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
   }
 
   const summary = await run()

@@ -9,10 +9,16 @@ import { createAdminClient } from '@/lib/supabase-admin'
 export const runtime = 'nodejs'
 
 const LOCAL_QUEUE_PATH = join(process.cwd(), '.local', 'event-submissions.jsonl')
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ?? process.env.SUPABAS_SERVICE_KEY
 
-function hasAdminCredentials() {
-  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && SERVICE_KEY)
+// Delegate credential detection to createAdminClient so the accepted env var
+// names can never drift apart again (a stricter check here previously returned
+// 503 in prod even when the admin client itself had working credentials).
+function getAdminClient() {
+  try {
+    return createAdminClient()
+  } catch {
+    return null
+  }
 }
 
 async function appendLocalSubmission(submission: EventSubmissionRecord) {
@@ -68,7 +74,8 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  if (!hasAdminCredentials()) {
+  const supabase = getAdminClient()
+  if (!supabase) {
     if (process.env.NODE_ENV === 'development') {
       try {
         await appendLocalSubmission(validated.value)
@@ -87,17 +94,7 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    return NextResponse.json(
-      { success: false, message: 'Event submissions are temporarily unavailable.' },
-      { status: 503 },
-    )
-  }
-
-  let supabase
-  try {
-    supabase = createAdminClient()
-  } catch (error) {
-    console.error('event submission admin client unavailable:', error)
+    console.error('event submission admin client unavailable: missing Supabase credentials')
     return NextResponse.json(
       { success: false, message: 'Event submissions are temporarily unavailable.' },
       { status: 503 },
