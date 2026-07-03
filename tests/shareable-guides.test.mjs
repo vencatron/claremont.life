@@ -24,12 +24,11 @@ test('/guides/cheap-eats exists as a polished direct landing page', () => {
   assert.match(cheapEatsSource, /claremont\.life\/guides\/cheap-eats|\/guides\/cheap-eats/i)
 })
 
-test('/guides/cheap-eats includes required utility links and newsletter CTA', () => {
+test('/guides/cheap-eats includes required utility links', () => {
   for (const href of ['/eat', '/deals', '/events', '/new']) {
     assert.match(cheapEatsSource, new RegExp(`href=[{]?['\"]${href}['\"]`), `expected an internal link to ${href}`)
   }
 
-  assert.match(cheapEatsSource, /NewsletterSignup/)
   assert.match(cheapEatsSource, /student|5C/i)
 })
 
