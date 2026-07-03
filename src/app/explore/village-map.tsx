@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import Link from 'next/link';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import villageData from './data/village-data.json';
 import businessData from './data/business-enrichment.json';
@@ -241,6 +242,14 @@ function BuildingPanel({
   const slug = nameToSlug(info.name);
   const [imgError, setImgError] = useState(false);
 
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [onClose]);
+
   return (
     <div
       style={{
@@ -288,6 +297,7 @@ function BuildingPanel({
       {/* Close button */}
       <button
         onClick={onClose}
+        aria-label="Close building details"
         style={{
           position: 'absolute',
           top: 12,
@@ -538,6 +548,7 @@ export default function VillageMap() {
   const [userLocation, setUserLocation] = useState<{ lng: number; lat: number } | null>(null);
   const [locatingUser, setLocatingUser] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [mapFailed, setMapFailed] = useState(false);
   const userMarkerRef = useRef<import('maplibre-gl').Marker | null>(null);
 
   useEffect(() => {
@@ -717,6 +728,14 @@ export default function VillageMap() {
       });
 
       mapRef.current = map;
+
+      // If the basemap style/tiles can't be fetched the canvas stays blank
+      // forever — surface an error overlay instead of a silent black screen.
+      let styleLoaded = false;
+      map.on('load', () => { styleLoaded = true; });
+      map.on('error', () => {
+        if (!styleLoaded) setMapFailed(true);
+      });
 
       // Enable scroll zoom after first interaction
       map.scrollZoom.disable();
@@ -923,11 +942,84 @@ export default function VillageMap() {
         }}
       />
 
+      {/* Exit back to the main site — the global navs are hidden on /explore,
+          so without this the map is a dead end. */}
+      <Link
+        href="/"
+        aria-label="Exit map and return to claremont.life"
+        style={{
+          position: 'absolute',
+          top: 16,
+          left: 16,
+          zIndex: 60,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          minHeight: 44,
+          padding: '10px 16px',
+          borderRadius: 999,
+          background: 'rgba(10,12,18,0.85)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          color: 'white',
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: 13,
+          fontWeight: 700,
+          textDecoration: 'none',
+        }}
+      >
+        <span aria-hidden="true">←</span> claremont.life
+      </Link>
+
+      {/* Map failed to load */}
+      {mapFailed && (
+        <div
+          role="alert"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 55,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(10,12,18,0.88)',
+            color: 'white',
+            fontFamily: 'system-ui, sans-serif',
+            padding: 24,
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ maxWidth: 420 }}>
+            <p style={{ fontSize: 18, fontWeight: 800 }}>The map couldn&apos;t load</p>
+            <p style={{ marginTop: 8, fontSize: 14, color: 'rgba(255,255,255,0.7)' }}>
+              Check your connection and reload the page. Some campus or corporate
+              networks block the map tile server.
+            </p>
+            <Link
+              href="/"
+              style={{
+                display: 'inline-block',
+                marginTop: 16,
+                padding: '10px 20px',
+                borderRadius: 999,
+                background: 'white',
+                color: '#0a0c12',
+                fontSize: 13,
+                fontWeight: 700,
+                textDecoration: 'none',
+              }}
+            >
+              Back to claremont.life
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* HUD title */}
       <div
         style={{
           position: 'absolute',
-          top: 16,
+          top: 72,
           left: 16,
           zIndex: 20,
           transition: 'opacity 1s',

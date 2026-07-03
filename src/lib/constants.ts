@@ -58,11 +58,3 @@ export const SOURCE_TO_COLLEGE: Record<string, College> = {
   'eventbrite':       'Community',
   'engage_claremont': 'Community',
 }
-
-export const NAV_ITEMS = [
-  { label: 'Events',  href: '/events',  icon: 'Calendar' },
-  { label: 'Eat',     href: '/eat',     icon: 'UtensilsCrossed' },
-  { label: 'Live',    href: '/housing', icon: 'Home' },
-  { label: 'Deals',   href: '/deals',   icon: 'Tag' },
-  { label: 'More',    href: '/more',    icon: 'Grid3x3' },
-] as const

@@ -56,9 +56,9 @@ test('maps a claremont.edu API event into the app event shape', () => {
   })
 })
 
-test('events page query reads only the claremont.edu source', () => {
+test('events page query reads all scraped sources (college scrapers restored)', () => {
   const dataSource = readFileSync(join(process.cwd(), 'src/lib/data.ts'), 'utf8')
-  const sourceFilterCount = dataSource.match(/\.eq\('source', 'claremont_edu_events'\)/g)?.length ?? 0
 
-  assert.equal(sourceFilterCount, 2)
+  // No source filter: events from every scraped calendar must reach the feed.
+  assert.equal(dataSource.includes(".eq('source'"), false)
 })

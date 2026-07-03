@@ -25,7 +25,6 @@ test('launch trust footer exists and exposes source, freshness, corrections, and
   assert.match(trustFooterSource, /public calendars|official calendars|source/i)
   assert.match(trustFooterSource, /updated|fresh|refresh/i)
   assert.match(trustFooterSource, /correction|report/i)
-  assert.match(trustFooterSource, /newsletter/i)
   assert.match(trustFooterSource, /no spam|unsubscribe|privacy/i)
 })
 

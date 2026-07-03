@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Search, X } from 'lucide-react'
 import { CampusPreference, useCampusPreference } from '@/components/CampusPreference'
@@ -30,6 +30,19 @@ export function EventsFeed({ events }: EventsFeedProps) {
   const [search, setSearch] = useState('')
   const [activeFilters, setActiveFilters] = useState<StudentEventFilterId[]>([])
   const campusPreference = useCampusPreference()
+
+  // Honor deep links like /events?filter=tonight (homepage quick actions).
+  // Read after mount so the statically prerendered HTML stays param-free.
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get('filter')
+    if (!raw) return
+    const valid = raw
+      .split(',')
+      .filter((id): id is StudentEventFilterId => DISCOVERY_FILTERS.some((f) => f.id === id))
+    if (valid.length === 0) return
+    const timeoutId = window.setTimeout(() => setActiveFilters(valid), 0)
+    return () => window.clearTimeout(timeoutId)
+  }, [])
 
   const hasDiscoveryState = search.trim().length > 0 || activeFilters.length > 0 || selectedCollege !== 'All'
   const filtered = filterStudentEvents(events, {
@@ -77,14 +90,18 @@ export function EventsFeed({ events }: EventsFeedProps) {
 
   return (
     <div>
+      {/* Campus preference scrolls away — keeping it inside the sticky block left
+          only ~250px of visible event list on a phone. */}
+      <div className="px-4 md:px-6 pt-3 space-y-3">
+        <CampusPreference className="border-gray-200 bg-white text-gray-900 md:bg-white" />
+        {campusPreference && selectedCollege === 'All' && (
+          <p className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+            Prioritizing {campusPreference} first. Pick a campus/source chip to filter explicitly.
+          </p>
+        )}
+      </div>
       <div className="sticky top-0 bg-background z-10 border-b border-gray-100">
         <div className="px-4 md:px-6 pt-3 space-y-3">
-          <CampusPreference className="border-gray-200 bg-white text-gray-900 md:bg-white" />
-          {campusPreference && selectedCollege === 'All' && (
-            <p className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
-              Prioritizing {campusPreference} first. Pick a campus/source chip to filter explicitly.
-            </p>
-          )}
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input

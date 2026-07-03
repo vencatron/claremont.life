@@ -6,6 +6,8 @@ import {
   HOME_QUICK_ACTIONS,
   splitHomepageEvents,
 } from '../src/lib/homepage-daily'
+import { DISCOVERY_FILTERS } from '../src/lib/student-events'
+import { STUDENT_EAT_FILTERS } from '../src/lib/student-eat'
 import type { ClaremontEvent } from '../src/types'
 
 function event(id: string, starts_at: string): ClaremontEvent {
@@ -22,21 +24,33 @@ test('homepage quick actions expose the student daily utility entry points', () 
   assert.deepEqual(
     HOME_QUICK_ACTIONS.map((action) => ({ id: action.id, label: action.label, href: action.href })),
     [
-      { id: 'today', label: 'Today', href: '/events' },
-      { id: 'tonight', label: 'Tonight', href: '/events' },
-      { id: 'weekend', label: 'This Weekend', href: '/events' },
-      { id: 'open-late', label: 'Open Late', href: '/eat' },
+      { id: 'today', label: 'Today', href: '/events?filter=today' },
+      { id: 'tonight', label: 'Tonight', href: '/events?filter=tonight' },
+      { id: 'weekend', label: 'This Weekend', href: '/events?filter=this-weekend' },
+      { id: 'open-late', label: 'Open Late', href: '/eat?filter=open-late' },
       { id: 'student-deals', label: 'Student Deals', href: '/deals' },
       { id: 'new-here', label: 'New Here', href: '/new' },
     ],
   )
 })
 
-test('homepage quick actions avoid unimplemented filter query params', () => {
-  assert.equal(
-    HOME_QUICK_ACTIONS.every((action) => !action.href.includes('?')),
-    true,
-  )
+test('homepage quick action filter params only use filters the target page implements', () => {
+  const implemented: Record<string, readonly string[]> = {
+    '/events': DISCOVERY_FILTERS.map((f) => f.id),
+    '/eat': STUDENT_EAT_FILTERS.map((f) => f.id),
+  }
+
+  for (const action of HOME_QUICK_ACTIONS) {
+    const [path, query = ''] = action.href.split('?')
+    const params = new URLSearchParams(query)
+    for (const [key, value] of params.entries()) {
+      assert.equal(key, 'filter', `${action.id}: only the filter param is implemented`)
+      const ids = implemented[path] ?? []
+      for (const id of value.split(',')) {
+        assert.ok(ids.includes(id), `${action.id}: ${path} does not implement filter "${id}"`)
+      }
+    }
+  }
 })
 
 test('home today fallback links avoid unimplemented utility query params', () => {

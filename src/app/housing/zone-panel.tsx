@@ -52,15 +52,6 @@ function streetViewMapLink(lat: number, lng: number) {
   return `https://www.google.com/maps/@${lat},${lng},3a,75y,90t/data=!3m6!1e1`
 }
 
-function WalkabilityBadge({ walkability }: { walkability: string }) {
-  const c = WALKABILITY[walkability as keyof typeof WALKABILITY] ?? WALKABILITY['car-needed']
-  return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${c.color}`}>
-      {c.icon} {c.label}
-    </span>
-  )
-}
-
 export function ZonePanel({ zone, listings, apiKey, onClose }: ZonePanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -144,7 +135,9 @@ export function ZonePanel({ zone, listings, apiKey, onClose }: ZonePanelProps) {
               </div>
             </div>
 
-            {/* Street Views */}
+            {/* Street Views — the thumbnails need a Maps key; hide the whole
+                section rather than showing a row of broken images. */}
+            {apiKey && (
             <div>
               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
                 Street View
@@ -174,6 +167,7 @@ export function ZonePanel({ zone, listings, apiKey, onClose }: ZonePanelProps) {
                 ))}
               </div>
             </div>
+            )}
 
             {/* Rental listings */}
             <div>
@@ -194,7 +188,7 @@ export function ZonePanel({ zone, listings, apiKey, onClose }: ZonePanelProps) {
                     const distKm = listing.distance_to_campus_m
                       ? (listing.distance_to_campus_m / 1000).toFixed(1)
                       : null
-                    const w = WALKABILITY[listing.walkability as keyof typeof WALKABILITY] ?? WALKABILITY['car-needed']
+                    const w = WALKABILITY[listing.walkability as keyof typeof WALKABILITY] ?? null
                     return (
                       <div key={listing.id} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
                         <div className="flex items-start gap-2 mb-2">
@@ -202,9 +196,11 @@ export function ZonePanel({ zone, listings, apiKey, onClose }: ZonePanelProps) {
                             <p className="font-semibold text-gray-900 text-sm truncate">{listing.name}</p>
                             <p className="text-xs text-gray-400 truncate mt-0.5">{listing.address}</p>
                           </div>
-                          <span className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${w.color}`}>
-                            {w.icon} {w.label}
-                          </span>
+                          {w && (
+                            <span className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${w.color}`}>
+                              {w.icon} {w.label}
+                            </span>
+                          )}
                         </div>
 
                         <div className="flex flex-wrap gap-3 text-xs text-gray-500">
