@@ -6,7 +6,7 @@ import type { HousingListing } from '@/types'
 import { zones, Zone, isPointInPolygon } from './zones'
 import { ZonePanel } from './zone-panel'
 
-const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? ''
 const CENTER = { lat: 34.1015, lng: -117.7113 }
 
 // ─── Zone polygon overlays ────────────────────────────────────────────────────
@@ -372,6 +372,20 @@ export function HousingMap({ listings }: HousingMapProps) {
           isPointInPolygon({ lat: l.lat, lng: l.lng }, selectedZone.polygon)
       )
     : []
+
+  // Without a Maps key the APIProvider renders a full-height broken map with
+  // Google's raw error overlay — degrade to a useful text fallback instead.
+  if (!API_KEY) {
+    return (
+      <div className="mx-4 my-6 rounded-2xl border border-border bg-muted/40 p-6 text-center md:mx-6">
+        <p className="font-semibold text-foreground">The housing map is unavailable right now.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          The neighborhood guide above still covers where students live, typical rents, and
+          walkability for each area.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div

@@ -7,6 +7,10 @@ import { ScrollScrubHero } from '@/components/ScrollScrubHero'
 import { StudentQuickActions } from '@/components/StudentQuickActions'
 import { StudentVoice } from '@/components/StudentVoice'
 
+// The Tonight / This Week preview goes stale without periodic revalidation —
+// without this the homepage keeps showing events from whenever the site last deployed.
+export const revalidate = 3600
+
 const CATEGORY_LINKS = [
   {
     label: 'Events',

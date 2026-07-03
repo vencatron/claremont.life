@@ -20,7 +20,8 @@ const CATEGORIES = [
   { label: 'All', match: () => true },
   { label: 'Restaurant', match: (p: EatPlace) => (p.primary_type ?? '').includes('restaurant') || (p.types ?? []).some(t => t.includes('restaurant')) },
   { label: 'Coffee & Cafe', match: (p: EatPlace) => (p.types ?? []).some(t => t.includes('cafe') || t.includes('coffee')) },
-  { label: 'Bar & Brewery', match: (p: EatPlace) => (p.types ?? []).some(t => t.includes('bar') || t.includes('brewery') || t.includes('pub') || t.includes('wine')) },
+  // Match whole type tokens — a bare `includes('bar')` filed barbecue_restaurant under bars.
+  { label: 'Bar & Brewery', match: (p: EatPlace) => (p.types ?? []).some(t => t === 'bar' || t.endsWith('_bar') || t.includes('brewery') || t === 'pub' || t.includes('wine')) },
   { label: 'Bakery', match: (p: EatPlace) => (p.types ?? []).some(t => t.includes('bakery')) },
   { label: 'Dessert & Ice Cream', match: (p: EatPlace) => (p.types ?? []).some(t => t.includes('ice_cream') || t.includes('dessert') || t.includes('donut') || t.includes('cookie')) },
   { label: 'Boba & Tea', match: (p: EatPlace) => (p.types ?? []).some(t => t.includes('tea') || t.includes('bubble') || t.includes('boba')) },
@@ -37,6 +38,14 @@ export function EatGuide({ places }: EatGuideProps) {
   const [categoryFilter, setCategoryFilter] = useState('All')
   const [search, setSearch] = useState('')
   const [currentTime, setCurrentTime] = useState<Date | null>(null)
+
+  // Honor deep links like /eat?filter=open-late (homepage quick actions).
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get('filter')
+    if (!raw || !STUDENT_EAT_FILTERS.some((f) => f.id === raw)) return
+    const timeoutId = window.setTimeout(() => setStudentFilter(raw as StudentEatFilterId), 0)
+    return () => window.clearTimeout(timeoutId)
+  }, [])
 
   useEffect(() => {
     const updateCurrentTime = () => setCurrentTime(new Date())

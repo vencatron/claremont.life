@@ -18,9 +18,9 @@ const LOCAL_RESOURCE_GROUPS = [
     description: 'The official starting point for trash and recycling, permits, trees, parks, council meetings, and city departments.',
     icon: Landmark,
     links: [
-      { label: 'City of Claremont', href: 'https://www.ci.claremont.ca.us/' },
-      { label: 'City calendar', href: 'https://www.ci.claremont.ca.us/' },
-      { label: 'Community services', href: 'https://www.ci.claremont.ca.us/' },
+      { label: 'City of Claremont', href: 'https://www.claremontca.gov/' },
+      { label: 'City calendar', href: 'https://www.claremontca.gov/Events-directory' },
+      { label: 'Community services', href: 'https://www.claremontca.gov/Government/Staff-and-Structure/Departments-and-Divisions/Community-Services' },
     ],
   },
   {
@@ -67,7 +67,7 @@ const LOCAL_RESOURCE_GROUPS = [
     description: 'A quick path to official contacts, emergency preparedness, neighborhood concerns, and practical resident errands.',
     icon: ShieldCheck,
     links: [
-      { label: 'City contacts', href: 'https://www.ci.claremont.ca.us/' },
+      { label: 'City contacts', href: 'https://www.claremontca.gov/Government/Staff-and-Structure/Contact-Staff' },
       { label: 'Local events', href: '/events' },
       { label: 'Housing + neighborhoods', href: '/housing' },
     ],
@@ -154,11 +154,11 @@ export default function LocalsPage() {
                       )
 
                       return external ? (
-                        <a key={link.href} href={link.href} className={className} target="_blank" rel="noreferrer">
+                        <a key={link.label} href={link.href} className={className} target="_blank" rel="noreferrer">
                           {content}
                         </a>
                       ) : (
-                        <Link key={link.href} href={link.href} className={className}>
+                        <Link key={link.label} href={link.href} className={className}>
                           {content}
                         </Link>
                       )
