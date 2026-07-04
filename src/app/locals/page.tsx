@@ -46,7 +46,6 @@ const LOCAL_RESOURCE_GROUPS = [
     links: [
       { label: 'Claremont Unified School District', href: 'https://www.cusd.claremont.edu/' },
       { label: 'Claremont Library', href: 'https://lacountylibrary.org/location/claremont-library/' },
-      { label: 'Living well guide', href: '/thrive' },
     ],
   },
   {
@@ -54,7 +53,7 @@ const LOCAL_RESOURCE_GROUPS = [
     description: 'Metrolink, Foothill Transit, bikes, parking, and the local mobility shortcuts that make Claremont less car-dependent.',
     icon: Bus,
     links: [
-      { label: 'Getting Around guide', href: '/move' },
+      { label: 'Getting Around guide', href: '/guides/getting-around' },
       { label: 'Foothill Transit', href: 'https://www.foothilltransit.org/' },
       { label: 'Claremont Metrolink Station', href: 'https://metrolinktrains.com/rider-info/general-info/stations/claremont/' },
     ],
