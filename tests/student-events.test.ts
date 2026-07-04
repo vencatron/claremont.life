@@ -93,8 +93,15 @@ test('EventCard source renders metadata badges and gives location prominence bef
   assert.equal(locationIndex < dateIndex, true)
 })
 
-test('EventCard source uses a safe URL guard instead of anchoring raw event URLs', () => {
+test('EventCard links to the internal event detail page instead of anchoring raw event URLs', () => {
   const source = readFileSync('src/components/EventCard.tsx', 'utf8')
+
+  assert.match(source, /href=\{`\/events\/\$\{event\.id\}`\}/)
+  assert.equal(source.includes('href={event.url}'), false)
+})
+
+test('event detail page uses a safe URL guard before rendering the official listing link', () => {
+  const source = readFileSync('src/app/events/[id]/page.tsx', 'utf8')
 
   assert.match(source, /safeEventUrl|isSafeEventUrl|safeUrl/i)
   assert.equal(source.includes('href={event.url}'), false)

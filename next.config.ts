@@ -68,6 +68,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    // Retired placeholder routes. /move's promise is fulfilled by the
+    // getting-around guide; /thrive's resident content lives on /locals.
+    return [
+      { source: "/move", destination: "/guides/getting-around", permanent: true },
+      { source: "/thrive", destination: "/locals", permanent: true },
+      { source: "/more", destination: "/", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

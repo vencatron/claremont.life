@@ -11,8 +11,30 @@ const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans', display
 const bebasNeue = Bebas_Neue({ subsets: ['latin'], variable: '--font-bebas', weight: '400', display: 'swap' })
 
 export const metadata: Metadata = {
-  title: 'claremont.life — Your guide to life in Claremont',
-  description: 'The definitive living guide for students at the 7 Claremont Colleges.',
+  metadataBase: new URL('https://claremont.life'),
+  title: {
+    default: 'claremont.life — Your guide to life in Claremont',
+    template: '%s | claremont.life',
+  },
+  description:
+    'Events, food, student deals, off-campus housing, and practical guides for the 7 Claremont Colleges and the Claremont Village. No account, no app, no ads.',
+  openGraph: {
+    siteName: 'claremont.life',
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://claremont.life',
+    images: [
+      {
+        url: '/hero-claremont-palms.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Palm trees over the Claremont Village',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

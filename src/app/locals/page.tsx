@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -11,6 +12,12 @@ import {
   ShieldCheck,
   Store,
 } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Claremont Local Resources — City Services, Schools & Transit',
+  description:
+    'A resident guide to Claremont, CA: city services, schools, the library, Metrolink and Foothill Transit, local news, and Village resources — all in one place.',
+}
 
 const LOCAL_RESOURCE_GROUPS = [
   {
@@ -39,7 +46,6 @@ const LOCAL_RESOURCE_GROUPS = [
     links: [
       { label: 'Claremont Unified School District', href: 'https://www.cusd.claremont.edu/' },
       { label: 'Claremont Library', href: 'https://lacountylibrary.org/location/claremont-library/' },
-      { label: 'Living well guide', href: '/thrive' },
     ],
   },
   {
@@ -47,7 +53,7 @@ const LOCAL_RESOURCE_GROUPS = [
     description: 'Metrolink, Foothill Transit, bikes, parking, and the local mobility shortcuts that make Claremont less car-dependent.',
     icon: Bus,
     links: [
-      { label: 'Getting Around guide', href: '/move' },
+      { label: 'Getting Around guide', href: '/guides/getting-around' },
       { label: 'Foothill Transit', href: 'https://www.foothilltransit.org/' },
       { label: 'Claremont Metrolink Station', href: 'https://metrolinktrains.com/rider-info/general-info/stations/claremont/' },
     ],

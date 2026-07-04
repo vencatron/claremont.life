@@ -1,9 +1,16 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { getUpcomingEvents } from '@/lib/data'
 import { EventsFeed } from '@/components/EventsFeed'
 import { PageHeader } from '@/components/PageHeader'
 import { Button } from '@/components/ui/button'
+
+export const metadata: Metadata = {
+  title: 'Events at the Claremont Colleges This Week',
+  description:
+    'Upcoming events across the 7 Claremont Colleges and the City of Claremont — talks, concerts, club nights, free food, and community happenings, refreshed hourly.',
+}
 
 export const revalidate = 3600
 

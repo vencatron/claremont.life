@@ -32,6 +32,33 @@ export async function getUpcomingEvents(limit = 100): Promise<ClaremontEvent[]> 
   return []
 }
 
+export async function getEventById(id: string): Promise<ClaremontEvent | null> {
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('id', id)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (!error) return data ? normalizeEventRow(data) : null
+
+  // Same legacy-schema fallback as getUpcomingEvents: production may still be
+  // on `start_date`/`end_date` with no `is_active` column.
+  if (isMissingColumnError(error)) {
+    const legacy = await supabase
+      .from('events')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle()
+
+    if (legacy.error) { console.error('getEventById legacy:', legacy.error); return null }
+    return legacy.data ? normalizeEventRow(legacy.data) : null
+  }
+
+  console.error('getEventById:', error)
+  return null
+}
+
 export async function getBusinesses(): Promise<Business[]> {
   const { data, error } = await supabase
     .from('businesses')

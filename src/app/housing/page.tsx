@@ -1,7 +1,14 @@
+import type { Metadata } from 'next'
 import { getHousingListings } from '@/lib/data'
 import { HousingMap } from './housing-map'
 import { HousingSurvivalGuide } from './housing-survival-guide'
 import { zones, isPointInPolygon } from './zones'
+
+export const metadata: Metadata = {
+  title: 'Off-Campus Housing Near the Claremont Colleges',
+  description:
+    'Apartments and rentals near the Claremont Colleges, mapped by walkability, price, and distance to campus — plus a survival guide for first-time off-campus renters.',
+}
 
 export const revalidate = 3600
 
