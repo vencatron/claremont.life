@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -11,6 +12,12 @@ import {
   ShieldCheck,
   Store,
 } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Claremont Local Resources — City Services, Schools & Transit',
+  description:
+    'A resident guide to Claremont, CA: city services, schools, the library, Metrolink and Foothill Transit, local news, and Village resources — all in one place.',
+}
 
 const LOCAL_RESOURCE_GROUPS = [
   {

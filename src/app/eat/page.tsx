@@ -1,6 +1,13 @@
+import type { Metadata } from 'next'
 import { getEatPlaces } from '@/lib/data'
 import { EatGuide } from './eat-guide'
 import { PageHeader } from '@/components/PageHeader'
+
+export const metadata: Metadata = {
+  title: 'Where to Eat in Claremont Village',
+  description:
+    'Restaurants, coffee, boba, and late-night food in the Claremont Village and around the Claremont Colleges — sorted by what is cheap, open, and walkable.',
+}
 
 export const revalidate = 3600
 
