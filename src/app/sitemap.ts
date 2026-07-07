@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/locals`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${BASE_URL}/guides`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${BASE_URL}/guides/cheap-eats`, priority: 0.8, changeFrequency: 'weekly' },
+    { url: `${BASE_URL}/guides/free-food`, priority: 0.8, changeFrequency: 'daily' },
     { url: `${BASE_URL}/guides/new-student-checklist`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${BASE_URL}/guides/getting-around`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${BASE_URL}/guides/parents-weekend`, priority: 0.8, changeFrequency: 'weekly' },

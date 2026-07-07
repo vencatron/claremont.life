@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Backpack, Bus, ChevronRight, UtensilsCrossed, Users } from 'lucide-react'
+import { Backpack, Bus, ChevronRight, Pizza, UtensilsCrossed, Users } from 'lucide-react'
 import { PageHeader } from '@/components/PageHeader'
 import { Card } from '@/components/ui/card'
 
@@ -12,9 +12,15 @@ export const metadata: Metadata = {
 
 const GUIDES = [
   {
+    href: '/guides/free-food',
+    title: 'Free Food This Week',
+    description: 'A live, day-by-day list of 5C events with free food — updated nightly from campus calendars.',
+    icon: Pizza,
+  },
+  {
     href: '/guides/cheap-eats',
     title: 'Cheap Eats',
-    description: 'Budget meals, student deals, and the free-food radar — how to eat well in Claremont without delivery-app prices.',
+    description: 'Budget meals, student deals, and practical food links — how to eat well in Claremont without delivery-app prices.',
     icon: UtensilsCrossed,
   },
   {
