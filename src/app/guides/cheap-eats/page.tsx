@@ -28,7 +28,7 @@ const cheapEatTips = [
   {
     title: 'Know the free-food radar',
     tag: 'Club meeting strategy',
-    copy: 'Talks, club events, department mixers, and late-night programming can turn into dinner if you check events early enough.',
+    copy: 'Talks, club events, department mixers, and late-night programming can turn into dinner. The radar now has its own page: claremont.life/guides/free-food.',
   },
   {
     title: 'Make late-night plans before late night',

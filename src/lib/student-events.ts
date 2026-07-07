@@ -187,11 +187,11 @@ function dateParts(date: Date, timeZone: string) {
   }
 }
 
-function localDateKey(date: Date, timeZone: string): string {
+export function localDateKey(date: Date, timeZone: string): string {
   return dateParts(date, timeZone).key
 }
 
-function localDateKeyOffset(date: Date, timeZone: string, offsetDays: number): string {
+export function localDateKeyOffset(date: Date, timeZone: string, offsetDays: number): string {
   const { year, month, day } = dateParts(date, timeZone)
   return calendarDateKey(year, month, day + offsetDays)
 }
