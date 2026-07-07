@@ -9,6 +9,7 @@ import {
   STUDENT_EAT_FILTERS,
   buildStudentEatPlaceCardModel,
   filterStudentEatPlaces,
+  sortStudentEatPlacesByClosingTime,
   type StudentEatFilterId,
 } from '@/lib/student-eat'
 
@@ -60,8 +61,13 @@ export function EatGuide({ places }: EatGuideProps) {
 
   const filtered = useMemo(() => {
     const cat = CATEGORIES.find(c => c.label === categoryFilter) ?? CATEGORIES[0]
-    return filterStudentEatPlaces(places, { studentFilter, search, now: currentTime })
+    const result = filterStudentEatPlaces(places, { studentFilter, search, now: currentTime })
       .filter(cat.match)
+    // A place closing in 5 minutes must never top the "what can I still eat" list.
+    if (studentFilter === 'open-now' || studentFilter === 'open-late') {
+      return sortStudentEatPlacesByClosingTime(result, { now: currentTime })
+    }
+    return result
   }, [places, studentFilter, categoryFilter, search, currentTime])
 
   const clearFilters = () => {
@@ -126,13 +132,14 @@ export function EatGuide({ places }: EatGuideProps) {
       {/* Count */}
       <div className="px-4 md:px-6 py-2">
         <p className="text-sm text-gray-500">{filtered.length} places</p>
+        <p className="mt-0.5 text-xs text-gray-400">Hours from Google — double-check late night.</p>
       </div>
 
       {/* Place cards */}
       <div className="px-4 md:px-6 pb-4 space-y-3 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4 md:space-y-0">
         {filtered.map((place) => {
           const cardModel = buildStudentEatPlaceCardModel(place, { now: currentTime })
-          const { displayType, safeWebsiteUrl, safeMapsUrl } = cardModel
+          const { displayType, safeWebsiteUrl, safeMapsUrl, openStatus } = cardModel
 
           return (
             <Card key={place.place_id} className="p-4 shadow-sm rounded-xl">
@@ -151,6 +158,11 @@ export function EatGuide({ places }: EatGuideProps) {
                     </Badge>
                     {place.price_level !== null && place.price_level > 0 && (
                       <span className="text-xs text-gray-500 font-medium">{formatPriceLevel(place.price_level)}</span>
+                    )}
+                    {openStatus.isClosingSoon && openStatus.minutesUntilClose !== null && (
+                      <Badge variant="secondary" className="bg-amber-100 text-amber-800 text-xs hover:bg-amber-100">
+                        {openStatus.minutesUntilClose <= 1 ? 'Closing now' : `Closes soon · ${openStatus.minutesUntilClose} min`}
+                      </Badge>
                     )}
                   </div>
                 </div>

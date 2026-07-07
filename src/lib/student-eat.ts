@@ -21,6 +21,21 @@ export type StudentEatFilterId = (typeof STUDENT_EAT_FILTERS)[number]['id']
 export type StudentEatTagId = Exclude<StudentEatFilterId, 'all'>
 export type OpenNowStatus = boolean | 'unknown'
 
+export const CLOSING_SOON_MINUTES = 60
+
+export interface OpenStatus {
+  /** Same semantics as getOpenNow — 'unknown' when hours are missing/unparseable or now is null. */
+  openNow: OpenNowStatus
+  /** e.g. '10:00 PM', '2:00 AM', '12:00 AM Sun'. null when closed, unknown, or open 24/7. */
+  closesAtLabel: string | null
+  /** Whole minutes until the containing (chained) range ends. null when closed, unknown, or open 24/7. */
+  minutesUntilClose: number | null
+  /** e.g. '11:00 AM', '5:00 PM', '11:00 AM tomorrow', '11:00 AM Mon'. null when open or unknown, or when no future opening exists in the parsed week. */
+  opensNextLabel: string | null
+  /** openNow === true && minutesUntilClose !== null && minutesUntilClose <= CLOSING_SOON_MINUTES */
+  isClosingSoon: boolean
+}
+
 export interface StudentEatTag {
   id: StudentEatTagId
   label: string
@@ -32,6 +47,7 @@ export interface StudentEatMetadata {
   details: string[]
   openNow: OpenNowStatus
   openLate: boolean
+  openStatus: OpenStatus
   safeWebsiteUrl: string | null
   safeMapsUrl: string | null
 }
@@ -51,6 +67,7 @@ export interface StudentEatPlaceCardModel {
   displayType: string
   tags: StudentEatTag[]
   details: string[]
+  openStatus: OpenStatus
   safeWebsiteUrl: string | null
   safeMapsUrl: string | null
 }
@@ -75,6 +92,8 @@ const TAG_ORDER: StudentEatTagId[] = STUDENT_EAT_FILTERS
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const
 const WEEKDAY_LOOKUP = new Map(WEEKDAYS.map((day, index) => [day.toLowerCase(), index]))
+const WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const
+const WEEK_MINUTES = 7 * 1440
 const CLAREMONT_COLLEGES_CENTER = { lat: 34.1017, lng: -117.7129 }
 const WALKABLE_MILES = 2.25
 
@@ -249,6 +268,99 @@ function getOpenNow(hours: string[] | null | undefined, now: Date | null, timeZo
   return hasRelevantDay ? false : 'unknown'
 }
 
+function toWeekInterval(range: HoursRange): { start: number; end: number } {
+  const start = range.startDay * 1440 + range.startMinute
+  const end = range.endDay * 1440 + range.endMinute // endDay may be startDay + 1; Saturday overnight yields end > WEEK_MINUTES
+  return { start, end }
+}
+
+/** 12h clock, matching Google's own hour strings: 0 → '12:00 AM', 570 → '9:30 AM', 1290 → '9:30 PM'. */
+function formatMinuteOfDay(minuteOfDay: number): string {
+  const m = ((minuteOfDay % 1440) + 1440) % 1440
+  const hour24 = Math.floor(m / 60)
+  const minute = m % 60
+  const period = hour24 >= 12 ? 'PM' : 'AM'
+  const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12
+  return `${hour12}:${String(minute).padStart(2, '0')} ${period}`
+}
+
+/**
+ * Formats an absolute minute-of-week with a day qualifier relative to nowWeekday:
+ * same calendar day → '10:00 PM'; day offset 1 → '11:00 AM tomorrow';
+ * offset 2–6 → '11:00 AM Mon'.
+ */
+function formatWeekMinuteLabel(weekMinute: number, nowWeekday: number): string {
+  const day = Math.floor((((weekMinute % WEEK_MINUTES) + WEEK_MINUTES) % WEEK_MINUTES) / 1440)
+  const offset = (day - nowWeekday + 7) % 7
+  const time = formatMinuteOfDay(weekMinute % 1440)
+  if (offset === 0) return time
+  if (offset === 1) return `${time} tomorrow`
+  return `${time} ${WEEKDAY_SHORT[day]}`
+}
+
+export function getOpenStatus(
+  hours: string[] | null | undefined,
+  now: Date | null,
+  timeZone: string = CLAREMONT_TIME_ZONE,
+): OpenStatus {
+  const openNow = getOpenNow(hours, now, timeZone)
+  const local = now === null ? null : localDateParts(now, timeZone)
+  if (openNow === 'unknown' || !local) {
+    return { openNow: 'unknown', closesAtLabel: null, minutesUntilClose: null, opensNextLabel: null, isClosingSoon: false }
+  }
+
+  const intervals = parseHours(hours).ranges.map(toWeekInterval)
+  const t = local.weekday * 1440 + local.minuteOfDay
+
+  if (openNow === true) {
+    const containing = intervals.find(({ start, end }) => (start <= t && t < end) || (end > WEEK_MINUTES && t < end - WEEK_MINUTES))
+    if (!containing) {
+      return { openNow, closesAtLabel: null, minutesUntilClose: null, opensNextLabel: null, isClosingSoon: false }
+    }
+
+    let end = containing.end
+    let covered = containing.end - containing.start
+    while (covered < WEEK_MINUTES) {
+      const next = intervals.find((interval) => interval.start === end % WEEK_MINUTES)
+      if (!next) break
+      covered += next.end - next.start
+      end += next.end - next.start
+    }
+
+    if (covered >= WEEK_MINUTES) {
+      // Open 24/7 — no closing time to count down to.
+      return { openNow, closesAtLabel: null, minutesUntilClose: null, opensNextLabel: null, isClosingSoon: false }
+    }
+
+    let minutesUntilClose = (end - t) % WEEK_MINUTES
+    if (minutesUntilClose <= 0) minutesUntilClose += WEEK_MINUTES
+    // Close labels within 24h stay bare ('2:00 AM', never '2:00 AM tomorrow'); rarer >24h chained spans get a day qualifier.
+    const closesAtLabel = minutesUntilClose <= 1440
+      ? formatMinuteOfDay(end % 1440)
+      : formatWeekMinuteLabel(end, local.weekday)
+
+    return {
+      openNow,
+      closesAtLabel,
+      minutesUntilClose,
+      opensNextLabel: null,
+      isClosingSoon: minutesUntilClose <= CLOSING_SOON_MINUTES,
+    }
+  }
+
+  let opensNextLabel: string | null = null
+  let bestDelta = Number.POSITIVE_INFINITY
+  for (const { start } of intervals) {
+    const delta = ((start % WEEK_MINUTES) - t + WEEK_MINUTES) % WEEK_MINUTES
+    if (delta > 0 && delta < bestDelta) {
+      bestDelta = delta
+      opensNextLabel = formatWeekMinuteLabel(start % WEEK_MINUTES, local.weekday)
+    }
+  }
+
+  return { openNow, closesAtLabel: null, minutesUntilClose: null, opensNextLabel, isClosingSoon: false }
+}
+
 function closesLate(hours: string[] | null | undefined): boolean {
   const parsed = parseHours(hours)
   return parsed.ranges.some((range) => range.endDay !== range.startDay || range.endMinute >= 23 * 60)
@@ -305,10 +417,13 @@ function inferTagIds(place: EatPlace, openNow: OpenNowStatus, openLate: boolean)
   return TAG_ORDER.filter((id) => tags.has(id))
 }
 
-function studentDetails(place: EatPlace, tagIds: StudentEatTagId[], openNow: OpenNowStatus): string[] {
+function studentDetails(place: EatPlace, tagIds: StudentEatTagId[], openStatus: OpenStatus): string[] {
   const details: string[] = []
-  if (openNow === true) details.push('Open now')
-  else if (openNow === false) details.push('Closed now')
+  if (openStatus.openNow === true) {
+    details.push(openStatus.closesAtLabel ? `Open · closes ${openStatus.closesAtLabel}` : 'Open now')
+  } else if (openStatus.openNow === false) {
+    details.push(openStatus.opensNextLabel ? `Closed · opens ${openStatus.opensNextLabel}` : 'Closed now')
+  }
 
   if (tagIds.includes('under-10')) details.push('Good cheap option')
   if (tagIds.includes('study-spot')) details.push('Works for studying')
@@ -327,7 +442,8 @@ function studentDetails(place: EatPlace, tagIds: StudentEatTagId[], openNow: Ope
 
 export function inferStudentEatMetadata(place: EatPlace, options: InferStudentEatOptions = {}): StudentEatMetadata {
   const { now = new Date(), timeZone = CLAREMONT_TIME_ZONE } = options
-  const openNow = getOpenNow(place.hours, now, timeZone)
+  const openStatus = getOpenStatus(place.hours, now, timeZone)
+  const openNow = openStatus.openNow
   const openLate = closesLate(place.hours)
   const tagIds = inferTagIds(place, openNow, openLate)
   const tags = tagIds.map((id) => ({ id, label: TAG_LABELS[id] }))
@@ -335,9 +451,10 @@ export function inferStudentEatMetadata(place: EatPlace, options: InferStudentEa
   return {
     tags,
     tagIds,
-    details: studentDetails(place, tagIds, openNow),
+    details: studentDetails(place, tagIds, openStatus),
     openNow,
     openLate,
+    openStatus,
     safeWebsiteUrl: isSafeExternalUrl(place.website) ? place.website : null,
     safeMapsUrl: isSafeExternalUrl(place.google_maps_url) ? place.google_maps_url : null,
   }
@@ -351,6 +468,7 @@ export function buildStudentEatPlaceCardModel(place: EatPlace, options: InferStu
     displayType: formatDisplayType(place.primary_type || place.types?.[0] || 'restaurant'),
     tags: metadata.tags,
     details: metadata.details,
+    openStatus: metadata.openStatus,
     safeWebsiteUrl: metadata.safeWebsiteUrl,
     safeMapsUrl: metadata.safeMapsUrl,
   }
@@ -390,4 +508,26 @@ export function filterStudentEatPlaces(places: EatPlace[], options: StudentEatFi
     const metadata = inferStudentEatMetadata(place, { now, timeZone })
     return appliesStudentEatFilter(place, studentFilter, metadata) && matchesStudentEatSearch(place, search, metadata)
   })
+}
+
+/**
+ * Stable sort for open-now / open-late result lists: open places with the most
+ * time left first (open-24/7 = Infinity, so they lead), places closing soonest
+ * last among open ones, closed/unknown places after all open ones (key -1).
+ * Ties preserve the incoming order (server-side rating desc). Does not mutate.
+ */
+export function sortStudentEatPlacesByClosingTime(
+  places: EatPlace[],
+  options: InferStudentEatOptions = {},
+): EatPlace[] {
+  const { now = new Date(), timeZone = CLAREMONT_TIME_ZONE } = options
+  const key = (place: EatPlace): number => {
+    const status = getOpenStatus(place.hours, now, timeZone)
+    if (status.openNow !== true) return -1
+    return status.minutesUntilClose ?? Number.POSITIVE_INFINITY
+  }
+  return places
+    .map((place, index) => ({ place, k: key(place), index }))
+    .sort((a, b) => (b.k === a.k ? a.index - b.index : b.k > a.k ? 1 : -1))
+    .map((entry) => entry.place)
 }
